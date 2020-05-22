@@ -7,7 +7,9 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.5.5",
+    "@nexys/babelsetup": "^1.0.3",
     "@nexys/lib": "^2.0.10",
+    "@nexys/utils": "^3.8.5",
     "@types/hapi__joi": "^16.0.12",
     "@types/koa": "^2.11.3",
     "@types/koa-basic-auth": "^2.0.3",
@@ -27,7 +29,6 @@
     "koa-router": "^7.4.0",
     "node-cache": "^5.1.0",
     "request-promise-native": "^1.0.8",
-    "@nexys/babelsetup": "^1.0.3",
     "supertest": "^4.0.2",
     "ts-jest": "^25.3.1",
     "tsc-watch": "^4.2.3"
