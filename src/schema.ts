@@ -7,11 +7,11 @@ export const id:Joi.ObjectSchema<{id:T.Id}> = Joi.object({
 });
 
 export const uuid:Joi.ObjectSchema<{uuid:T.Uuid}> = Joi.object({
-  id: Joi.string().guid().required()
+  uuid: Joi.string().guid().required()
 });
 
 export const name:Joi.ObjectSchema<{name:string}> = Joi.object({
-  id: Joi.string().required()
+  name: Joi.string().required()
 });
 
 export const validateId = validate<{id:T.Id}>(id);
