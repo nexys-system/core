@@ -3,7 +3,7 @@
 [![CircleCI](https://circleci.com/gh/Nexysweb/koa-lib.svg?style=svg)](https://circleci.com/gh/Nexysweb/koa-lib)
 [![TavisCI](https://travis-ci.com/Nexysweb/koa-lib-ts.svg?branch=master)](https://travis-ci.com/Nexysweb/koa-lib-ts)
 
-Nexys typescript web framework (built on top of Koa)
+Nexys typescript web framework (built on top of Koa and Nexys System SDK)
 
 3 things need to be setup
 
