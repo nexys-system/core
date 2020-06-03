@@ -9,6 +9,9 @@ Nexys typescript web framework (built on top of Koa and Nexys System SDK)
 ## Setup
 
 ### App init
+
+path suggestion: `src/app.ts`
+
 ```
 import Mount from 'koa-mount';
 import { App, Routes } from '@nexys/koa-lib';
