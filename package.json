@@ -7,9 +7,11 @@
     "build": "tsc"
   },
   "dependencies": {
-    "@nexys/lib": "^2.0.10",
-    "@nexys/utils": "^3.8.6",
+    "@hapi/joi": "^17.1.1",
+    "@nexys/http": "^1.0.0",
+    "@nexys/utils": "^3.9.0",
     "@types/hapi__joi": "^16.0.12",
+    "@types/jsonwebtoken": "^8.5.0",
     "@types/koa": "^2.11.3",
     "@types/koa-basic-auth": "^2.0.3",
     "@types/koa-helmet": "^3.1.2",
@@ -37,8 +39,8 @@
     "@types/supertest": "^2.0.8",
     "jest": "^26.0.1",
     "supertest": "^4.0.2",
-    "tsc-watch": "^4.2.3",
     "ts-jest": "^25.3.1",
+    "tsc-watch": "^4.2.3",
     "typescript": "^3.9.3"
   }
 }
