@@ -33,13 +33,18 @@ export const startApp = async (port: number) => {
 };
 ```
 
-### Cache
+### Cache Initialization
+
+path suggestion: `src/service/cache.ts`
+
 ```
 import { Cache } from '@nexys/koa-lib';
 export default new Cache.Local({persistent: true });
 ```
 
-### Middleware auth
+### Middleware Auth
+
+path suggestion: `src/middleware/auth.ts`
 
 ```
 import { Middleware} from '@nexys/koa-lib';
