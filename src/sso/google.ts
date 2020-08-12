@@ -5,7 +5,7 @@ import rp from "request-promise-native";
 import * as Utils from "./utils";
 import SSOAbstract from "./abstract";
 
-interface GoogleProfile {
+export interface GoogleProfile {
   id: string;
   email: string;
   verified_email: boolean;
@@ -19,7 +19,7 @@ interface GoogleProfile {
   hd: string;
 }
 
-interface Profile {
+export interface Profile {
   id: string;
   email: string;
   firstName: string;

@@ -8,4 +8,17 @@ import * as GoogleUtil from "./google";
 import Github from "./google";
 import * as GithubUtil from "./google";
 
-export { SSOAbstract, Routes, Utils, GoogleUtil, Google, Github, GithubUtil };
+import Gitlab from "./google";
+import * as GitlabUtil from "./google";
+
+export {
+  SSOAbstract,
+  Routes,
+  Utils,
+  GoogleUtil,
+  Google,
+  Github,
+  GithubUtil,
+  Gitlab,
+  GitlabUtil,
+};
