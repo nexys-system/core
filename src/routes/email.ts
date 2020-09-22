@@ -5,7 +5,7 @@ import { HTTP } from "@nexys/http";
 export default (emailService: EmailService) => {
   const router: Router = new Router();
 
-  router.get("/email", async (ctx) => {
+  router.get("/", async (ctx) => {
     const { email }: { email: string } = ctx.query;
 
     if (!email) {
