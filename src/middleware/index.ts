@@ -5,8 +5,9 @@ import * as Validation from "./validate";
 
 import Auth from "./auth";
 import * as AuthHelper from "./auth";
+import * as Cookies from "./cookies";
 
-export { Auth, AuthHelper };
+export { Auth, AuthHelper, Cookies };
 
 export const defaultMessage = "an error occurred, see logs for more details";
 export const defaultStatus = 500;
