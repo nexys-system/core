@@ -1,6 +1,6 @@
 {
   "name": "@nexys/koa-lib",
-  "version": "2.2.1",
+  "version": "2.2.2",
   "license": "MIT",
   "scripts": {
     "test": "jest",
