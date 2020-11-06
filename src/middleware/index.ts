@@ -4,11 +4,9 @@ import _bodyParser from "koa-body";
 import * as Validation from "./validate";
 
 import Auth from "./auth";
-import { readToken } from "./auth";
+import * as AuthHelper from "./auth";
 
-const authHelpers = { readToken };
-
-export { authHelpers, Auth };
+export { Auth, AuthHelper };
 
 export const defaultMessage = "an error occurred, see logs for more details";
 export const defaultStatus = 500;
