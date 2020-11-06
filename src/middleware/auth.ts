@@ -7,7 +7,7 @@ import * as Cookies from "./cookies";
 
 // see https://github.com/Nexysweb/koa-lib/blob/master/src/middleware/index.ts
 
-export const OLDreadToken = (headers: {
+export const readTokenHeaders = (headers: {
   authorization?: string;
 }): string | null => {
   if (headers.authorization) {
