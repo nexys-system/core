@@ -4,7 +4,7 @@ import _bodyParser from "koa-body";
 import * as Validation from "./validate";
 
 import Auth from "./auth";
-import * as AuthHelper from "./auth";
+import * as AuthHelper from "./auth/utils";
 import * as Cookies from "./cookies";
 
 export { Auth, AuthHelper, Cookies };
