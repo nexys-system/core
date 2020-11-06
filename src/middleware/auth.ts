@@ -24,13 +24,17 @@ export interface UserState<Profile, UserCache> {
 
 export const login = <A extends { token: string }>(
   profileWToken: A,
-  ctx: Koa.Context
+  ctx: Koa.Context,
+  cookieOpts: {
+    secure: boolean;
+    sameSite?: boolean | "strict" | "lax" | "none";
+  } = { secure: true }
 ) => {
   const { token, ...rest }: A = profileWToken;
   //const b: Omit<A, "token"> = rest;
 
   // set token in cookie
-  Cookies.setToken(token, ctx.cookies);
+  Cookies.setToken(token, ctx.cookies, cookieOpts.secure, cookieOpts.sameSite);
 
   ctx.body = rest;
 };
