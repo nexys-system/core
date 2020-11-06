@@ -14,15 +14,13 @@ interface Profile {
 }
 
 interface UserCache {
-  cacheData: any;
+  permissions: [];
 }
 
 const auth = new A.default<Profile, UserCache>(new Cache({ persistent: true }));
 
 test("isPermissionValid", () => {
   const userPermissions = ["p1", "p2", "p3"];
-  expect(auth.isPermissionValid("doesnotexist", userPermissions)).toEqual(
-    false
-  );
-  expect(auth.isPermissionValid("p2", userPermissions)).toEqual(true);
+  expect(A.isPermissionValid("doesnotexist", userPermissions)).toEqual(false);
+  expect(A.isPermissionValid("p2", userPermissions)).toEqual(true);
 });

@@ -523,10 +523,10 @@
   dependencies:
     "@babel/runtime" "^7.5.5"
 
-"@nexys/utils@^3.9.0":
-  version "3.9.5"
-  resolved "https://registry.yarnpkg.com/@nexys/utils/-/utils-3.9.5.tgz#4dd355869643b5dcd49bb5f28f5f8c622c720c91"
-  integrity sha512-oAcWfxV+KCz/uCj6IvUhPoTf+IQp1cwGG1lda+tYL8XxiiZq2fpCJnGaXO94dlW8qXnL1Vznvr2eyN0002hAUg==
+"@nexys/utils@^3.9.13":
+  version "3.9.13"
+  resolved "https://registry.yarnpkg.com/@nexys/utils/-/utils-3.9.13.tgz#74f7c0af2182b81d642b18e21f07593823a24e9d"
+  integrity sha512-y9DxSwhN8JZgm8fLd+LNprSTFp981zpphvSbALtIC0OQj8eu2quo3Mcby8ewyaUN1VGvjdVK8N9Fqsaa9fvCHg==
 
 "@sinonjs/commons@^1.7.0":
   version "1.8.1"

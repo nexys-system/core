@@ -41,7 +41,15 @@ export const login = <A extends { token: string }>(
 
 const cacheUserPrefix: string = "user-";
 
-export default class Auth<Profile extends T.ObjectWithId, UserCache> {
+export const isPermissionValid = (
+  permissionRequired: string,
+  userPermissions: string[]
+): boolean => userPermissions.includes(permissionRequired);
+
+export default class Auth<
+  Profile extends T.ObjectWithId,
+  UserCache extends { permissions: string[] }
+> {
   cache: Cache;
 
   constructor(cache: Cache) {
@@ -85,10 +93,10 @@ export default class Auth<Profile extends T.ObjectWithId, UserCache> {
     ctx: Koa.Context,
     next: Koa.Next
   ): Promise<void> => {
-    const { user } = ctx;
-    const { permissions } = this.getCache(user.id);
+    const { userCache }: { userCache: UserCache } = ctx.state as any;
+    const { permissions } = userCache;
 
-    if (this.isPermissionValid(permission, permissions)) {
+    if (isPermissionValid(permission, permissions)) {
       await next();
     } else {
       ctx.status = 401;
@@ -101,11 +109,6 @@ export default class Auth<Profile extends T.ObjectWithId, UserCache> {
       return;
     }
   };
-
-  isPermissionValid = (
-    permissionRequired: string,
-    userPermissions: string[]
-  ): boolean => userPermissions.includes(permissionRequired);
 
   isAuthorized = (
     permission: string
