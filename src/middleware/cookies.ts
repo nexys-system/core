@@ -10,9 +10,11 @@ export const getToken = (cookies: Cookies): string | undefined =>
  * @param token
  * @param cookies
  * @param secure y default true, when http throws: `Error: Cannot send secure cookie over unencrypted connection`
+ * @param sameSite: https://web.dev/samesite-cookies-explained/
  */
 export const setToken = (
   token: string,
   cookies: Cookies,
-  secure: boolean = true
-) => cookies.set(tokenKey, token, { httpOnly: true, secure });
+  secure: boolean = true,
+  sameSite?: boolean | "strict" | "lax" | "none"
+) => cookies.set(tokenKey, token, { httpOnly: true, secure, sameSite });
