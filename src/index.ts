@@ -7,5 +7,17 @@ import * as Middleware from "./middleware";
 import * as Routes from "./routes";
 import * as Validation from "./validation";
 import * as SSO from "./sso";
+import * as OAuth from "./oauth";
 
-export { App, JWT, Schema, Type, Cache, Middleware, Routes, Validation, SSO };
+export {
+  App,
+  JWT,
+  Schema,
+  Type,
+  Cache,
+  Middleware,
+  Routes,
+  Validation,
+  SSO,
+  OAuth,
+};
