@@ -12,7 +12,10 @@ interface UserCache {
 }
 
 test("create instance of auth", () => {
-  const auth = new A<Profile, UserCache>(new Cache({ persistent: true }));
+  const auth = new A<Profile, UserCache>(
+    new Cache({ persistent: true }),
+    "mysecret"
+  );
 
   expect(auth instanceof A);
 });

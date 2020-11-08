@@ -21,20 +21,20 @@ export default class Github extends AbstractOAuth<Profile> {
     return Utils.callback(urlToken, body);
   };
 
-  getParams = (state?: { [k: string]: string }) => {
+  getParams = (state?: string) => {
     const params = {
       client_id: this.client_id,
       redirect_uri: this.redirect_uri,
     };
 
     if (state) {
-      return { state: JSON.stringify(state), ...params };
+      return { state, ...params };
     }
 
     return params;
   };
 
-  oAuthUrl = (state?: { [k: string]: string }): string => {
+  oAuthUrl = (state?: string): string => {
     const params = this.getParams(state);
     return Utils.oAuthLink(urlAuthorize, params);
   };
