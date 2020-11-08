@@ -1,3 +1,4 @@
+// note that this one is deprecated
 import Router from "koa-router";
 import SsoAbstract from "./abstract";
 

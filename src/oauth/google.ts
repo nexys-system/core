@@ -2,7 +2,7 @@ import Rp from "request-promise-native";
 import * as Utils from "./utils";
 import AbstractOAuth from "./abstract";
 
-export interface Profile {
+export interface GoogleProfile {
   id: string;
   email: string;
   verified_email: boolean;
@@ -14,6 +14,13 @@ export interface Profile {
   gender: string;
   locale: string;
   hd: string;
+}
+
+export interface Profile {
+  id: string;
+  email: string;
+  firstName: string;
+  lastName: string;
 }
 
 export const scopesDefault: string[] = [
@@ -59,7 +66,7 @@ export default class Google extends AbstractOAuth<Profile> {
     return Utils.callback(url, body);
   };
 
-  getProfile = async (accessToken: string): Promise<any> => {
+  getProfile = async (accessToken: string): Promise<Profile> => {
     const url: string =
       "https://www.googleapis.com/oauth2/v1/userinfo?alt=json";
 
@@ -70,7 +77,7 @@ export default class Google extends AbstractOAuth<Profile> {
     };
 
     try {
-      const res: Profile = await Rp(url, options);
+      const res: GoogleProfile = await Rp(url, options);
 
       return {
         id: res.id,

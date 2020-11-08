@@ -11,7 +11,7 @@ export default abstract class OAuth2<Profile> {
 
   abstract callback(code: string): Promise<string>;
 
-  abstract oAuthUrl(state?: { [k: string]: string } | string, scopes?: string[]): string;
+  abstract oAuthUrl(state?: string, scopes?: string[]): string;
 
   abstract getProfile(token: string): Promise<Profile>;
 }
