@@ -1,17 +1,15 @@
 import JWT from "jsonwebtoken";
 
-const dummySecretKey = "mysecretkey";
+export default class JWTClass {
+  secret: string;
 
-const secretKey = process.env.SECRET || dummySecretKey;
+  constructor(secret: string) {
+    this.secret = secret;
+  }
 
-if (dummySecretKey === secretKey) {
-  console.warn(
-    "secret key has not been set in env var, taking default - this should NEVER be the case on prod"
-  );
+  sign = <A extends Object>(profile: A): string =>
+    JWT.sign(profile, this.secret);
+
+  verify = <A extends Object>(token: string): { iat: number } & A =>
+    JWT.verify(token, this.secret) as { iat: number } & A;
 }
-
-export const sign = <A extends Object>(profile: A): string =>
-  JWT.sign(profile, secretKey);
-
-export const verify = <A extends Object>(token: string): { iat: number } & A =>
-  JWT.verify(token, secretKey) as { iat: number } & A;

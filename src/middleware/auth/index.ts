@@ -3,7 +3,7 @@ import Compose from "koa-compose";
 
 import { OptionSet } from "@nexys/utils/dist/types";
 
-import * as JWT from "../../jwt";
+import JWT from "../../jwt";
 import * as T from "../../type";
 import * as LT from "./type";
 import Cache from "../../cache/cache";
@@ -17,18 +17,25 @@ export default class Auth<
   UserCache extends LT.Permissions
 > {
   cache: Cache;
+  jwt: JWT;
 
-  constructor(cache: Cache) {
+  /**
+   *
+   * @param cache needed for extra login information
+   * @param secret for the JWT verification
+   */
+  constructor(cache: Cache, secret: string) {
     this.cache = cache;
+    this.jwt = new JWT(secret);
   }
 
-  getProfile = (token: string): Profile => JWT.verify<Profile>(token);
+  getProfile = (token: string): Profile => this.jwt.verify<Profile>(token);
 
   getCache = <A>(id: T.Id): A => this.cache.get(U.cacheUserPrefix + id);
 
   setCache = (profile: Profile, cacheData: UserCache): string => {
     this.cache.set(U.cacheUserPrefix + profile.id, cacheData);
-    return JWT.sign(profile);
+    return this.jwt.sign(profile);
   };
 
   authFormat = (

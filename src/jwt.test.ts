@@ -1,11 +1,10 @@
-import * as J from './jwt';
+import JWT from "./jwt";
 
-test('encode', () => {
-  const e = {a: 'a', b: 'a'};
-  const s = J.sign(e);
-  const o = J.verify(s);
+test("encode", () => {
+  const j = new JWT("mysecret");
+  const e = { a: "a", b: "a" };
+  const s = j.sign(e);
+  const o = j.verify(s);
 
-  delete(o.iat)
-
-  expect(e).toEqual(o)
-})
+  expect({ ...e, iat: o.iat }).toEqual(o);
+});
