@@ -21,6 +21,6 @@ export const setToken = (
   secure: boolean = true,
   sameSite?: boolean | "strict" | "lax" | "none"
 ) => {
-  cookies.set(metaKey, new Date().toISOString());
+  cookies.set(metaKey, new Date().toISOString(), { httpOnly: false });
   return cookies.set(tokenKey, token, { httpOnly: true, secure, sameSite });
 };
