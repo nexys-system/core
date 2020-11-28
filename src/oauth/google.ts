@@ -25,9 +25,9 @@ export interface Profile {
 
 export const scopesDefault: string[] = [
   "userinfo.profile",
-  "userinfo.email",
-  "calendar",
-  "gmail.readonly", // for emails, not required if only the token is needed
+  "userinfo.email"
+  //"calendar",
+  //"gmail.readonly", // for emails, not required if only the token is needed
 ].map((path) => apiHost + "/auth/" + path);
 
 const urlAuthorize: string = "https://accounts.google.com/o/oauth2/v2/auth";
