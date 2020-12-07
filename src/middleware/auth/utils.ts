@@ -35,3 +35,13 @@ export const isPermissionValid = (
   permissionRequired: string,
   userPermissions: string[]
 ): boolean => userPermissions.includes(permissionRequired);
+
+export const extractBasicAuthToken = (s: string): string => s.slice(6);
+
+export const createBasicAuthToken = (username: string, password: string) =>
+  Buffer.from(username + ":" + password).toString("base64");
+
+export const createBasicAuthHeaderString = (
+  username: string,
+  password: string
+) => "Basic " + createBasicAuthToken(username, password);

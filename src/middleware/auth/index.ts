@@ -119,3 +119,19 @@ export default class Auth<
     Koa.ParameterizedContext<Koa.DefaultState, Koa.Context>
   > => Compose([this.isAuthenticated(), this.hasPermission(permission)]);
 }
+
+// basic auth
+export const isBasicAuthenticated = (
+  username: string,
+  password: string
+) => async (ctx: Koa.Context, next: Koa.Next) => {
+  const Authorization = ctx.headers;
+  const token = U.extractBasicAuthToken(Authorization);
+
+  if (token === U.createBasicAuthToken(username, password)) {
+    await next();
+  } else {
+    ctx.status = 401;
+    ctx.body = { msg: "unauthorized" };
+  }
+};
