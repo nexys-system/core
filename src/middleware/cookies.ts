@@ -24,3 +24,13 @@ export const setToken = (
   cookies.set(metaKey, new Date().toISOString(), { httpOnly: false });
   return cookies.set(tokenKey, token, { httpOnly: true, secure, sameSite });
 };
+
+/**
+ * removes token for logout
+ * @param cookies cookies
+ * @see https://github.com/koajs/koa/issues/777#issuecomment-461499834
+ */
+export const removeToken = (cookies: Cookies) => {
+  cookies.set(metaKey, undefined);
+  return cookies.set(tokenKey, undefined);
+};

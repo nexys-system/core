@@ -29,6 +29,12 @@ export const login = <A extends { token: string }>(
   ctx.body = rest;
 };
 
+export const logout = (ctx: Koa.Context) => {
+  Cookies.removeToken(ctx.cookies);
+
+  ctx.body = { msg: "cookies removed" };
+};
+
 export const cacheUserPrefix: string = "user-";
 
 export const isPermissionValid = (
