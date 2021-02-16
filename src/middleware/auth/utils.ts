@@ -1,5 +1,5 @@
 import Koa from "koa";
-
+import * as T from "../../type";
 import * as Cookies from "../cookies";
 
 export const readTokenHeaders = (headers: {
@@ -51,3 +51,5 @@ export const createBasicAuthHeaderString = (
   username: string,
   password: string
 ) => "Basic " + createBasicAuthToken(username, password);
+
+export const getKey = (id: T.Id) => cacheUserPrefix + id;

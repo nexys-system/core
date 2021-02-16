@@ -1,7 +1,7 @@
 import Koa from "koa";
 import Compose from "koa-compose";
 
-import { OptionSet } from "@nexys/utils/dist/types";
+import { Id, OptionSet } from "@nexys/utils/dist/types";
 
 import JWT from "../../jwt";
 import * as T from "../../type";
@@ -31,7 +31,7 @@ export default class Auth<
 
   getProfile = (token: string): Profile => this.jwt.verify<Profile>(token);
 
-  getCache = <A>(id: T.Id): A => this.cache.get(U.cacheUserPrefix + id);
+  getCache = <A>(id: T.Id): A => this.cache.get(U.getKey(id));
 
   setCache = (profile: Profile, cacheData: UserCache): string => {
     this.cache.set(U.cacheUserPrefix + profile.id, cacheData);
@@ -118,6 +118,16 @@ export default class Auth<
   ): Compose.Middleware<
     Koa.ParameterizedContext<Koa.DefaultState, Koa.Context>
   > => Compose([this.isAuthenticated(), this.hasPermission(permission)]);
+
+  /**
+   * removes cookies and cache associated with user
+   * @param profile
+   * @param ctx
+   */
+  logout = (profile: Profile, ctx: Koa.Context) => {
+    Cookies.removeToken(ctx.cookies);
+    this.cache.destroy(U.getKey(profile.id));
+  };
 }
 
 // basic auth
