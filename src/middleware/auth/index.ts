@@ -12,23 +12,24 @@ import * as Cookies from "../cookies";
 import * as U from "./utils";
 // see https://github.com/Nexysweb/koa-lib/blob/master/src/middleware/index.ts
 
-const extractToken = (s?: string):string | undefined => s ? s.slice('bearer '.length) : undefined;
-
 export default class Auth<
   Profile extends T.ObjectWithId,
-  UserCache extends LT.Permissions,
-  acceptHeaderToken: boolean = false
+  UserCache extends LT.Permissions
 > {
   cache: Cache;
   jwt: JWT;
-  acceptHeaderToken: boolean
+  acceptHeaderToken: boolean;
 
   /**
    *
    * @param cache needed for extra login information
    * @param secret for the JWT verification
    */
-  constructor(cache: Cache, secret: string) {
+  constructor(
+    cache: Cache,
+    secret: string,
+    acceptHeaderToken: boolean = false
+  ) {
     this.cache = cache;
     this.jwt = new JWT(secret);
     this.acceptHeaderToken = acceptHeaderToken;
@@ -72,7 +73,11 @@ export default class Auth<
     ctx: Koa.Context,
     next: Koa.Next
   ): Promise<void> => {
-    const token = Cookies.getToken(ctx.cookies) || extractToken(ctx.headers['Authorization']);
+    const token: string | undefined =
+      Cookies.getToken(ctx.cookies) ||
+      (this.acceptHeaderToken
+        ? U.extractOptBearerToken(ctx.headers["Authorization"])
+        : undefined);
 
     if (token === undefined) {
       ctx.status = 401;

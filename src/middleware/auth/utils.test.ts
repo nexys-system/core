@@ -29,3 +29,9 @@ test("create basic token", () => {
 
   expect(h2).toEqual(h);
 });
+
+test("extract token", () => {
+  const u = A.extractBearerToken("bearer mytoken");
+  console.log("a" + u);
+  expect(u).toEqual("mytoken");
+});
