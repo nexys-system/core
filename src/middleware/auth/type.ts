@@ -15,7 +15,8 @@ export interface UserState<
 
 export interface LoginResponse<Profile extends T.ObjectWithId> {
   permissions: string[];
-  token: string;
   profile: Profile;
   locale: OptionSet;
+  accessToken: string;
+  refreshToken: string;
 }

@@ -12,7 +12,7 @@ export const readTokenHeaders = (headers: {
   return null;
 };
 
-export const login = <A extends { token: string }>(
+export const login = <A extends { accessToken: string; refreshToken: string }>(
   profileWToken: A,
   ctx: Koa.Context,
   cookieOpts: {
@@ -20,11 +20,26 @@ export const login = <A extends { token: string }>(
     sameSite?: boolean | "strict" | "lax" | "none";
   } = { secure: true }
 ) => {
-  const { token, ...rest }: A = profileWToken;
+  const { accessToken, refreshToken, ...rest }: A = profileWToken;
   //const b: Omit<A, "token"> = rest;
 
   // set token in cookie
-  Cookies.setToken(token, ctx.cookies, cookieOpts.secure, cookieOpts.sameSite);
+  Cookies.setToken(
+    accessToken,
+    ctx.cookies,
+    cookieOpts.secure,
+    "ACCESS",
+    cookieOpts.sameSite
+  );
+
+  //console.log("set refresh");
+  Cookies.setToken(
+    refreshToken,
+    ctx.cookies,
+    cookieOpts.secure,
+    "REFRESH",
+    cookieOpts.sameSite
+  );
 
   ctx.body = rest;
 };

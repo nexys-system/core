@@ -12,6 +12,11 @@ import * as Cookies from "../cookies";
 import * as U from "./utils";
 // see https://github.com/Nexysweb/koa-lib/blob/master/src/middleware/index.ts
 
+interface RefreshToken {
+  profile: any;
+  type: "REFRESH";
+}
+
 export default class Auth<
   Profile extends T.ObjectWithId,
   UserCache extends LT.Permissions
@@ -35,13 +40,73 @@ export default class Auth<
     this.acceptHeaderToken = acceptHeaderToken;
   }
 
-  getProfile = (token: string): Profile => this.jwt.verify<Profile>(token);
+  getProfile = (
+    token: string,
+    ctx: Koa.Context,
+    refreshAttempt = 0
+  ): Profile => {
+    try {
+      //console.log(this.jwt.read(token));
+      const decoded = this.jwt.verify<Profile>(token);
+
+      // todo if beyond a certain time, gte refresh
+
+      return decoded;
+    } catch (err) {
+      // try to issue a new token from refresh token
+      //console.log("jwt verify failed");
+
+      if (refreshAttempt > 0) {
+        throw Error("new access token invalid, aborting here");
+      }
+
+      return this.refresh(ctx);
+    }
+  };
+
+  // todo call database to avoid inifinte renewing
+  refresh = (ctx: Koa.Context): Profile => {
+    const refreshToken = Cookies.getToken(ctx.cookies, "REFRESH");
+    //console.log(refreshToken);
+
+    if (!refreshToken) {
+      throw Error("could not get refresh token");
+    }
+
+    try {
+      //console.log("d");
+      const refTokenValue = this.jwt.verify<RefreshToken>(refreshToken);
+      //console.log(refTokenValue);
+      const newToken = this.jwt.sign(refTokenValue.profile);
+      //console.log(newToken, "newtok");
+      try {
+        Cookies.setToken(newToken, ctx.cookies);
+      } catch (err) {
+        console.log(err);
+      }
+      //console.log("set token");
+      return this.getProfile(refTokenValue.profile, ctx, 1);
+      //console.log("p", p);
+      //return p;
+    } catch (err) {
+      throw Error("JWT refresh invalid");
+    }
+
+    //throw Error("JWT invalid");
+  };
 
   getCache = <A>(id: T.Id): A => this.cache.get(U.getKey(id));
 
-  setCache = (profile: Profile, cacheData: UserCache): string => {
+  setCache = (
+    profile: Profile,
+    cacheData: UserCache
+  ): { accessToken: string; refreshToken: string } => {
     this.cache.set(U.cacheUserPrefix + profile.id, cacheData);
-    return this.jwt.sign(profile);
+    const refreshToken: RefreshToken = { profile, type: "REFRESH" };
+    return {
+      accessToken: this.jwt.sign(profile),
+      refreshToken: this.jwt.sign(refreshToken),
+    };
   };
 
   authFormat = (
@@ -49,9 +114,15 @@ export default class Auth<
     profile: Profile,
     locale: OptionSet = { id: 1, name: "en" }
   ): LT.LoginResponse<Profile> => {
-    const token: string = this.setCache(profile, userCache);
+    const { accessToken, refreshToken } = this.setCache(profile, userCache);
 
-    return { permissions: userCache.permissions, token, profile, locale };
+    return {
+      permissions: userCache.permissions,
+      accessToken,
+      refreshToken,
+      profile,
+      locale,
+    };
   };
 
   authOutput = (
@@ -86,7 +157,7 @@ export default class Auth<
     }
 
     try {
-      const profile: Profile = this.getProfile(token);
+      const profile: Profile = this.getProfile(token, ctx);
       const userCache: UserCache = this.getCache<UserCache>(profile.id);
       const state: LT.UserState<Profile, UserCache> = {
         profile,

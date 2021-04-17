@@ -7,6 +7,8 @@ export default class JWTClass {
     this.secret = secret;
   }
 
+  read = (token: string) => JWT.decode(token);
+
   sign = <A extends Object>(profile: A): string =>
     JWT.sign(profile, this.secret);
 

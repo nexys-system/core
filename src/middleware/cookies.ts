@@ -1,10 +1,14 @@
 import Cookies from "cookies";
 
-const tokenKey = "ACCESS_TOKEN";
+const accessTokenKey = "ACCESS_TOKEN";
+const refreshTokenKey = "REFRESH_TOKEN";
 const metaKey = "META";
 
-export const getToken = (cookies: Cookies): string | undefined =>
-  cookies.get(tokenKey);
+export const getToken = (
+  cookies: Cookies,
+  type: "ACCESS" | "REFRESH" = "ACCESS"
+): string | undefined =>
+  cookies.get(type === "ACCESS" ? accessTokenKey : refreshTokenKey);
 
 /**
  * swt token in cookie, note httpOlny and secure
@@ -18,11 +22,16 @@ export const getToken = (cookies: Cookies): string | undefined =>
 export const setToken = (
   token: string,
   cookies: Cookies,
-  secure: boolean = true,
+  secure: boolean = false,
+  type: "ACCESS" | "REFRESH" = "ACCESS",
   sameSite?: boolean | "strict" | "lax" | "none"
 ) => {
-  cookies.set(metaKey, new Date().toISOString(), { httpOnly: false });
-  return cookies.set(tokenKey, token, { httpOnly: true, secure, sameSite });
+  const key = type === "ACCESS" ? accessTokenKey : refreshTokenKey;
+  if (type === "ACCESS") {
+    // only set meta token when setting access token
+    cookies.set(metaKey, new Date().toISOString(), { httpOnly: false });
+  }
+  return cookies.set(key, token, { httpOnly: true, secure, sameSite });
 };
 
 /**
@@ -32,5 +41,6 @@ export const setToken = (
  */
 export const removeToken = (cookies: Cookies) => {
   cookies.set(metaKey, undefined);
-  return cookies.set(tokenKey, undefined);
+  cookies.set(refreshTokenKey, undefined);
+  return cookies.set(accessTokenKey, undefined);
 };
