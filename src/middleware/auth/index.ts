@@ -1,7 +1,7 @@
 import Koa from "koa";
 import Compose from "koa-compose";
 
-import { Id, OptionSet } from "@nexys/utils/dist/types";
+import { OptionSet } from "@nexys/utils/dist/types";
 
 import JWT from "../../jwt";
 import * as T from "../../type";
@@ -18,8 +18,9 @@ interface RefreshToken {
 }
 
 export default class Auth<
-  Profile extends T.ObjectWithId,
-  UserCache extends LT.Permissions
+  Profile extends T.ObjectWithId<Id>,
+  UserCache extends LT.Permissions,
+  Id = number
 > {
   cache: Cache;
   jwt: JWT;
@@ -95,7 +96,7 @@ export default class Auth<
     //throw Error("JWT invalid");
   };
 
-  getCache = <A>(id: T.Id): A => this.cache.get(U.getKey(id));
+  getCache = <Id, A>(id: Id): A => this.cache.get(U.getKey(id));
 
   setCache = (
     profile: Profile,
@@ -113,7 +114,7 @@ export default class Auth<
     userCache: UserCache,
     profile: Profile,
     locale: OptionSet = { id: 1, name: "en" }
-  ): LT.LoginResponse<Profile> => {
+  ): LT.LoginResponse<Profile, Id> => {
     const { accessToken, refreshToken } = this.setCache(profile, userCache);
 
     return {
@@ -158,8 +159,8 @@ export default class Auth<
 
     try {
       const profile: Profile = this.getProfile(token, ctx);
-      const userCache: UserCache = this.getCache<UserCache>(profile.id);
-      const state: LT.UserState<Profile, UserCache> = {
+      const userCache: UserCache = this.getCache<Id, UserCache>(profile.id);
+      const state: LT.UserState<Id, Profile, UserCache> = {
         profile,
         userCache,
       };

@@ -1,10 +1,8 @@
-import fs from 'fs';
-
-export type Id = number | string;
+import fs from "fs";
 
 export interface OptionSet {
-  id: number,
-  name: string
+  id: number;
+  name: string;
 }
 
 // https://bitbucket.org/echo_rm/ts-is-present/src/master/
@@ -14,17 +12,12 @@ export function isDefined<T>(t: T | undefined): t is T {
 }
 
 export interface File {
-  value: Buffer | fs.ReadStream,
-  filename: string,
-  size: number,
-  contentType: string
+  value: Buffer | fs.ReadStream;
+  filename: string;
+  size: number;
+  contentType: string;
 }
 
-export interface Entity {
-  name: string,
-  id: Id
-}
-
-export interface ObjectWithId {
-  id: Id
+export interface ObjectWithId<IId> {
+  id: IId;
 }

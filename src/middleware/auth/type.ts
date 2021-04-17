@@ -6,14 +6,15 @@ export interface Permissions {
 }
 
 export interface UserState<
-  Profile extends T.ObjectWithId,
+  Id,
+  Profile extends T.ObjectWithId<Id>,
   UserCache extends Permissions
 > {
   profile: Profile;
   userCache: UserCache;
 }
 
-export interface LoginResponse<Profile extends T.ObjectWithId> {
+export interface LoginResponse<Profile extends T.ObjectWithId<Id>, Id> {
   permissions: string[];
   profile: Profile;
   locale: OptionSet;

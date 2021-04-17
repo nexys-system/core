@@ -67,7 +67,7 @@ export const createBasicAuthHeaderString = (
   password: string
 ) => "Basic " + createBasicAuthToken(username, password);
 
-export const getKey = (id: T.Id) => cacheUserPrefix + id;
+export const getKey = <Id>(id: Id) => cacheUserPrefix + id;
 
 export const extractBearerToken = (s: string): string =>
   s.slice("bearer ".length);
