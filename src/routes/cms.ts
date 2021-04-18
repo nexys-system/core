@@ -2,7 +2,7 @@ import Koa from "koa";
 import Router from "koa-router";
 import bodyParser from "koa-body";
 import * as Middleware from "../middleware";
-import * as Schema from "../schema";
+import Validation, { Utils as VU } from "@nexys/validation";
 
 import { CMSService } from "./type";
 
@@ -14,7 +14,7 @@ export default (CMS: CMSService) => {
   router.post(
     "/",
     bodyParser(),
-    Schema.validateUuid,
+    Validation.isShapeMiddleware({ uuid: { extraCheck: VU.checkUuid } }),
     async (ctx: Koa.Context) => {
       const { uuid, lang = "en" } = ctx.state.validationResult;
       const r = () => CMS.get(uuid, lang);
