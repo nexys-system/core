@@ -528,6 +528,18 @@
   resolved "https://registry.yarnpkg.com/@nexys/utils/-/utils-3.9.13.tgz#74f7c0af2182b81d642b18e21f07593823a24e9d"
   integrity sha512-y9DxSwhN8JZgm8fLd+LNprSTFp981zpphvSbALtIC0OQj8eu2quo3Mcby8ewyaUN1VGvjdVK8N9Fqsaa9fvCHg==
 
+"@nexys/utils@^3.9.14":
+  version "3.9.14"
+  resolved "https://registry.yarnpkg.com/@nexys/utils/-/utils-3.9.14.tgz#db7e3581dd3f15990334842111be35d5aba443ca"
+  integrity sha512-ab+iVapztGguPbHaACoNXtn65iWh+hSqNOoKnIQkmldsQ4yUsRpPhs+Us+x2g5A3/ShwxREAz8DMLp0rpYcWig==
+
+"@nexys/validation@^1.0.13":
+  version "1.0.13"
+  resolved "https://registry.yarnpkg.com/@nexys/validation/-/validation-1.0.13.tgz#9d3ded42779385bd1cf634029f5afff8f31eb3f0"
+  integrity sha512-yaj+e1CbXCIDx4Yk5Xw+dI7RSVeExjOWY32rMeUgkONdOLzk8mC59CMc7ZY8eB+e+BTZGy+A+zI/NnwrbOTOvQ==
+  dependencies:
+    "@nexys/utils" "^3.9.14"
+
 "@sinonjs/commons@^1.7.0":
   version "1.8.1"
   resolved "https://registry.yarnpkg.com/@sinonjs/commons/-/commons-1.8.1.tgz#e7df00f98a203324f6dc7cc606cad9d4a8ab2217"
