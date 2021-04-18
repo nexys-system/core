@@ -133,7 +133,7 @@ const UserRoutes = <
     }
   );
 
-  return router.routes;
+  return router.routes();
 };
 
 export default UserRoutes;

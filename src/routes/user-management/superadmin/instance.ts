@@ -95,7 +95,7 @@ const InstanceService = <
     }
   );
 
-  return router.routes;
+  return router.routes();
 };
 
 export default InstanceService;

@@ -32,7 +32,7 @@ const UserRoutes = <
   router.use("/authentication", authenticationRoutes);
   router.use(mainRoutes);
 
-  return router.routes;
+  return router.routes();
 };
 
 export default UserRoutes;

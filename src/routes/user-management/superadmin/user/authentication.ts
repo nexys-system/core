@@ -101,7 +101,7 @@ const UserAuthenticationService = <
     }
   );
 
-  return router.routes;
+  return router.routes();
 };
 
 export default UserAuthenticationService;
