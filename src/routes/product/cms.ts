@@ -1,7 +1,7 @@
 import Koa from "koa";
 import Router from "koa-router";
 import bodyParser from "koa-body";
-import * as Middleware from "../middleware";
+import * as Middleware from "../../middleware";
 import Validation, { Utils as VU } from "@nexys/validation";
 
 import { CMSService } from "./type";

@@ -1,7 +1,7 @@
 import Koa from "koa";
 import Router from "koa-router";
 
-import * as Middleware from "../middleware";
+import * as Middleware from "../../middleware";
 
 import { NotificationService } from "./type";
 

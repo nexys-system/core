@@ -62,7 +62,7 @@ const ProfileRoutes = <
     async (ctx) => {
       const data: { password: string; old: string } = ctx.request.body;
       const { uuid, instance } = ctx.state.profile;
-      console.log(uuid, data.password, { uuid: instance.uuid }, data.old);
+
       const r = await passwordService.setPassword(
         uuid,
         data.password,

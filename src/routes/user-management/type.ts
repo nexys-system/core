@@ -1,9 +1,16 @@
+import { Permissions } from "../../middleware/auth/type";
+
 export interface Services {
   instanceService: any;
   userService: any;
   passwordService: any;
   permissionService: any;
   userAuthenticationService: any;
+  loginService: {
+    authenticate: <Profile>(x: any, y: any, z: any) => any; //Promise<{ profile: Profile; permissions: Permissions; signup: any }>;
+    signup: any;
+    activate: any;
+  };
 }
 
 //type Profile = Pick<CT.User, 'firstName' | 'lastName' | 'email' | 'lang'>;

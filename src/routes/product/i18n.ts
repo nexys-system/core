@@ -1,6 +1,6 @@
 import Koa from "koa";
 import Router from "koa-router";
-import * as Middleware from "../middleware";
+import * as Middleware from "../../middleware";
 import { I18nService } from "./type";
 
 const { handleResponse } = Middleware;
