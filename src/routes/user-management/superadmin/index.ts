@@ -9,6 +9,8 @@ import Instance from "./instance";
 import User from "./user";
 import Permission from "./permission";
 
+console.log("d");
+
 const UserRoutes = <
   Profile extends ObjectWithId<Id>,
   UserCache extends Permissions,
@@ -35,7 +37,7 @@ const UserRoutes = <
   router.use("/instance", instanceRoutes);
   router.use("/permission", permissionRoutes);
 
-  return router.routes;
+  return router.routes();
 };
 
 export default UserRoutes;
