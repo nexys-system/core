@@ -9,8 +9,6 @@ import Instance from "./instance";
 import User from "./user";
 import Permission from "./permission";
 
-console.log("d");
-
 const UserRoutes = <
   Profile extends ObjectWithId<Id>,
   UserCache extends Permissions,
