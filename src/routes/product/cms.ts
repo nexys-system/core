@@ -14,9 +14,13 @@ export default (CMS: CMSService) => {
   router.post(
     "/",
     bodyParser(),
-    Validation.isShapeMiddleware({ uuid: { extraCheck: VU.checkUuid } }),
+    Validation.isShapeMiddleware({
+      uuid: { extraCheck: VU.checkUuid },
+      isHtml: { type: "boolean", optional: true },
+      lang: { optional: true },
+    }),
     async (ctx: Koa.Context) => {
-      const { uuid, lang = "en" } = ctx.state.validationResult;
+      const { uuid, lang = "en" } = ctx.request.body;
       const r = () => CMS.get(uuid, lang);
 
       await handleResponse(r, ctx);
