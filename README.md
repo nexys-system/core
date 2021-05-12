@@ -2,7 +2,7 @@
 
 [![npm version](https://badge.fury.io/js/%40nexys%2Fkoa-lib.svg)](https://www.npmjs.com/package/@nexys/koa-lib)
 [![npm version](https://img.shields.io/npm/v/@nexys/koa-lib.svg)](https://www.npmjs.com/package/@nexys/koa-lib)
-[![CI](https://github.com/Nexysweb/koa-lib-ts/workflows/CI/badge.svg)](https://github.com/Nexysweb/koa-lib-ts/actions)
+[![CI](https://github.com/nexys-system/koa-lib-ts/workflows/CI/badge.svg)](https://github.com/nexys-system/koa-lib-ts/actions)
 
 Nexys typescript web framework (built on top of Koa and Nexys System SDK)
 
