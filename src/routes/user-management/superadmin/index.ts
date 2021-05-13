@@ -8,6 +8,7 @@ import { Permissions } from "../../../middleware/auth/type";
 import Instance from "./instance";
 import User from "./user";
 import Permission from "./permission";
+import Main from "./main";
 
 const UserRoutes = <
   Profile extends ObjectWithId<Id>,
@@ -31,9 +32,12 @@ const UserRoutes = <
     MiddlewareAuth
   );
 
+  const mainRoutes = Main<Profile, UserCache, Id>(services, MiddlewareAuth);
+
   router.use("/user", userRoutes);
   router.use("/instance", instanceRoutes);
   router.use("/permission", permissionRoutes);
+  router.use(mainRoutes);
 
   return router.routes();
 };

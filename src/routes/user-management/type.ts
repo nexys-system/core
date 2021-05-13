@@ -1,5 +1,3 @@
-import { Permissions } from "../../middleware/auth/type";
-
 export interface Services {
   instanceService: any;
   userService: any;
@@ -11,6 +9,7 @@ export interface Services {
     signup: any;
     activate: any;
   };
+  productService: any;
 }
 
 //type Profile = Pick<CT.User, 'firstName' | 'lastName' | 'email' | 'lang'>;
