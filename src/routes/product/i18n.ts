@@ -21,6 +21,7 @@ export default (I18n: I18nService) => {
 
   router.get("/refresh", async (ctx) => {
     await I18n.saveAll();
+    ctx.body = {message: 'Translations refreshed successfully'};
     ctx.status = 200;
   });
 
