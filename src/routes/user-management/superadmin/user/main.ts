@@ -52,7 +52,7 @@ const UserRoutes = <
       lastName: {},
       email: { extraCheck: VU.emailCheck },
       instance: { uuid: { extraCheck: VU.checkUuid } },
-      status: { id: { type: "number" } },
+      status: { type: "number" } ,
       lang: {},
     }),
     async (ctx) => {

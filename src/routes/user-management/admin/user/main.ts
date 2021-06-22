@@ -49,8 +49,7 @@ const UserRoutes = <
       firstName: {},
       lastName: {},
       email: { extraCheck: VU.emailCheck },
-
-      status: { id: { type: "number" } },
+      status: {  type: "number" } ,
       lang: {},
     }),
     async (ctx) => {
