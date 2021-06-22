@@ -58,7 +58,7 @@ const UserRoutes = <
     async (ctx) => {
       const user: Profile & {
         instance: { uuid: Uuid };
-        status: { id: Id };
+        status: T.Status;
       } = ctx.request.body;
       ctx.body = await userService.insert({
         ...user,

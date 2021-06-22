@@ -26,9 +26,8 @@ export interface UserAuthenticationType {
   name: string;
 }
 
-export interface UserStatus {
-  id: number;
-  name: string;
+export enum Status {
+  active=1, pending, inactive
 }
 
 export interface UserAuthentication {
@@ -56,7 +55,7 @@ export interface User {
   lastName: string;
   email: string;
   lang: string;
-  status: { id: number } | UserStatus;
+  status: Status
   logDateAdded: Date;
   instance: { uuid: string } | Instance;
 }
