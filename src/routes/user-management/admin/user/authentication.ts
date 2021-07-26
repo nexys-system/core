@@ -3,16 +3,19 @@ import bodyParser from "koa-body";
 
 import m from "../../../../middleware/auth";
 import Validation, { Utils as VU } from "@nexys/validation";
-import * as T from "../../type";
+import * as T from "../../../../user-management/crud-type";
 import { ObjectWithId } from "../../../../type";
 import { Permissions } from "../../../../middleware/auth/type";
+import { UserAuthentication } from "../../../../user-management";
 
 const AuthRoutes = <
   Profile extends ObjectWithId<Id>,
   UserCache extends Permissions,
   Id
 >(
-  { userAuthenticationService }: T.Services,
+  {
+    userAuthenticationService,
+  }: { userAuthenticationService: UserAuthentication },
   MiddlewareAuth: m<Profile, UserCache, Id>
 ) => {
   const router = new Router();
@@ -77,10 +80,8 @@ const AuthRoutes = <
       const {
         uuid,
         ...data
-      }: Pick<
-        T.UserAuthentication,
-        "uuid" | "type" | "value" | "isEnabled"
-      > = ctx.request.body;
+      }: Pick<T.UserAuthentication, "uuid" | "type" | "value" | "isEnabled"> =
+        ctx.request.body;
       ctx.body = await userAuthenticationService.update(uuid, data); // todo add instance!
     }
   );

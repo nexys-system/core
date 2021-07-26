@@ -4,15 +4,15 @@ import Validation, { Utils as VU } from "@nexys/validation";
 
 import m from "../../../middleware/auth";
 import { Permissions } from "../../../middleware/auth/type";
-import * as T from "../type";
 import { ObjectWithId } from "../../../type";
+import { InstanceService } from "../../../user-management";
 
-const InstanceService = <
+const InstanceRoute = <
   Profile extends ObjectWithId<Id>,
   UserCache extends Permissions,
   Id
 >(
-  { instanceService }: T.Services,
+  { instanceService }: { instanceService: InstanceService },
   MiddlewareAuth: m<Profile, UserCache, Id>
 ) => {
   const router = new Router();
@@ -98,4 +98,4 @@ const InstanceService = <
   return router.routes();
 };
 
-export default InstanceService;
+export default InstanceRoute;

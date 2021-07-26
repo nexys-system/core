@@ -3,16 +3,21 @@ import bodyParser from "koa-body";
 
 import m from "../../../../middleware/auth";
 import Validation, { Utils as VU } from "@nexys/validation";
-import * as T from "../../type";
+
 import { ObjectWithId } from "../../../../type";
 import { Permissions } from "../../../../middleware/auth/type";
+
+import { UserService } from "../../../../user-management";
+import { Uuid } from "@nexys/utils/dist/types";
+import { User } from "../../../../user-management/crud-type";
+import * as T from "../../../../user-management/type";
 
 const UserRoutes = <
   Profile extends ObjectWithId<Id>,
   UserCache extends Permissions,
   Id
 >(
-  { userService }: T.Services,
+  { userService }: { userService: UserService },
   MiddlewareAuth: m<Profile, UserCache, Id>
 ) => {
   const router = new Router();
@@ -49,19 +54,22 @@ const UserRoutes = <
       firstName: {},
       lastName: {},
       email: { extraCheck: VU.emailCheck },
-      status: {  type: "number" } ,
+      status: { type: "number" },
       lang: {},
     }),
     async (ctx) => {
       const user: Profile & {
-        status: { id: Id };
+        status: T.Status;
       } = ctx.request.body;
       const { instance } = ctx.state.profile;
-      ctx.body = await userService.insert({
+
+      const userRow: Omit<User, "uuid"> = {
         ...user,
         instance,
         logDateAdded: new Date(),
-      });
+      } as any;
+
+      ctx.body = await userService.insert(userRow);
     }
   );
 
@@ -80,9 +88,9 @@ const UserRoutes = <
         uuid,
         ...profile
       }: {
-        uuid: Id;
+        uuid: Uuid;
       } & Partial<Profile> = ctx.request.body;
-      ctx.body = await userService.update(uuid, profile); // todo add instance!
+      ctx.body = await userService.update(uuid, profile as any); // todo add instance!
     }
   );
 
@@ -106,14 +114,12 @@ const UserRoutes = <
     MiddlewareAuth.isAuthorized("admin"),
     Validation.isShapeMiddleware({
       uuid: { extraCheck: VU.checkUuid },
-      status: { id: { type: "number", extraCheck: VU.checkId } },
+      status: { type: "number" },
     }),
     async (ctx) => {
-      const {
-        uuid,
-        status,
-      }: { uuid: Id; status: { id: Id } } = ctx.request.body;
-      ctx.body = await userService.changeStatus(uuid, status.id);
+      const { uuid, status }: { uuid: Uuid; status: T.Status } =
+        ctx.request.body;
+      ctx.body = await userService.changeStatus(uuid, status);
     }
   );
 

@@ -1,7 +1,7 @@
 import { Uuid } from "@nexys/utils/dist/types";
-import * as CT from "../type";
+import * as T from "../../../user-management/crud-type";
 
-type ProfileCore = Pick<CT.User, "firstName" | "lastName">;
+type ProfileCore = Pick<T.User, "firstName" | "lastName">;
 export type Profile = ProfileCore & {
   id: Uuid;
   uuid: Uuid;

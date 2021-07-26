@@ -4,16 +4,19 @@ import Validation, { Utils as VU } from "@nexys/validation";
 
 import m from "../../../../middleware/auth";
 import { Permissions } from "../../../../middleware/auth/type";
-import * as T from "../../type";
+
 import { ObjectWithId } from "../../../../type";
 import { Uuid } from "@nexys/utils/dist/types";
+import { UserService } from "../../../../user-management";
+
+import { Status } from "../../../../user-management/type";
 
 const UserRoutes = <
   Profile extends ObjectWithId<Id>,
   UserCache extends Permissions,
   Id
 >(
-  { userService }: T.Services,
+  { userService }: { userService: UserService },
   MiddlewareAuth: m<Profile, UserCache, Id>
 ) => {
   const router = new Router();
@@ -52,18 +55,18 @@ const UserRoutes = <
       lastName: {},
       email: { extraCheck: VU.emailCheck },
       instance: { uuid: { extraCheck: VU.checkUuid } },
-      status: { type: "number" } ,
+      status: { type: "number" },
       lang: {},
     }),
     async (ctx) => {
       const user: Profile & {
         instance: { uuid: Uuid };
-        status: T.Status;
+        status: Status;
       } = ctx.request.body;
       ctx.body = await userService.insert({
         ...user,
         logDateAdded: new Date(),
-      });
+      } as any);
     }
   );
 
@@ -84,7 +87,7 @@ const UserRoutes = <
       }: {
         uuid: Uuid;
       } & Partial<Profile> = ctx.request.body;
-      ctx.body = await userService.update(uuid, profile); // todo add instance!
+      ctx.body = await userService.update(uuid, profile as any); // todo add instance!
     }
   );
 
@@ -125,11 +128,8 @@ const UserRoutes = <
       status: { id: { type: "number", extraCheck: VU.checkId } },
     }),
     async (ctx) => {
-      const {
-        uuid,
-        status,
-      }: { uuid: Uuid; status: { id: Id } } = ctx.request.body;
-      ctx.body = await userService.changeStatus(uuid, status.id);
+      const { uuid, status }: { uuid: Uuid; status: Status } = ctx.request.body;
+      ctx.body = await userService.changeStatus(uuid, status);
     }
   );
 

@@ -12,7 +12,7 @@ const ProductService = <
   UserCache extends Permissions,
   Id
 >(
-  { productService }: T.Services,
+  { productService }: { productService: T.productService },
   MiddlewareAuth: m<Profile, UserCache, Id>
 ) => {
   const router = new Router();

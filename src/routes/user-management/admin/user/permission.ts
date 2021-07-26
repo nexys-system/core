@@ -3,16 +3,18 @@ import bodyParser from "koa-body";
 
 import m from "../../../../middleware/auth";
 import Validation, { Utils as VU } from "@nexys/validation";
-import * as T from "../../type";
+
 import { ObjectWithId } from "../../../../type";
 import { Permissions } from "../../../../middleware/auth/type";
+import { PermissionService } from "../../../../user-management";
+import { Uuid } from "@nexys/utils/dist/types";
 
 const PermissionRoutes = <
   Profile extends ObjectWithId<Id>,
   UserCache extends Permissions,
   Id
 >(
-  { permissionService }: T.Services,
+  { permissionService }: { permissionService: PermissionService },
   MiddlewareAuth: m<Profile, UserCache, Id>
 ) => {
   const router = new Router();
@@ -48,8 +50,8 @@ const PermissionRoutes = <
         permission,
         assigned,
       }: {
-        user: { uuid: Id };
-        permission: { uuid: Id };
+        user: { uuid: Uuid };
+        permission: { uuid: Uuid };
         assigned: boolean;
       } = ctx.request.body;
 

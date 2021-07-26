@@ -4,10 +4,11 @@ import Router from "koa-router";
 import bodyParser from "koa-body";
 
 import m from "../../../middleware/auth";
-import * as T from "../type";
+
 import { ObjectWithId } from "../../../type";
 import { Permissions } from "../../../middleware/auth/type";
 import { Uuid } from "@nexys/utils/dist/types";
+import { LoginService } from "../../../user-management";
 
 /**  const instance = {
     uuid: process.env.InstanceUuid || "",
@@ -15,7 +16,7 @@ import { Uuid } from "@nexys/utils/dist/types";
   }; */
 
 const LoginRoutes = <Profile extends ObjectWithId<Id>, Id>(
-  { loginService }: T.Services,
+  { loginService }: { loginService: LoginService },
   MiddlewareAuth: m<Profile, Permissions, Id>,
   instance: { uuid: Uuid; name: string }
 ) => {
@@ -27,14 +28,14 @@ const LoginRoutes = <Profile extends ObjectWithId<Id>, Id>(
     const { email, password } = ctx.request.body;
 
     try {
-      const { profile, permissions } = await loginService.authenticate<Profile>(
+      const { profile, permissions } = await loginService.authenticate(
         email,
         password,
         { uuid: instance.uuid }
       );
       const lang = langDefault;
 
-      const nProfile: Profile = { id: profile.uuid, ...profile };
+      const nProfile: Profile = { id: profile.uuid, ...profile } as any;
 
       return MiddlewareAuth.authOutput(ctx, nProfile, { permissions }, lang, {
         secure: false,
@@ -78,7 +79,7 @@ const LoginRoutes = <Profile extends ObjectWithId<Id>, Id>(
   router.all("/activate", async (ctx) => {
     const { challenge } = ctx.query;
 
-    if (!challenge) {
+    if (!challenge || typeof challenge !== "string") {
       ctx.status = 400;
       ctx.body = { error: "challenge must be given" };
       return;

@@ -5,15 +5,16 @@ import Validation, { Utils as VU } from "@nexys/validation";
 
 import m from "../../../../middleware/auth";
 import { Permissions } from "../../../../middleware/auth/type";
-import * as T from "../../type";
+
 import { ObjectWithId } from "../../../../type";
+import { PermissionService } from "../../../../user-management";
 
 const InstanceService = <
   Profile extends ObjectWithId<Id>,
   UserCache extends Permissions,
   Id
 >(
-  { permissionService }: T.Services,
+  { permissionService }: { permissionService: PermissionService },
   MiddlewareAuth: m<Profile, UserCache, Id>
 ) => {
   const router = new Router();

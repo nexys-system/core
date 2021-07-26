@@ -4,15 +4,19 @@ import Validation, { Utils as VU } from "@nexys/validation";
 
 import m from "../../../../middleware/auth";
 import { Permissions } from "../../../../middleware/auth/type";
-import * as T from "../../type";
+
+import * as T from "../../../../user-management/crud-type";
 import { ObjectWithId } from "../../../../type";
+import { UserAuthentication } from "../../../../user-management";
 
 const UserAuthenticationService = <
   Profile extends ObjectWithId<Id>,
   UserCache extends Permissions,
   Id
 >(
-  { userAuthenticationService }: T.Services,
+  {
+    userAuthenticationService,
+  }: { userAuthenticationService: UserAuthentication },
   MiddlewareAuth: m<Profile, UserCache, Id>
 ) => {
   const router = new Router();
@@ -77,10 +81,8 @@ const UserAuthenticationService = <
       const {
         uuid,
         ...data
-      }: Pick<
-        T.UserAuthentication,
-        "uuid" | "type" | "value" | "isEnabled"
-      > = ctx.request.body;
+      }: Pick<T.UserAuthentication, "uuid" | "type" | "value" | "isEnabled"> =
+        ctx.request.body;
       ctx.body = await userAuthenticationService.update(uuid, data); // todo add instance!
     }
   );
