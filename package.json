@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@nexys/http": "^1.0.0",
+    "@nexys/oauth": "^0.0.3",
     "@nexys/utils": "^3.9.13",
     "@nexys/validation": "^1.0.13",
     "@types/jsonwebtoken": "^8.5.0",

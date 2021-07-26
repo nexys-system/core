@@ -157,7 +157,7 @@ export default class Auth<
       const token: string | undefined =
         CookiesService.getToken(ctx.cookies) ||
         (this.acceptHeaderToken
-          ? U.extractOptBearerToken(ctx.headers["Authorization"])
+          ? U.extractOptBearerToken(ctx.headers["Authorization"] as string)
           : undefined);
 
       if (token === undefined) {
@@ -224,8 +224,8 @@ export default class Auth<
 export const isBasicAuthenticated =
   (username: string, password: string) =>
   async (ctx: Koa.Context, next: Koa.Next) => {
-    const Authorization = ctx.headers;
-    const token = U.extractBasicAuthToken(Authorization);
+    const Authorization = ctx.headers["Authorization"];
+    const token = U.extractBasicAuthToken(Authorization as string);
 
     if (token === U.createBasicAuthToken(username, password)) {
       await next();

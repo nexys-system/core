@@ -11,6 +11,10 @@ export default (I18n: I18nService) => {
   router.get("/serve", async (ctx: Koa.Context) => {
     const { locale } = ctx.request.query;
 
+    if (typeof locale !== "string") {
+      throw Error("locale is not of type string");
+    }
+
     try {
       ctx.body = await I18n.getFile(locale);
     } catch (error) {
@@ -21,7 +25,7 @@ export default (I18n: I18nService) => {
 
   router.get("/refresh", async (ctx) => {
     await I18n.saveAll();
-    ctx.body = {message: 'Translations refreshed successfully'};
+    ctx.body = { message: "Translations refreshed successfully" };
     ctx.status = 200;
   });
 

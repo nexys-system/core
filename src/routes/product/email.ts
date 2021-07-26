@@ -6,10 +6,14 @@ export default (emailService: EmailService) => {
   const router: Router = new Router();
 
   router.get("/", async (ctx) => {
-    const { email }: { email: string } = ctx.query;
+    const { email }: { email?: string } = ctx.query;
 
     if (!email) {
       throw new HTTP.Error("no email was given", 400);
+    }
+
+    if (typeof email !== "string") {
+      throw Error("email is not of the right type");
     }
 
     ctx.body = await emailService.send([email], "hey", "hello");
