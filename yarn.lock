@@ -507,6 +507,11 @@
     "@types/yargs" "^15.0.0"
     chalk "^4.0.0"
 
+"@nexys/crypto@^1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@nexys/crypto/-/crypto-1.0.3.tgz#4c0491af46b63bcd1118a4f248d0dff4797f91fa"
+  integrity sha512-J8fIZQ4FKpB4nfXAJQUvPfN4ZPV2UVrIXWZDRxXabtBkRimfqnTRP1CfkDfLTzoouWMx7EZLU5eeSViH8yFLBA==
+
 "@nexys/http@^1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@nexys/http/-/http-1.0.0.tgz#d3e12d375adb7e4491f806ec16a82f973b42618d"
@@ -589,6 +594,11 @@
   integrity sha512-K2waXdXBi2302XUdcHcR1jCeU0LL4TD9HRs/gk0N2Xvrht+G/BfJa4QObBQZfhMdxiCpV3COl5Nfq4uKTeTnJA==
   dependencies:
     "@babel/types" "^7.3.0"
+
+"@types/bcryptjs@^2.4.2":
+  version "2.4.2"
+  resolved "https://registry.yarnpkg.com/@types/bcryptjs/-/bcryptjs-2.4.2.tgz#e3530eac9dd136bfdfb0e43df2c4c5ce1f77dfae"
+  integrity sha512-LiMQ6EOPob/4yUL66SZzu6Yh77cbzJFYll+ZfaPiPPFswtIlA/Fs1MzdKYA7JApHU49zQTbJGX3PDmCpIdDBRQ==
 
 "@types/body-parser@*":
   version "1.19.1"
@@ -1067,6 +1077,11 @@ basic-auth@^2.0.0:
   integrity sha512-NF+epuEdnUYVlGuhaxbbq+dvJttwLnGY+YixlXlME5KpQ5W3CnXA5cVTneY3SPbPDRkcjMbifrwmFYcClgOZeg==
   dependencies:
     safe-buffer "5.1.2"
+
+bcryptjs@^2.4.3:
+  version "2.4.3"
+  resolved "https://registry.yarnpkg.com/bcryptjs/-/bcryptjs-2.4.3.tgz#9ab5627b93e60621ff7cdac5da9733027df1d0cb"
+  integrity sha1-mrVie5PmBiH/fNrF2pczAn3x0Ms=
 
 brace-expansion@^1.1.7:
   version "1.1.11"

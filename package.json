@@ -6,11 +6,17 @@
     "test": "jest",
     "build": "tsc"
   },
+  "repository": {
+    "url": "https://github.com/nexys-system/koa-lib-ts",
+    "type": "git"
+  },
   "dependencies": {
+    "@nexys/crypto": "^1.0.3",
     "@nexys/http": "^1.0.0",
     "@nexys/oauth": "^0.0.3",
     "@nexys/utils": "^3.9.13",
     "@nexys/validation": "^1.0.13",
+    "@types/bcryptjs": "^2.4.2",
     "@types/jsonwebtoken": "^8.5.0",
     "@types/koa": "^2.11.3",
     "@types/koa-basic-auth": "^2.0.3",
@@ -19,6 +25,7 @@
     "@types/koa-mount": "^4.0.0",
     "@types/koa-router": "^7.4.0",
     "@types/node-fetch": "^2.5.12",
+    "bcryptjs": "^2.4.3",
     "jsonwebtoken": "^8.5.1",
     "koa": "^2.11.0",
     "koa-basic-auth": "^4.0.0",
