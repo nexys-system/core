@@ -1,4 +1,5 @@
-import Rp from "request-promise-native";
+import fetch from "node-fetch";
+import * as FT from "node-fetch";
 import * as Utils from "./utils";
 import AbstractOAuth from "./abstract";
 
@@ -25,7 +26,7 @@ export interface Profile {
 
 export const scopesDefault: string[] = [
   "userinfo.profile",
-  "userinfo.email"
+  "userinfo.email",
   //"calendar",
   //"gmail.readonly", // for emails, not required if only the token is needed
 ].map((path) => apiHost + "/auth/" + path);
@@ -70,15 +71,14 @@ export default class Google extends AbstractOAuth<Profile> {
     const url: string =
       "https://www.googleapis.com/oauth2/v1/userinfo?alt=json";
 
-    const options: Rp.RequestPromiseOptions = {
+    const options: FT.RequestInit = {
       headers: Utils.oAuthHeaders(accessToken),
       method: "GET",
-      json: true,
     };
 
     try {
-      const res: GoogleProfile = await Rp(url, options);
-
+      const r = await fetch(url, options);
+      const res: GoogleProfile = await r.json();
       return {
         id: res.id,
         email: res.email,

@@ -1,8 +1,8 @@
-import Rp from "request-promise-native";
+import fetch from "node-fetch";
 import * as Utils from "./utils";
 import AbstractOAuth from "./abstract";
 
-export type Profile = any;
+export type Profile = { id: string; login: string };
 
 const urlAuthorize: string = "https://gitlab.com/oauth/authorize";
 const urlToken: string = "https://gitlab.com/oauth/token";
@@ -32,17 +32,19 @@ export default class Gitlab extends AbstractOAuth<Profile> {
   getProfile = async (token: string): Promise<Profile> => {
     const headers = {
       Authorization: "Bearer " + token,
-      "user-agent": "node.js",
+      "content-type": "application/json",
     };
+
+    const url = "https://api.github.com/user";
+
     const options = {
-      url: "https://api.github.com/user",
       method: "GET",
       headers,
-      json: true,
     };
 
-    const r = await Rp(options);
+    const r = await fetch(url, options);
+    const { id, login } = await r.json();
 
-    return { id: r.id, login: r.login };
+    return { id, login };
   };
 }

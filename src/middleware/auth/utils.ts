@@ -1,6 +1,7 @@
 import Koa from "koa";
 import * as T from "../../type";
-import * as Cookies from "../cookies";
+import * as CookiesService from "../cookies";
+import Cookies from "cookies";
 
 export const readTokenHeaders = (headers: {
   authorization?: string;
@@ -14,38 +15,38 @@ export const readTokenHeaders = (headers: {
 
 export const login = <A extends { accessToken: string; refreshToken: string }>(
   profileWToken: A,
-  ctx: Koa.Context,
+  ctxCookies: Cookies,
   cookieOpts: {
     secure: boolean;
     sameSite?: boolean | "strict" | "lax" | "none";
   } = { secure: true }
-) => {
+): Omit<A, "accessToken" | "refreshToken"> => {
   const { accessToken, refreshToken, ...rest }: A = profileWToken;
   //const b: Omit<A, "token"> = rest;
 
   // set token in cookie
-  Cookies.setToken(
+  CookiesService.setToken(
     accessToken,
-    ctx.cookies,
+    ctxCookies,
     cookieOpts.secure,
     "ACCESS",
     cookieOpts.sameSite
   );
 
   //console.log("set refresh");
-  Cookies.setToken(
+  CookiesService.setToken(
     refreshToken,
-    ctx.cookies,
+    ctxCookies,
     cookieOpts.secure,
     "REFRESH",
     cookieOpts.sameSite
   );
 
-  ctx.body = rest;
+  return rest;
 };
 
 export const logout = (ctx: Koa.Context) => {
-  Cookies.removeToken(ctx.cookies);
+  CookiesService.removeToken(ctx.cookies);
 
   ctx.body = { msg: "cookies removed" };
 };

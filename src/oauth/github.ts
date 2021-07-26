@@ -1,4 +1,4 @@
-import Rp from "request-promise-native";
+import fetch from "node-fetch";
 import * as Utils from "./utils";
 import AbstractOAuth from "./abstract";
 
@@ -40,19 +40,20 @@ export default class Github extends AbstractOAuth<Profile> {
   };
 
   getProfile = async (token: string): Promise<Profile> => {
+    const url = "https://api.github.com/user";
     const headers = {
       Authorization: "Bearer " + token,
       "user-agent": "node.js",
     };
     const options = {
-      url: "https://api.github.com/user",
       method: "GET",
       headers,
       json: true,
     };
 
-    const r = await Rp(options);
+    const r = await fetch(url, options);
+    const { id, login } = await r.json();
 
-    return { id: r.id, login: r.login };
+    return { id, login };
   };
 }

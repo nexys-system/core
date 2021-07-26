@@ -35,3 +35,19 @@ test("extract token", () => {
   console.log("a" + u);
   expect(u).toEqual("mytoken");
 });
+
+test("login", () => {
+  const profile = { firstName: "John", lastName: "Doe" };
+  const profileWToken = {
+    accessToken: "aToken",
+    refreshToken: "rToken",
+    ...profile,
+  };
+  const u = A.login(profileWToken, {
+    set: (...props: any) => {
+      console.log("COOKIE SET: " + JSON.stringify(props));
+    },
+  } as any);
+
+  expect(u).toEqual(profile);
+});

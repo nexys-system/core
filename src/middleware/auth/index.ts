@@ -5,17 +5,13 @@ import { OptionSet } from "@nexys/utils/dist/types";
 
 import JWT from "../../jwt";
 import * as T from "../../type";
+import * as TA from "./type";
 import * as LT from "./type";
 import Cache from "../../cache/cache";
-import * as Cookies from "../cookies";
+import * as CookiesService from "../cookies";
 
 import * as U from "./utils";
 // see https://github.com/Nexysweb/koa-lib/blob/master/src/middleware/index.ts
-
-interface RefreshToken {
-  profile: any;
-  type: "REFRESH";
-}
 
 export default class Auth<
   Profile extends T.ObjectWithId<Id>,
@@ -66,8 +62,14 @@ export default class Auth<
   };
 
   // todo call database to avoid inifinte renewing
-  refresh = (ctx: Koa.Context): Profile => {
-    const refreshToken = Cookies.getToken(ctx.cookies, "REFRESH");
+  refresh = (
+    ctx: Koa.Context,
+    cookieOpts: {
+      secure: boolean;
+      sameSite?: boolean | "strict" | "lax" | "none";
+    } = { secure: true }
+  ): Profile => {
+    const refreshToken = CookiesService.getToken(ctx.cookies, "REFRESH");
     //console.log(refreshToken);
 
     if (!refreshToken) {
@@ -76,19 +78,27 @@ export default class Auth<
 
     try {
       //console.log("d");
-      const refTokenValue = this.jwt.verify<RefreshToken>(refreshToken);
+      const refTokenValue =
+        this.jwt.verify<TA.RefreshToken<Profile>>(refreshToken);
       //console.log(refTokenValue);
-      const newToken = this.jwt.sign(refTokenValue.profile);
+      const newToken = this.jwt.sign<Profile>(refTokenValue.profile);
       //console.log(newToken, "newtok");
       try {
-        Cookies.setToken(newToken, ctx.cookies);
+        CookiesService.setToken(
+          newToken,
+          ctx.cookies,
+          cookieOpts.secure,
+          "ACCESS",
+          cookieOpts.sameSite
+        );
       } catch (err) {
         console.log(err);
       }
       //console.log("set token");
-      return this.getProfile(refTokenValue.profile, ctx, 1);
+      //return this.getProfile(refTokenValue.profile, ctx, 1);
       //console.log("p", p);
       //return p;
+      return refTokenValue.profile;
     } catch (err) {
       throw Error("JWT refresh invalid");
     }
@@ -103,7 +113,7 @@ export default class Auth<
     cacheData: UserCache
   ): { accessToken: string; refreshToken: string } => {
     this.cache.set(U.cacheUserPrefix + profile.id, cacheData);
-    const refreshToken: RefreshToken = { profile, type: "REFRESH" };
+    const refreshToken: TA.RefreshToken<Profile> = { profile, type: "REFRESH" };
     return {
       accessToken: this.jwt.sign(profile),
       refreshToken: this.jwt.sign(refreshToken),
@@ -138,62 +148,60 @@ export default class Auth<
   ) => {
     const r = this.authFormat(userCache, profile, locale);
 
-    return U.login(r, ctx, cookieOpts);
+    ctx.body = U.login(r, ctx.cookies, cookieOpts);
   };
 
-  isAuthenticated = () => async (
-    ctx: Koa.Context,
-    next: Koa.Next
-  ): Promise<void> => {
-    const token: string | undefined =
-      Cookies.getToken(ctx.cookies) ||
-      (this.acceptHeaderToken
-        ? U.extractOptBearerToken(ctx.headers["Authorization"])
-        : undefined);
+  isAuthenticated =
+    () =>
+    async (ctx: Koa.Context, next: Koa.Next): Promise<void> => {
+      const token: string | undefined =
+        CookiesService.getToken(ctx.cookies) ||
+        (this.acceptHeaderToken
+          ? U.extractOptBearerToken(ctx.headers["Authorization"])
+          : undefined);
 
-    if (token === undefined) {
-      ctx.status = 401;
-      ctx.body = { message: "please provide a token" };
-      return;
-    }
+      if (token === undefined) {
+        ctx.status = 401;
+        ctx.body = { message: "please provide a token" };
+        return;
+      }
 
-    try {
-      const profile: Profile = this.getProfile(token, ctx);
-      const userCache: UserCache = this.getCache<Id, UserCache>(profile.id);
-      const state: LT.UserState<Id, Profile, UserCache> = {
-        profile,
-        userCache,
-      };
+      try {
+        const profile: Profile = this.getProfile(token, ctx);
+        const userCache: UserCache = this.getCache<Id, UserCache>(profile.id);
+        const state: LT.UserState<Id, Profile, UserCache> = {
+          profile,
+          userCache,
+        };
 
-      ctx.state = state;
-    } catch (_err) {
-      ctx.status = 401;
-      ctx.body = { message: "user could not be authenticated" };
-      return;
-    }
-    await next();
-  };
-
-  hasPermission = (permission: string) => async (
-    ctx: Koa.Context,
-    next: Koa.Next
-  ): Promise<void> => {
-    const { userCache }: { userCache: UserCache } = ctx.state as any;
-    const { permissions } = userCache;
-
-    if (U.isPermissionValid(permission, permissions)) {
+        ctx.state = state;
+      } catch (_err) {
+        ctx.status = 401;
+        ctx.body = { message: "user could not be authenticated" };
+        return;
+      }
       await next();
-    } else {
-      ctx.status = 401;
-      ctx.body = {
-        message:
-          'user could not be authorized - permission "' +
-          permission +
-          '" not found',
-      };
-      return;
-    }
-  };
+    };
+
+  hasPermission =
+    (permission: string) =>
+    async (ctx: Koa.Context, next: Koa.Next): Promise<void> => {
+      const { userCache }: { userCache: UserCache } = ctx.state as any;
+      const { permissions } = userCache;
+
+      if (U.isPermissionValid(permission, permissions)) {
+        await next();
+      } else {
+        ctx.status = 401;
+        ctx.body = {
+          message:
+            'user could not be authorized - permission "' +
+            permission +
+            '" not found',
+        };
+        return;
+      }
+    };
 
   isAuthorized = (
     permission: string
@@ -207,23 +215,22 @@ export default class Auth<
    * @param ctx
    */
   logout = (profile: Profile, ctx: Koa.Context) => {
-    Cookies.removeToken(ctx.cookies);
+    CookiesService.removeToken(ctx.cookies);
     this.cache.destroy(U.getKey(profile.id));
   };
 }
 
 // basic auth
-export const isBasicAuthenticated = (
-  username: string,
-  password: string
-) => async (ctx: Koa.Context, next: Koa.Next) => {
-  const Authorization = ctx.headers;
-  const token = U.extractBasicAuthToken(Authorization);
+export const isBasicAuthenticated =
+  (username: string, password: string) =>
+  async (ctx: Koa.Context, next: Koa.Next) => {
+    const Authorization = ctx.headers;
+    const token = U.extractBasicAuthToken(Authorization);
 
-  if (token === U.createBasicAuthToken(username, password)) {
-    await next();
-  } else {
-    ctx.status = 401;
-    ctx.body = { msg: "unauthorized" };
-  }
-};
+    if (token === U.createBasicAuthToken(username, password)) {
+      await next();
+    } else {
+      ctx.status = 401;
+      ctx.body = { msg: "unauthorized" };
+    }
+  };

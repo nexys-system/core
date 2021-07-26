@@ -1,4 +1,5 @@
-import Rp from 'request-promise-native';
+import fetch from "node-fetch";
+import * as FT from "node-fetch";
 
 export interface OAuthHeaders {
   Authorization: string;
@@ -17,39 +18,47 @@ export interface Profile {
  * @param url
  * @param extra
  */
-export const getUriRedirect = (url: string, extra: { [k: string]: string }): string => {
+export const getUriRedirect = (
+  url: string,
+  extra: { [k: string]: string }
+): string => {
   const extraArray = Object.entries(extra);
 
   if (extraArray.length === 0) {
     return url;
   }
 
-  return url + '?' + extraArray.map(([k, v]) => `${k}=${encodeURIComponent(v)}`);
+  return (
+    url + "?" + extraArray.map(([k, v]) => `${k}=${encodeURIComponent(v)}`)
+  );
 };
 
-export const oAuthLink = (host: string, params: { [k: string]: string | boolean | number }): string => {
+export const oAuthLink = (
+  host: string,
+  params: { [k: string]: string | boolean | number }
+): string => {
   const p: string = Object.entries(params)
     .map(([k, v]) => `${k}=${encodeURIComponent(v)}`)
-    .join('&');
+    .join("&");
 
-  return host + '?' + p;
+  return host + "?" + p;
 };
 
-export const callback = async (url: string, body: Object): Promise<string> => {
+export const callback = async (url: string, data: Object): Promise<string> => {
+  const body = JSON.stringify(data);
   const options = {
-    url,
     body,
-    method: 'POST',
-    json: true
+    headers: { "content-type": "application/json" },
+    method: "POST",
   };
 
-  const response = await Rp(options);
+  const r = await fetch(url, options);
+  const { access_token } = await r.json();
 
-  return response.access_token;
+  return access_token;
 };
 
-export const oAuthHeaders = (accessToken: string): OAuthHeaders => {
-  return {
-    Authorization: 'Bearer ' + accessToken
-  };
-};
+export const oAuthHeaders = (accessToken: string): FT.HeaderInit => ({
+  "content-type": "application/json",
+  Authorization: "Bearer " + accessToken,
+});

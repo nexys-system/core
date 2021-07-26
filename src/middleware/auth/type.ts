@@ -21,3 +21,8 @@ export interface LoginResponse<Profile extends T.ObjectWithId<Id>, Id> {
   accessToken: string;
   refreshToken: string;
 }
+
+export interface RefreshToken<Profile> {
+  profile: Profile;
+  type: "REFRESH";
+}
