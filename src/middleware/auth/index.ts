@@ -122,7 +122,7 @@ export default class Auth<
       //return this.getProfile(refTokenValue.profile, ctx, 1);
       //console.log("p", p);
       //return p;
-      return profile;
+      return nProfile;
     } catch (err) {
       console.log(err);
       throw Error("JWT refresh invalid");
@@ -133,17 +133,8 @@ export default class Auth<
 
   getCache = <Id, A>(id: Id): A => this.cache.get(U.getKey(id));
 
-  setCache = async (
-    profile: Profile,
-    cacheData: UserCache
-  ): Promise<{ accessToken: string }> => {
-    const _r = await this.cache.set(U.cacheUserPrefix + profile.id, cacheData);
-    // const refreshToken: TA.RefreshToken<Profile> = { profile, type: "REFRESH" };
-    return {
-      accessToken: this.jwt.sign(profile),
-      // refreshToken: this.jwt.sign(refreshToken),
-    };
-  };
+  setCache = async (profile: Profile, cacheData: UserCache) =>
+    this.cache.set(U.getKey(profile.id), cacheData);
 
   authFormat = async (
     userCache: UserCache,
@@ -151,7 +142,10 @@ export default class Auth<
     refreshToken: string,
     locale: OptionSet = { id: 1, name: "en" }
   ): Promise<LT.LoginResponse<Profile, Id>> => {
-    const { accessToken } = await this.setCache(profile, userCache);
+    // set cache
+    await this.setCache(profile, userCache);
+    // get access token
+    const accessToken = this.jwt.sign(profile);
 
     return {
       permissions: userCache.permissions,
@@ -195,7 +189,6 @@ export default class Auth<
 
       try {
         const profile = await this.getProfile(token, ctx);
-
         const userCache: UserCache = this.getCache<Id, UserCache>(profile.id);
         const state: LT.UserState<Id, Profile, UserCache> = {
           profile,
@@ -263,3 +256,7 @@ export const isBasicAuthenticated =
       ctx.body = { msg: "unauthorized" };
     }
   };
+
+function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}

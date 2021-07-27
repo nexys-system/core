@@ -43,7 +43,6 @@ export default class Password {
       false
     );
 
-    console.log(userAuth);
     if (oldPassword && !U.matchPassword(oldPassword, userAuth.value)) {
       throw Error("the old password is not correct");
     }

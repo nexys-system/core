@@ -43,7 +43,7 @@ class QueryService extends T.QueryService {
     );*/
     //console.log(arr[0].sql);
     const r = await this.fetchr.mutate(query);
-    console.log(r);
+
     return r;
   }
 

@@ -102,20 +102,16 @@ class LocalCache extends Cache {
   ): Promise<any> {
     const data = this.serialize<A>(value);
 
-    let result: boolean = false;
-
-    if (ttl) {
-      result = this.cache.set<A>(key, data, ttl);
-    } else {
-      result = this.cache.set<A>(key, data);
-    }
+    const result = this.cache.set<A>(key, data, ttl || 0);
 
     if (this.persistent) {
       await this.save();
     }
 
-    if (result) return key;
-    else return false;
+    if (result) {
+      return key;
+    }
+    throw Error("could not set");
   }
 
   destroy(key: string) {
