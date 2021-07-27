@@ -256,7 +256,3 @@ export const isBasicAuthenticated =
       ctx.body = { msg: "unauthorized" };
     }
   };
-
-function sleep(ms: number) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
