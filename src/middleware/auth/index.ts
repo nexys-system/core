@@ -5,7 +5,7 @@ import { OptionSet } from "@nexys/utils/dist/types";
 
 import JWT from "../../jwt";
 import * as T from "../../type";
-import * as TA from "./type";
+
 import * as LT from "./type";
 import Cache from "../../cache/cache";
 import * as CookiesService from "../cookies";
@@ -14,7 +14,7 @@ import * as U from "./utils";
 import { LoginService } from "../../user-management";
 // see https://github.com/Nexysweb/koa-lib/blob/master/src/middleware/index.ts
 
-const dtExpires = 10;
+const dtExpires = 15 * 60; // after 15min, the access token expires and the refresh token is used to create a new session: - permissions, - status etc are refreshed in the process
 
 export default class Auth<
   Profile extends T.ObjectWithId<Id>,
