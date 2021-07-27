@@ -35,7 +35,7 @@ export default class UserAuthentication {
   ): Promise<{ uuid: Uuid }> => {
     console.log(row);
     const r = await this.qs.insertUuid(U.Entity.UserAuthentication, row);
-    console.log(r);
+
     return { uuid: r.uuid };
   };
 

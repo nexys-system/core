@@ -1,5 +1,6 @@
 import { UOptionSet, Uuid } from "@nexys/utils/dist/types";
 import * as TC from "./crud-type";
+import * as TQ from "@nexys/fetchr";
 
 export enum Status {
   active = 1,
@@ -35,13 +36,37 @@ export type UserListOut = Omit<TC.User, "status"> & {
   status: { id: Status; name: string };
 };
 
-export interface QueryService {
-  list<A = any>(entity: string, params?: any): Promise<A[]>;
-  detail<A = any>(entity: string, params?: any): Promise<A>;
-  find: <A>(entity: string, p: any, b?: boolean) => Promise<A>;
-  insert<A>(entity: string, data: Omit<A, "id">): Promise<any>;
-  insertUuid<A>(entity: string, data: Omit<A, "uuid">): Promise<any>;
-  insertMultiple<A>(entity: string, data: Omit<A, "uuid">[]): Promise<any>;
-  update<A>(entity: string, filters: Partial<A>, data: Partial<A>): any;
-  delete: any;
+export abstract class QueryService {
+  abstract list<A = any>(entity: string, params?: any): Promise<A[]>;
+
+  abstract detail<A = any>(entity: string, params?: any): Promise<A>;
+
+  abstract find: <A = any>(entity: string, p: any, b?: boolean) => Promise<A>;
+
+  abstract insert<A>(
+    entity: string,
+    data: Omit<A, "id">
+  ): Promise<
+    Omit<TQ.Type.MutateResponseInsert, "id" | "uuid"> & { id: number }
+  >;
+
+  abstract insertUuid<A>(
+    entity: string,
+    data: Omit<A, "uuid">
+  ): Promise<
+    Omit<TQ.Type.MutateResponseInsert, "id" | "uuid"> & { uuid: string }
+  >;
+
+  abstract insertMultiple<A>(
+    entity: string,
+    data: Omit<A, "uuid">[]
+  ): Promise<TQ.Type.MutateResponseInsert[]>;
+
+  abstract update<A>(
+    entity: string,
+    filters: Partial<A>,
+    data: Partial<A>
+  ): Promise<TQ.Type.MutateResponseUpdate>;
+
+  abstract delete: (a: any, b: any) => Promise<TQ.Type.MutateResponseDelete>;
 }

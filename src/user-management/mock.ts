@@ -17,12 +17,15 @@ export const status = T.Status.pending;
 
 export const hashedPassword = "myhashedpassword";
 
-class QueryService {
-  constructor(host: string, token: string) {}
+class QueryService extends T.QueryService {
+  constructor(host: string, token: string) {
+    super();
+  }
 
   insertUuid = <A>(entity: string, data: A) =>
     Promise.resolve({
       uuid: entity + "_uuid",
+      success: true,
     });
 
   list = <A = any>(entity: string, _query: any): Promise<A[]> => {
@@ -37,7 +40,7 @@ class QueryService {
 
   find = (entity: string, _query: any) => {
     if (entity === "User") {
-      return {
+      return Promise.resolve({
         ...profile,
         status,
         UserAuthentication: [
@@ -47,15 +50,25 @@ class QueryService {
             isEnabled: true,
           },
         ],
-      };
+      }) as any;
     }
+
+    throw Error("not impolemented");
   };
 
   detail = <A>(): Promise<A> => Promise.resolve({} as A);
-  insert = <A>() => Promise.resolve(undefined);
-  insertMultiple = () => Promise.resolve(undefined);
-  update = () => Promise.resolve(undefined);
-  delete = () => Promise.resolve(undefined);
+  insert = <A>() => {
+    throw Error("undefined");
+  };
+  insertMultiple = () => {
+    throw Error("undefined");
+  };
+  update = () => {
+    throw Error("undefined");
+  };
+  delete = () => {
+    throw Error("undefined");
+  };
 }
 
 export const qs = new QueryService("host", "token");
