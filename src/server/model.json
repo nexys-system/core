@@ -1,0 +1,590 @@
+[
+  {
+    "name": "Investor",
+    "uuid": true,
+    "fields": [
+      {
+        "name": "phone",
+        "optional": true,
+        "column": "",
+        "type": "String"
+      },
+      {
+        "name": "company",
+        "optional": true,
+        "column": "",
+        "type": "String"
+      },
+      {
+        "name": "iban",
+        "optional": true,
+        "column": "",
+        "type": "String"
+      },
+      {
+        "name": "bic",
+        "optional": true,
+        "column": "",
+        "type": "String"
+      },
+      {
+        "name": "user",
+        "optional": false,
+        "column": "",
+        "type": "User"
+      }
+    ]
+  },
+  {
+    "name": "Property",
+    "uuid": true,
+    "fields": [
+      {
+        "name": "street",
+        "optional": false,
+        "column": "",
+        "type": "String"
+      },
+      {
+        "name": "zip",
+        "optional": false,
+        "column": "",
+        "type": "String"
+      },
+      {
+        "name": "city",
+        "optional": false,
+        "column": "",
+        "type": "String"
+      },
+      {
+        "name": "categoryId",
+        "optional": false,
+        "column": "",
+        "type": "Int",
+        "options": [
+          {
+            "id": 1,
+            "name": "test"
+          }
+        ]
+      },
+      {
+        "name": "typeId",
+        "optional": false,
+        "column": "",
+        "type": "Int"
+      },
+      {
+        "name": "statusId",
+        "optional": false,
+        "column": "",
+        "type": "Int"
+      },
+      {
+        "name": "purchasePrice",
+        "optional": false,
+        "column": "",
+        "type": "BigDecimal"
+      },
+      {
+        "name": "sharePrice",
+        "optional": false,
+        "column": "",
+        "type": "BigDecimal"
+      }
+    ]
+  },
+  {
+    "name": "InvestorProperty",
+    "uuid": true,
+    "fields": [
+      {
+        "name": "user",
+        "optional": false,
+        "column": "",
+        "type": "Investor"
+      },
+      {
+        "name": "property",
+        "optional": false,
+        "column": "",
+        "type": "Property"
+      },
+      {
+        "name": "n_shares",
+        "optional": false,
+        "column": "",
+        "type": "BigDecimal"
+      }
+    ]
+  },
+  {
+    "name": "Transaction",
+    "uuid": true,
+    "fields": [
+      {
+        "name": "property",
+        "optional": false,
+        "column": "",
+        "type": "Property"
+      },
+      {
+        "name": "user",
+        "optional": false,
+        "column": "",
+        "type": "Investor"
+      },
+      {
+        "name": "amount",
+        "optional": false,
+        "column": "",
+        "type": "BigDecimal"
+      },
+      {
+        "name": "date",
+        "optional": false,
+        "column": "",
+        "type": "LocalDate"
+      },
+      {
+        "name": "typeId",
+        "optional": false,
+        "column": "",
+        "type": "Int"
+      }
+    ]
+  },
+  {
+    "name": "Referral",
+    "uuid": true,
+    "fields": [
+      {
+        "name": "user",
+        "optional": false,
+        "column": "",
+        "type": "Investor"
+      },
+      {
+        "name": "email",
+        "optional": false,
+        "column": "",
+        "type": "String"
+      },
+      {
+        "name": "logDateAdded",
+        "optional": false,
+        "column": "",
+        "type": "LocalDateTime"
+      },
+      {
+        "name": "statusId",
+        "optional": false,
+        "column": "",
+        "type": "Int"
+      }
+    ]
+  },
+  {
+    "name": "User",
+    "uuid": true,
+    "fields": [
+      {
+        "name": "firstName",
+        "optional": false,
+        "column": "",
+        "type": "String"
+      },
+      {
+        "name": "lastName",
+        "optional": false,
+        "column": "",
+        "type": "String"
+      },
+      {
+        "name": "email",
+        "optional": false,
+        "column": "",
+        "type": "String"
+      },
+      {
+        "name": "logDateAdded",
+        "optional": false,
+        "column": "",
+        "type": "LocalDateTime"
+      },
+      {
+        "name": "instance",
+        "optional": false,
+        "column": "",
+        "type": "Instance"
+      },
+      {
+        "name": "lang",
+        "optional": false,
+        "column": "",
+        "type": "String"
+      },
+      {
+        "name": "status",
+        "optional": false,
+        "column": null,
+        "type": "Int"
+      }
+    ]
+  },
+  {
+    "name": "UserStatus",
+    "uuid": false,
+    "fields": [
+      {
+        "name": "name",
+        "optional": false,
+        "column": "",
+        "type": "String"
+      }
+    ]
+  },
+  {
+    "name": "Tenant",
+    "uuid": true,
+    "fields": [
+      {
+        "name": "phone",
+        "optional": false,
+        "column": "",
+        "type": "String"
+      },
+      {
+        "name": "user",
+        "optional": false,
+        "column": "",
+        "type": "User"
+      }
+    ]
+  },
+  {
+    "name": "TenantProperty",
+    "uuid": true,
+    "fields": [
+      {
+        "name": "rent",
+        "optional": false,
+        "column": "",
+        "type": "BigDecimal"
+      },
+      {
+        "name": "dateStart",
+        "optional": false,
+        "column": "",
+        "type": "LocalDate"
+      },
+      {
+        "name": "dateEnd",
+        "optional": true,
+        "column": "",
+        "type": "LocalDate"
+      },
+      {
+        "name": "property",
+        "optional": false,
+        "column": "",
+        "type": "Property"
+      },
+      {
+        "name": "tenant",
+        "optional": false,
+        "column": "",
+        "type": "Tenant"
+      }
+    ]
+  },
+  {
+    "name": "TenantRent",
+    "uuid": true,
+    "fields": [
+      {
+        "name": "tenantProperty",
+        "optional": false,
+        "column": "",
+        "type": "TenantProperty"
+      },
+      {
+        "name": "statusId",
+        "optional": false,
+        "column": "",
+        "type": "Int",
+        "options": [
+          {
+            "id": 1,
+            "name": "pending"
+          },
+          {
+            "id": 2,
+            "name": "paid"
+          },
+          {
+            "id": 3,
+            "name": "overdue"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "UserAuthenticationType",
+    "uuid": false,
+    "fields": [
+      {
+        "name": "name",
+        "optional": false,
+        "column": "",
+        "type": "String"
+      }
+    ]
+  },
+  {
+    "name": "UserAuthentication",
+    "uuid": true,
+    "fields": [
+      {
+        "name": "value",
+        "optional": false,
+        "column": "",
+        "type": "String"
+      },
+      {
+        "name": "isEnabled",
+        "optional": false,
+        "column": "",
+        "type": "Boolean"
+      },
+      {
+        "name": "type",
+        "optional": false,
+        "column": "",
+        "type": "UserAuthenticationType"
+      },
+      {
+        "name": "user",
+        "optional": false,
+        "column": "",
+        "type": "User"
+      }
+    ]
+  },
+  {
+    "name": "Instance",
+    "uuid": true,
+    "fields": [
+      {
+        "name": "name",
+        "optional": false,
+        "column": "",
+        "type": "String"
+      },
+      {
+        "name": "dateAdded",
+        "optional": false,
+        "column": "",
+        "type": "LocalDateTime"
+      }
+    ]
+  },
+  {
+    "name": "Permission",
+    "uuid": true,
+    "fields": [
+      {
+        "name": "name",
+        "optional": false,
+        "column": "",
+        "type": "String"
+      },
+      {
+        "name": "description",
+        "optional": true,
+        "column": "",
+        "type": "String"
+      }
+    ]
+  },
+  {
+    "name": "UserPermission",
+    "uuid": true,
+    "fields": [
+      {
+        "name": "permissionInstance",
+        "optional": false,
+        "column": "",
+        "type": "PermissionInstance"
+      },
+      {
+        "name": "user",
+        "optional": false,
+        "column": "",
+        "type": "User"
+      }
+    ]
+  },
+  {
+    "name": "PermissionInstance",
+    "uuid": true,
+    "fields": [
+      {
+        "name": "instance",
+        "optional": false,
+        "column": "",
+        "type": "Instance"
+      },
+      {
+        "name": "permission",
+        "optional": false,
+        "column": "",
+        "type": "Permission"
+      }
+    ]
+  },
+  {
+    "name": "MaintenanceType",
+    "uuid": false,
+    "fields": [
+      {
+        "name": "name",
+        "optional": false,
+        "column": "",
+        "type": "String"
+      }
+    ]
+  },
+  {
+    "name": "Maintenance",
+    "uuid": true,
+    "fields": [
+      {
+        "name": "property",
+        "optional": false,
+        "column": "",
+        "type": "Property"
+      },
+      {
+        "name": "tenancy",
+        "optional": true,
+        "column": "",
+        "type": "TenantProperty"
+      },
+      {
+        "name": "subject",
+        "optional": false,
+        "column": "",
+        "type": "String"
+      },
+      {
+        "name": "type",
+        "optional": false,
+        "column": "",
+        "type": "MaintenanceType"
+      },
+      {
+        "name": "priorityId",
+        "optional": false,
+        "column": "",
+        "type": "Int",
+        "options": [
+          {
+            "id": 1,
+            "name": "Low"
+          },
+          {
+            "id": 2,
+            "name": "Default"
+          },
+          {
+            "id": 3,
+            "name": "Emergency"
+          }
+        ]
+      },
+      {
+        "name": "description",
+        "optional": true,
+        "column": "",
+        "type": "String"
+      },
+      {
+        "name": "statusId",
+        "optional": false,
+        "column": "",
+        "type": "Int",
+        "options": [
+          {
+            "id": 1,
+            "name": "To Do"
+          },
+          {
+            "id": 2,
+            "name": "In Progress"
+          },
+          {
+            "id": 3,
+            "name": "Done"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Service",
+    "uuid": true,
+    "fields": [
+      {
+        "name": "name",
+        "optional": false,
+        "column": "",
+        "type": "String"
+      },
+      {
+        "name": "date",
+        "optional": false,
+        "column": "",
+        "type": "String"
+      }
+    ]
+  },
+  {
+    "name": "UserToken",
+    "uuid": true,
+    "fields": [
+      {
+        "name": "token",
+        "optional": false,
+        "column": null,
+        "type": "String"
+      },
+      {
+        "name": "logDateAdded",
+        "optional": false,
+        "column": null,
+        "type": "LocalDateTime"
+      },
+      {
+        "name": "user",
+        "optional": false,
+        "column": "user_id",
+        "type": "User"
+      },
+      {
+        "name": "ip",
+        "optional": true,
+        "column": null,
+        "type": "String"
+      },
+      {
+        "name": "userAgent",
+        "optional": true,
+        "column": null,
+        "type": "String"
+      }
+    ]
+  }
+]

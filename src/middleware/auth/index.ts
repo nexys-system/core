@@ -11,7 +11,10 @@ import Cache from "../../cache/cache";
 import * as CookiesService from "../cookies";
 
 import * as U from "./utils";
+import { LoginService } from "../../user-management";
 // see https://github.com/Nexysweb/koa-lib/blob/master/src/middleware/index.ts
+
+const dtExpires = 10;
 
 export default class Auth<
   Profile extends T.ObjectWithId<Id>,
@@ -21,6 +24,7 @@ export default class Auth<
   cache: Cache;
   jwt: JWT;
   acceptHeaderToken: boolean;
+  loginService: LoginService;
 
   /**
    *
@@ -28,6 +32,7 @@ export default class Auth<
    * @param secret for the JWT verification
    */
   constructor(
+    loginService: LoginService,
     cache: Cache,
     secret: string,
     acceptHeaderToken: boolean = false
@@ -35,20 +40,31 @@ export default class Auth<
     this.cache = cache;
     this.jwt = new JWT(secret);
     this.acceptHeaderToken = acceptHeaderToken;
+    this.loginService = loginService;
   }
 
-  getProfile = (
+  getProfile = async (
     token: string,
     ctx: Koa.Context,
     refreshAttempt = 0
-  ): Profile => {
+  ): Promise<Profile> => {
     try {
       //console.log(this.jwt.read(token));
-      const decoded = this.jwt.verify<Profile>(token);
+      const profile = this.jwt.verify<Profile>(token);
 
       // todo if beyond a certain time, gte refresh
 
-      return decoded;
+      const { iat } = profile;
+      const t = new Date().getTime() / 1000;
+      //console.log({ iat, t });
+
+      if (iat && iat + dtExpires < t) {
+        //ctx.status = 401;
+        //ctx.body = { message: "token expired" };
+        return this.refresh(ctx);
+      }
+
+      return profile;
     } catch (err) {
       // try to issue a new token from refresh token
       //console.log("jwt verify failed");
@@ -62,13 +78,14 @@ export default class Auth<
   };
 
   // todo call database to avoid inifinte renewing
-  refresh = (
+  refresh = async (
     ctx: Koa.Context,
     cookieOpts: {
       secure: boolean;
       sameSite?: boolean | "strict" | "lax" | "none";
-    } = { secure: true }
-  ): Profile => {
+    } = { secure: false }
+  ): Promise<Profile> => {
+    console.info("Refreshing token");
     const refreshToken = CookiesService.getToken(ctx.cookies, "REFRESH");
     //console.log(refreshToken);
 
@@ -78,28 +95,36 @@ export default class Auth<
 
     try {
       //console.log("d");
-      const refTokenValue =
-        this.jwt.verify<TA.RefreshToken<Profile>>(refreshToken);
+      // const refTokenValue =
+      // this.jwt.verify<TA.RefreshToken<Profile>>(refreshToken);
       //console.log(refTokenValue);
-      const newToken = this.jwt.sign<Profile>(refTokenValue.profile);
-      //console.log(newToken, "newtok");
-      try {
-        CookiesService.setToken(
-          newToken,
-          ctx.cookies,
-          cookieOpts.secure,
-          "ACCESS",
-          cookieOpts.sameSite
-        );
-      } catch (err) {
-        console.log(err);
-      }
+
+      const { profile, permissions }: { profile: any; permissions: string[] } =
+        await this.loginService.reAuthenticate(refreshToken);
+
+      const nProfile: Profile = { id: profile.uuid, ...profile } as any;
+
+      const userCache: UserCache = { permissions } as UserCache;
+
+      const profileWToken = await this.authFormat(
+        userCache,
+        nProfile,
+        refreshToken,
+        {
+          id: 1,
+          name: "EN-us",
+        }
+      );
+
+      U.login(profileWToken, ctx.cookies, cookieOpts);
+
       //console.log("set token");
       //return this.getProfile(refTokenValue.profile, ctx, 1);
       //console.log("p", p);
       //return p;
-      return refTokenValue.profile;
+      return profile;
     } catch (err) {
+      console.log(err);
       throw Error("JWT refresh invalid");
     }
 
@@ -108,24 +133,25 @@ export default class Auth<
 
   getCache = <Id, A>(id: Id): A => this.cache.get(U.getKey(id));
 
-  setCache = (
+  setCache = async (
     profile: Profile,
     cacheData: UserCache
-  ): { accessToken: string; refreshToken: string } => {
-    this.cache.set(U.cacheUserPrefix + profile.id, cacheData);
-    const refreshToken: TA.RefreshToken<Profile> = { profile, type: "REFRESH" };
+  ): Promise<{ accessToken: string }> => {
+    const _r = await this.cache.set(U.cacheUserPrefix + profile.id, cacheData);
+    // const refreshToken: TA.RefreshToken<Profile> = { profile, type: "REFRESH" };
     return {
       accessToken: this.jwt.sign(profile),
-      refreshToken: this.jwt.sign(refreshToken),
+      // refreshToken: this.jwt.sign(refreshToken),
     };
   };
 
-  authFormat = (
+  authFormat = async (
     userCache: UserCache,
     profile: Profile,
+    refreshToken: string,
     locale: OptionSet = { id: 1, name: "en" }
-  ): LT.LoginResponse<Profile, Id> => {
-    const { accessToken, refreshToken } = this.setCache(profile, userCache);
+  ): Promise<LT.LoginResponse<Profile, Id>> => {
+    const { accessToken } = await this.setCache(profile, userCache);
 
     return {
       permissions: userCache.permissions,
@@ -136,9 +162,10 @@ export default class Auth<
     };
   };
 
-  authOutput = (
+  authOutput = async (
     ctx: Koa.Context,
     profile: Profile,
+    refreshToken: string,
     userCache: UserCache,
     locale: OptionSet = { id: 1, name: "en" },
     cookieOpts: {
@@ -146,7 +173,7 @@ export default class Auth<
       sameSite?: boolean | "strict" | "lax" | "none";
     } = { secure: true }
   ) => {
-    const r = this.authFormat(userCache, profile, locale);
+    const r = await this.authFormat(userCache, profile, refreshToken, locale);
 
     ctx.body = U.login(r, ctx.cookies, cookieOpts);
   };
@@ -167,7 +194,8 @@ export default class Auth<
       }
 
       try {
-        const profile: Profile = this.getProfile(token, ctx);
+        const profile = await this.getProfile(token, ctx);
+
         const userCache: UserCache = this.getCache<Id, UserCache>(profile.id);
         const state: LT.UserState<Id, Profile, UserCache> = {
           profile,
@@ -175,7 +203,8 @@ export default class Auth<
         };
 
         ctx.state = state;
-      } catch (_err) {
+      } catch (err) {
+        console.log(err);
         ctx.status = 401;
         ctx.body = { message: "user could not be authenticated" };
         return;

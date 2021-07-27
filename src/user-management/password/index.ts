@@ -39,7 +39,8 @@ export default class Password {
           user: userFilter,
           type: { id: UU.userAuthenticationPasswordId },
         },
-      }
+      },
+      false
     );
 
     console.log(userAuth);

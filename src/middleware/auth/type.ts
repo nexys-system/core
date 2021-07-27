@@ -1,4 +1,4 @@
-import { Uuid, OptionSet } from "@nexys/utils/dist/types";
+import { OptionSet } from "@nexys/utils/dist/types";
 import * as T from "../../type";
 
 export interface Permissions {

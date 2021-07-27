@@ -512,10 +512,10 @@
   resolved "https://registry.yarnpkg.com/@nexys/crypto/-/crypto-1.0.3.tgz#4c0491af46b63bcd1118a4f248d0dff4797f91fa"
   integrity sha512-J8fIZQ4FKpB4nfXAJQUvPfN4ZPV2UVrIXWZDRxXabtBkRimfqnTRP1CfkDfLTzoouWMx7EZLU5eeSViH8yFLBA==
 
-"@nexys/fetchr@^0.2.2":
-  version "0.2.2"
-  resolved "https://registry.yarnpkg.com/@nexys/fetchr/-/fetchr-0.2.2.tgz#f0e0d0772139226a67f3d7c816b43eed15e25634"
-  integrity sha512-qtn90/Gqblv67aUQpCI67jPWS3UZhKKjrX2nQa/3cxxnYxRUpnKEECMQzrCSr8hLyf06riNahYqp6uB94ImENQ==
+"@nexys/fetchr@^0.2.6":
+  version "0.2.6"
+  resolved "https://registry.yarnpkg.com/@nexys/fetchr/-/fetchr-0.2.6.tgz#eac59d13ae9de79ac431156016bab88ecc041915"
+  integrity sha512-ycuiJEBybvwOJPwZnDN2uzUtAJQUXKPX9UifrJxH9Jbh8jSKOIXSA4TnqsnyCNBA9VX+0dOlo8IEIVCbP14oRA==
   dependencies:
     "@nexys/sql-migrations" "^0.0.1"
     "@nexys/validation" "^2.1.0"
@@ -4299,7 +4299,7 @@ ts-jest@^25.3.1:
     semver "6.x"
     yargs-parser "18.x"
 
-tsc-watch@^4.2.3:
+tsc-watch@^4.4.0:
   version "4.4.0"
   resolved "https://registry.yarnpkg.com/tsc-watch/-/tsc-watch-4.4.0.tgz#3ebbf1db54bcef6bfe534b330fa87284a4139320"
   integrity sha512-+0Yey6ptOOXAnt44OKTk2/EnQnmA0auL7VWXm9d9abMS4tabt0Xdr9B4AK6OJbWAre9ZdLA81+Nk8sz9unptyA==

@@ -12,6 +12,15 @@ export interface User {
   lang: string;
 }
 
+export interface UserToken {
+  uuid: Uuid;
+  token: string;
+  logDateAdded: Date;
+  user: { uuid: Uuid };
+  userAgent?: string;
+  ip?: string;
+}
+
 export interface UserAuthenticationType {
   id: Id;
   name: string;

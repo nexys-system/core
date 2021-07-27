@@ -28,6 +28,12 @@ class QueryService extends T.QueryService {
       success: true,
     });
 
+  insertId = <A>(entity: string, data: A) =>
+    Promise.resolve({
+      id: 0,
+      success: true,
+    });
+
   list = <A = any>(entity: string, _query: any): Promise<A[]> => {
     if (entity === "UserPermission") {
       return Promise.resolve([

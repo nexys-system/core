@@ -18,6 +18,7 @@ interface UserCache {
 
 test("create instance of auth", () => {
   const auth = new A<Profile, UserCache>(
+    "" as any,
     new Cache({ persistent: true }),
     "mysecret"
   );
@@ -27,6 +28,7 @@ test("create instance of auth", () => {
 
 test("create instance of auth = string uuid", () => {
   const auth = new A<ProfileUuid, UserCache, Uuid>(
+    "" as any,
     new Cache({ persistent: true }),
     "mysecret"
   );

@@ -6,6 +6,7 @@ import * as CT from "../crud-type";
 import { UOptionSet } from "@nexys/utils/dist/types";
 import PermissionService from "../permission";
 import * as Status from "./status";
+import { Params } from "@nexys/fetchr/dist/query-builder/aggregate/type";
 
 export default class User {
   qs: QueryService;
@@ -15,19 +16,59 @@ export default class User {
     this.permissionService = new PermissionService(qs);
   }
 
+  getByUuid = async (
+    uuid: Uuid,
+    instanceIn?: { uuid: Uuid }
+  ): Promise<{
+    profile: T.Profile;
+    status: T.Status;
+    UserAuthentication?: CT.UserAuthentication[];
+  }> => this.getByAttribute({ key: "uuid", value: uuid }, instanceIn);
+
   getByEmail = async (
     email: string,
     instanceIn?: { uuid: Uuid }
   ): Promise<{
     profile: T.Profile;
-    status: { id: T.Status };
+    status: T.Status;
+    UserAuthentication?: CT.UserAuthentication[];
+  }> => this.getByAttribute({ key: "email", value: email }, instanceIn);
+
+  getByAttribute = async (
+    attribute: { key: "email" | "uuid"; value: string },
+    instanceIn?: { uuid: Uuid }
+  ): Promise<{
+    profile: T.Profile;
+    status: T.Status;
     UserAuthentication?: CT.UserAuthentication[];
   }> => {
+    const params: any = {
+      projection: {
+        uuid: true,
+        firstName: true,
+        lastName: true,
+        email: true,
+        lang: true,
+        status: true,
+        instance: { uuid: true, name: true },
+      },
+      filters: {
+        [attribute.key]: attribute.value,
+        //instance:undefined// { uuid: instanceIn?.uuid || "" },
+      },
+      references: { [U.Entity.UserAuthentication]: {} },
+    };
+
+    if (instanceIn) {
+      params.filters.instance = { uuid: instanceIn.uuid };
+    }
+
     // get user with associated authentication methods
     const {
       uuid,
       firstName,
       lastName,
+      email,
       lang,
       status,
       instance,
@@ -36,22 +77,12 @@ export default class User {
       uuid: Uuid;
       firstName: string;
       lastName: string;
+      email: string;
       lang: string;
-      status: { id: T.Status };
+      status: T.Status;
       instance: UOptionSet;
       UserAuthentication?: CT.UserAuthentication[];
-    } = await this.qs.find(U.Entity.User, {
-      projection: {
-        uuid: true,
-        firstName: true,
-        lastName: true,
-        lang: true,
-        status: true,
-        instance: { uuid: true, name: true },
-      },
-      filters: { email, instance: { uuid: instanceIn?.uuid || "" } },
-      references: { [U.Entity.UserAuthentication]: {} },
-    });
+    } = await this.qs.find(U.Entity.User, params, false);
 
     const profile = { uuid, firstName, lastName, email, lang, instance };
 
@@ -63,7 +94,7 @@ export default class User {
     instanceIn?: { uuid: Uuid }
   ): Promise<{
     profile: T.Profile;
-    status: { id: T.Status };
+    status: T.Status;
     hashedPassword: string;
     auth: { uuid: Uuid };
   }> => {

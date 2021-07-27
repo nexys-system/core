@@ -17,7 +17,7 @@ export default class Instance {
     this.qs.detail<CT.Instance>(U.Entity.Instance, uuid);
 
   exists = async (name: string) =>
-    this.qs.find<CT.Instance>(U.Entity.Instance, { filters: { name } });
+    this.qs.find<CT.Instance>(U.Entity.Instance, { filters: { name } }, false);
 
   insert = async (name: string) => {
     const row: Omit<CT.Instance, "uuid"> = { name, dateAdded: new Date() };

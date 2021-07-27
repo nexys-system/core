@@ -33,7 +33,7 @@ export interface ActionPayload {
 }
 
 export type UserListOut = Omit<TC.User, "status"> & {
-  status: { id: Status; name: string };
+  status: Status;
 };
 
 export abstract class QueryService {
@@ -41,21 +41,22 @@ export abstract class QueryService {
 
   abstract detail<A = any>(entity: string, params?: any): Promise<A>;
 
-  abstract find: <A = any>(entity: string, p: any, b?: boolean) => Promise<A>;
+  abstract find<A = any>(entity: string, p: any, b: boolean): Promise<A>;
 
   abstract insert<A>(
     entity: string,
+    data: Omit<A, "uuid" | "id">
+  ): Promise<{ uuid: string } | { id: number }>;
+
+  abstract insertId<A>(
+    entity: string,
     data: Omit<A, "id">
-  ): Promise<
-    Omit<TQ.Type.MutateResponseInsert, "id" | "uuid"> & { id: number }
-  >;
+  ): Promise<{ id: number }>;
 
   abstract insertUuid<A>(
     entity: string,
     data: Omit<A, "uuid">
-  ): Promise<
-    Omit<TQ.Type.MutateResponseInsert, "id" | "uuid"> & { uuid: string }
-  >;
+  ): Promise<{ uuid: string }>;
 
   abstract insertMultiple<A>(
     entity: string,
@@ -68,5 +69,5 @@ export abstract class QueryService {
     data: Partial<A>
   ): Promise<TQ.Type.MutateResponseUpdate>;
 
-  abstract delete: (a: any, b: any) => Promise<TQ.Type.MutateResponseDelete>;
+  abstract delete(a: any, b: any): Promise<TQ.Type.MutateResponseDelete>;
 }

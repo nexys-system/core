@@ -27,19 +27,33 @@ const LoginRoutes = <Profile extends ObjectWithId<Id>, Id>(
   router.post("/", bodyParser(), checkLogin, async (ctx) => {
     const { email, password } = ctx.request.body;
 
+    const userAgent: string | undefined = ctx.request.headers["user-agent"];
+    const ip: string = ctx.request.ip;
+
     try {
-      const { profile, permissions } = await loginService.authenticate(
-        email,
-        password,
-        { uuid: instance.uuid }
-      );
+      const { profile, permissions, refreshToken } =
+        await loginService.authenticate(
+          email,
+          password,
+          {
+            uuid: instance.uuid,
+          },
+          { userAgent, ip }
+        );
       const lang = langDefault;
 
       const nProfile: Profile = { id: profile.uuid, ...profile } as any;
 
-      return MiddlewareAuth.authOutput(ctx, nProfile, { permissions }, lang, {
-        secure: false,
-      });
+      MiddlewareAuth.authOutput(
+        ctx,
+        nProfile,
+        refreshToken,
+        { permissions },
+        lang,
+        {
+          secure: false,
+        }
+      );
     } catch (err) {
       ctx.status = 400;
       ctx.body = { error: err.message };
@@ -50,6 +64,10 @@ const LoginRoutes = <Profile extends ObjectWithId<Id>, Id>(
   router.all("/logout", MiddlewareAuth.isAuthenticated(), async (ctx) => {
     const profile = ctx.state.profile as Profile;
     MiddlewareAuth.logout(profile, ctx);
+    await loginService.logout(
+      ctx.state.profile.id,
+      ctx.cookies.get("REFRESH_TOKEN")
+    );
     ctx.body = { message: "logged out successfully" };
   });
 
