@@ -10,6 +10,7 @@ import { Locale, Permissions } from "../../../middleware/auth/type";
 import { Uuid } from "@nexys/utils/dist/types";
 import { LoginService } from "../../../user-management";
 import { headerAcceptLanguageToLocale } from "../../../user-management/locale";
+import { AuthenticationType } from "../../../user-management/crud-type";
 
 /**  const instance = {
     uuid: process.env.InstanceUuid || "",
@@ -37,8 +38,8 @@ const LoginRoutes = <Profile extends ObjectWithId<Id>, Id>(
           {
             uuid: instance.uuid,
           },
-          { userAgent, ip },
-          password
+          { password, type: AuthenticationType.password },
+          { userAgent, ip }
         );
 
       const nProfile: Profile = { id: profile.uuid, ...profile } as any;

@@ -105,8 +105,24 @@ export default class User {
     return { profile, status, locale, UserAuthentication };
   };
 
-  getUserByEmailWithAuth = async (
-    email: string,
+  getAuthenticationRow = async (
+    type: CT.AuthenticationType,
+    value: string
+  ): Promise<CT.UserAuthentication> => {
+    try {
+      console.log({ filters: { type, value } });
+      return await this.qs.find<CT.UserAuthentication>(
+        U.Entity.UserAuthentication,
+        { filters: { type, value } },
+        false
+      );
+    } catch (err) {
+      return Promise.reject("could not find row");
+    }
+  };
+
+  getUserByAttributeWithAuth = async (
+    attribute: { key: "uuid" | "email"; value: string },
     instanceIn?: { uuid: Uuid },
     authType: CT.AuthenticationType = CT.AuthenticationType.password
   ): Promise<{
@@ -117,7 +133,7 @@ export default class User {
   }> => {
     try {
       const { profile, status, locale, UserAuthentication } =
-        await this.getByEmail(email, instanceIn);
+        await this.getByAttribute(attribute, instanceIn);
 
       const userAuthentication = UserAuthentication?.find(
         (x) => x.type === authType
@@ -138,7 +154,9 @@ export default class User {
       };
     } catch (err) {
       console.log(err);
-      throw Error("no user could be found with email: " + email);
+      throw Error(
+        "no user could be found with attribute: " + JSON.stringify(attribute)
+      );
     }
   };
 

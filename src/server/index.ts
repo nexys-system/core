@@ -1,5 +1,6 @@
 import App from "../lib/app";
 import Router from "koa-router";
+
 import * as FetchR from "@nexys/fetchr";
 import * as QueryService from "../lib/query/service";
 
@@ -9,6 +10,9 @@ import MiddlewareAuth from "../lib/middleware/auth";
 import Cache from "../lib/cache/local";
 
 import * as Config from "./config";
+
+import * as OAuth from "@nexys/oauth";
+import { AuthenticationType } from "../lib/user-management/crud-type";
 
 const fetchR = new FetchR.default(Config.database, Config.model);
 const qs = new QueryService.default(fetchR);
@@ -42,8 +46,44 @@ const profileRoutes = UserManagementRoutes.Profile(
   middlewareAuth
 );
 
+const gh = new OAuth.Github(
+  Config.ssoGithub.client_id,
+  Config.ssoGithub.client_secret,
+  "http://localhost:3000" + "/sso/github/redirect"
+);
+
 const app = App();
 const router = new Router();
+
+router.get("/sso/red", async (ctx) => {
+  ctx.redirect(gh.oAuthUrl());
+});
+
+router.get("/sso/github/redirect", async (ctx) => {
+  const { code } = ctx.query;
+  const token = await gh.callback(code as string);
+  const profile = await gh.getProfile(token);
+
+  try {
+    const l = await loginService.authenticate(
+      profile.login,
+      Config.instance,
+      { type: AuthenticationType.github },
+      { ip: "" }
+    );
+
+    await middlewareAuth.authOutput(
+      ctx,
+      l.profile as any,
+      l.refreshToken,
+      { permissions: l.permissions },
+      l.locale,
+      { secure: false }
+    );
+  } catch (err) {
+    ctx.body = { message: err };
+  }
+});
 
 router.use("/auth", loginRoutes);
 router.use("/profile", profileRoutes);
@@ -54,7 +94,7 @@ router.get("/", (ctx) => {
 
 app.use(router.routes());
 
-export const startApp = async (port: number) => {
+const startApp = async (port: number) => {
   app.listen(port, () => console.log("Server started at port " + port));
 };
 

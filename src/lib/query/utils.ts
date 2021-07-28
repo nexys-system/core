@@ -89,10 +89,7 @@ export const getFirst = <A = any>(
     return null;
   }
 
-  throw new HTTP.Error(
-    `The requested entry of \`${entity}\` could not be found`,
-    500
-  );
+  throw Error(`The requested entry of \`${entity}\` could not be found`);
 };
 
 export const getDetail = <A>(

@@ -24,6 +24,8 @@ export const login = <A extends { accessToken: string; refreshToken: string }>(
   const { accessToken, refreshToken, ...rest }: A = profileWToken;
   //const b: Omit<A, "token"> = rest;
 
+  console.log("gfd");
+
   // set token in cookie
   CookiesService.setToken(
     accessToken,
@@ -33,6 +35,8 @@ export const login = <A extends { accessToken: string; refreshToken: string }>(
     cookieOpts.sameSite
   );
 
+  console.log("gfd");
+
   //console.log("set refresh");
   CookiesService.setToken(
     refreshToken,
@@ -41,6 +45,8 @@ export const login = <A extends { accessToken: string; refreshToken: string }>(
     "REFRESH",
     cookieOpts.sameSite
   );
+
+  console.log("gfd3");
 
   return rest;
 };

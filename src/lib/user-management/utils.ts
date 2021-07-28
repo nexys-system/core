@@ -5,6 +5,5 @@ export const Entity = {
   PermissionInstance: "PermissionInstance",
   UserPermission: "UserPermission",
   UserAuthentication: "UserAuthentication",
-  UserAuthenticationType: "UserAuthenticationType",
   UserToken: "UserToken",
 };

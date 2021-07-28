@@ -6,7 +6,10 @@ const UserService = new I(M.qs as any);
 
 describe("user service", () => {
   test("getUserByEmailWithPassword", async () => {
-    const r = await UserService.getUserByEmailWithAuth(M.email);
+    const r = await UserService.getUserByAttributeWithAuth({
+      value: M.email,
+      key: "email",
+    });
 
     const { profile, status, auth } = r;
 

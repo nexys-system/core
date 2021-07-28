@@ -6,6 +6,7 @@ import * as U from "./password/utils";
 import * as T from "./type";
 import * as A from "./action-payload";
 import { Locale } from "../middleware/auth/type";
+import { AuthenticationType } from "./crud-type";
 
 export default class LoginService {
   userService: UserService;
@@ -17,31 +18,60 @@ export default class LoginService {
     this.secretKey = secretKey;
   }
 
+  preAuthenticate = async (
+    username: string,
+    instance: { uuid: Uuid },
+    authMode: { type: AuthenticationType; password?: string }
+  ) => {
+    if (authMode.type !== AuthenticationType.password) {
+      const authRow = await this.userService.getAuthenticationRow(
+        authMode.type,
+        username
+      );
+
+      return this.userService.getUserByAttributeWithAuth(
+        { key: "uuid", value: authRow.user.uuid },
+        instance
+      );
+    }
+
+    return this.userService.getUserByAttributeWithAuth(
+      { key: "email", value: username },
+      instance
+    );
+  };
+
   /**
    * authenticates a user
    * @param password [optional] if login via password, password is required
+   * @param username: typically the email but is also used for SSO login where it can be a username
+   * @param authMode: indicates which type of authentication it is. `password` is only required if it is a password authentication mechanism
    */
   authenticate = async (
-    email: string,
+    username: string,
     instance: { uuid: Uuid },
-    { userAgent, ip }: { userAgent?: string; ip: string },
-    password?: string
+    authMode: { type: AuthenticationType; password?: string },
+    { userAgent, ip }: { userAgent?: string; ip: string }
   ): Promise<{
     profile: T.Profile;
     locale: Locale;
     permissions: string[];
     refreshToken: string;
   }> => {
-    const { profile, status, locale, auth } =
-      await this.userService.getUserByEmailWithAuth(email, instance);
+    const { profile, status, locale, auth } = await this.preAuthenticate(
+      username,
+      instance,
+      authMode
+    );
 
     if (status !== T.Status.active) {
       throw new Error(`status not ok`);
     }
 
     if (
-      typeof password === "string" &&
-      !(await U.matchPassword(password, auth.value))
+      authMode.type === AuthenticationType.password &&
+      typeof authMode.password === "string" &&
+      !(await U.matchPassword(authMode.password, auth.value))
     ) {
       throw new Error(`email and password combination don't match`);
     }
