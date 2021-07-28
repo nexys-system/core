@@ -23,7 +23,7 @@ const LoginRoutes = <Profile extends ObjectWithId<Id>, Id>(
 ) => {
   const router = new Router();
 
-  router.post("/", bodyParser(), checkLogin, async (ctx) => {
+  router.post("/login", bodyParser(), checkLogin, async (ctx) => {
     const { email, password } = ctx.request.body;
 
     const userAgent: string | undefined = ctx.request.headers["user-agent"];

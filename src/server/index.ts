@@ -58,7 +58,7 @@ const profileRoutes = UserManagementRoutes.Profile(
 const app = App();
 const router = new Router();
 
-router.use("/login", loginRoutes);
+router.use("/auth", loginRoutes);
 router.use("/profile", profileRoutes);
 
 router.get("/", (ctx) => {

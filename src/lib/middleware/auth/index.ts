@@ -46,10 +46,11 @@ export default class Auth<
     token: string,
     ctx: Koa.Context,
     refreshAttempt = 0
-  ): Promise<Profile> => {
+  ): Promise<{ profile: Profile; userCache: UserCache }> => {
     try {
       //console.log(this.jwt.read(token));
       const profile = this.jwt.verify<Profile>(token);
+      const userCache: UserCache = this.getCache<Id, UserCache>(profile.id);
 
       // todo if beyond a certain time, gte refresh
 
@@ -63,7 +64,7 @@ export default class Auth<
         return this.refresh(ctx);
       }
 
-      return profile;
+      return { profile, userCache };
     } catch (err) {
       // try to issue a new token from refresh token
       //console.log("jwt verify failed");
@@ -83,7 +84,7 @@ export default class Auth<
       secure: boolean;
       sameSite?: boolean | "strict" | "lax" | "none";
     } = { secure: false }
-  ): Promise<Profile> => {
+  ): Promise<{ profile: Profile; userCache: UserCache }> => {
     console.info("Refreshing token");
     const refreshToken = CookiesService.getToken(ctx.cookies, "REFRESH");
     //console.log(refreshToken);
@@ -118,7 +119,7 @@ export default class Auth<
       //return this.getProfile(refTokenValue.profile, ctx, 1);
       //console.log("p", p);
       //return p;
-      return nProfile;
+      return { profile: nProfile, userCache };
     } catch (err) {
       console.log(err);
       throw Error("JWT refresh invalid");
@@ -184,8 +185,8 @@ export default class Auth<
       }
 
       try {
-        const profile = await this.getProfile(token, ctx);
-        const userCache: UserCache = this.getCache<Id, UserCache>(profile.id);
+        const { profile, userCache } = await this.getProfile(token, ctx);
+
         const state: LT.UserState<Id, Profile, UserCache> = {
           profile,
           userCache,
