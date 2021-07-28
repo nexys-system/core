@@ -6,3 +6,19 @@ export const localeDefault: Locale = {
   country: countryDefault,
   lang: langDefault,
 };
+
+export const headerAcceptLanguageToLocale = (
+  acceptLanguage?: string
+): Locale => {
+  if (!acceptLanguage) {
+    return localeDefault;
+  }
+  const [langString] = acceptLanguage.split(";");
+
+  const [lang, country] = langString.split("-");
+
+  if (!lang || !country) {
+    return localeDefault;
+  }
+  return { lang, country };
+};

@@ -63,9 +63,10 @@ export default class LoginService {
   signup = async (
     profile: Omit<T.Profile, "uuid">,
     password: string,
+    locale: Locale,
     permissions: string[] = []
   ): Promise<{ uuid: Uuid; authentication: { uuid: Uuid }; token: string }> => {
-    const { uuid } = await this.userService.insertByProfile(profile);
+    const { uuid } = await this.userService.insertByProfile(profile, locale);
 
     const hashedPassword = await U.hashPassword(password);
 

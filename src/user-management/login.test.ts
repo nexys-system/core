@@ -1,6 +1,7 @@
 import I from "./login";
 import * as M from "./mock";
 import { decryptPayload } from "./action-payload";
+import { localeDefault } from "./locale";
 
 const secret = "durbdhrbserjvcejg37fg3hcishfjkic";
 const LoginService = new I(M.qs as any, secret);
@@ -11,7 +12,8 @@ describe("login service", () => {
       {
         ...M.profile,
       },
-      "mypassword"
+      "mypassword",
+      localeDefault
     );
 
     expect(r).toEqual({

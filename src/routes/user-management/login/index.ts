@@ -9,7 +9,10 @@ import { ObjectWithId } from "../../../type";
 import { Locale, Permissions } from "../../../middleware/auth/type";
 import { Uuid } from "@nexys/utils/dist/types";
 import { LoginService } from "../../../user-management";
-import { localeDefault } from "../../../user-management/locale";
+import {
+  headerAcceptLanguageToLocale,
+  localeDefault,
+} from "../../../user-management/locale";
 
 /**  const instance = {
     uuid: process.env.InstanceUuid || "",
@@ -73,19 +76,23 @@ const LoginRoutes = <Profile extends ObjectWithId<Id>, Id>(
   router.post("/signup", bodyParser(), isSignupShape, async (ctx) => {
     const { password, ...signupProfile } = ctx.request.body;
 
-    const locale: Locale = localeDefault;
+    const locale: Locale = headerAcceptLanguageToLocale(
+      ctx.headers["accept-language"]
+    );
 
     const profile = {
       ...signupProfile,
-      locale,
       instance,
       logDateAdded: new Date(),
     };
 
     try {
-      const { uuid, token } = await loginService.signup(profile, password, [
-        "app",
-      ]);
+      const { uuid, token } = await loginService.signup(
+        profile,
+        password,
+        locale,
+        ["app"]
+      );
 
       console.log("should send email with " + token);
 
