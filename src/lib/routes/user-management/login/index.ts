@@ -9,10 +9,7 @@ import { ObjectWithId } from "../../../type";
 import { Locale, Permissions } from "../../../middleware/auth/type";
 import { Uuid } from "@nexys/utils/dist/types";
 import { LoginService } from "../../../user-management";
-import {
-  headerAcceptLanguageToLocale,
-  localeDefault,
-} from "../../../user-management/locale";
+import { headerAcceptLanguageToLocale } from "../../../user-management/locale";
 
 /**  const instance = {
     uuid: process.env.InstanceUuid || "",

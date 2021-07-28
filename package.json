@@ -5,6 +5,7 @@
   "scripts": {
     "test": "jest",
     "build": "tsc",
+    "buildpackage": "tsc -p tsconfig.build.json",
     "watch": "tsc-watch --onSuccess \"node ./dist/server/index.js\""
   },
   "repository": {
@@ -41,7 +42,7 @@
   },
   "main": "dist/index.js",
   "files": [
-    "dist/*"
+    "dist/lib/*"
   ],
   "devDependencies": {
     "@types/jest": "^25.2.3",

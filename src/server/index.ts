@@ -1,14 +1,14 @@
-import App from "../app";
+import App from "../lib/app";
 import Router from "koa-router";
 import * as FetchR from "@nexys/fetchr";
-import * as QueryService from "../query/service";
+import * as QueryService from "../lib/query/service";
 
 import fs from "fs";
 
-import * as UserManagementService from "../user-management";
-import * as UserManagementRoutes from "../routes/user-management";
-import MiddlewareAuth from "../middleware/auth";
-import Cache from "../cache/local";
+import * as UserManagementService from "../lib/user-management";
+import * as UserManagementRoutes from "../lib/routes/user-management";
+import MiddlewareAuth from "../lib/middleware/auth";
+import Cache from "../lib/cache/local";
 
 // init fetchr
 const model: FetchR.Type.Entity[] = JSON.parse(
