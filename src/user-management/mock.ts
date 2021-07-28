@@ -1,5 +1,6 @@
 import { AuthenticationType } from "./crud-type";
 import * as T from "./type";
+import { Entity } from "./utils";
 
 export const userUuid = "myUuid";
 export const email = "john@doe.com";
@@ -44,8 +45,12 @@ class QueryService extends T.QueryService {
     return Promise.resolve([]);
   };
 
-  find = (entity: string, _query: any) => {
-    if (entity === "User") {
+  find = (entity: string, _query: any, b: boolean = false) => {
+    if (entity === Entity.User) {
+      if (b === true) {
+        return Promise.resolve(null);
+      }
+
       return Promise.resolve({
         ...profile,
         status,
@@ -59,10 +64,13 @@ class QueryService extends T.QueryService {
       }) as any;
     }
 
-    throw Error("not impolemented");
+    throw Error("not implemented");
   };
 
-  detail = <A>(): Promise<A> => Promise.resolve({} as A);
+  detail = <A>(entity: string): Promise<A> => {
+    throw Error("undefined");
+  };
+
   insert = <A>() => {
     throw Error("undefined");
   };

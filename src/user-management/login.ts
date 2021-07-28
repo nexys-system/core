@@ -66,7 +66,9 @@ export default class LoginService {
     locale: Locale,
     permissions: string[] = []
   ): Promise<{ uuid: Uuid; authentication: { uuid: Uuid }; token: string }> => {
-    if (await this.userService.exists(profile.email)) {
+    const exists = await this.userService.exists(profile.email);
+
+    if (exists) {
       return Promise.reject({ message: "User already exists" });
     }
 
