@@ -7,9 +7,10 @@ export interface User {
   lastName: string;
   email: string;
   status: Status;
+  localeLang?: string;
+  localeCountry?: string;
   logDateAdded: Date;
   instance: { uuid: Uuid } | Instance;
-  lang: string;
 }
 
 export interface UserToken {
@@ -21,16 +22,17 @@ export interface UserToken {
   ip?: string;
 }
 
-export interface UserAuthenticationType {
-  id: Id;
-  name: string;
+export enum AuthenticationType {
+  password = 1,
+  google = 2,
+  github = 3,
 }
 
 export interface UserAuthentication {
   uuid: Uuid;
   value: string;
   isEnabled: boolean;
-  type: { id: Id } | UserAuthenticationType;
+  type: AuthenticationType;
   user: { uuid: Uuid } | User;
 }
 

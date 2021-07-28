@@ -1,4 +1,3 @@
-import { OptionSet } from "@nexys/utils/dist/types";
 import * as T from "../../type";
 
 export interface Permissions {
@@ -17,12 +16,12 @@ export interface UserState<
 export interface LoginResponse<Profile extends T.ObjectWithId<Id>, Id> {
   permissions: string[];
   profile: Profile;
-  locale: OptionSet;
+  locale: string;
   accessToken: string;
   refreshToken: string;
 }
 
-export interface RefreshToken<Profile> {
-  profile: Profile;
-  type: "REFRESH";
+export interface Locale {
+  country: string;
+  lang: string;
 }

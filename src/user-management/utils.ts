@@ -8,6 +8,3 @@ export const Entity = {
   UserAuthenticationType: "UserAuthenticationType",
   UserToken: "UserToken",
 };
-
-//export const userAuthenticationPassword = "password";
-export const userAuthenticationPasswordId = 1;

@@ -1,3 +1,4 @@
+import { AuthenticationType } from "./crud-type";
 import * as T from "./type";
 
 export const userUuid = "myUuid";
@@ -9,7 +10,6 @@ export const profile: T.Profile = {
   firstName: "John",
   lastName: "Doe",
   email,
-  lang: "en",
   instance: { uuid: "instanceUuid", name: "instance" },
 };
 
@@ -52,7 +52,7 @@ class QueryService extends T.QueryService {
         UserAuthentication: [
           {
             value: hashedPassword,
-            type: { id: 1, name: "password" },
+            type: AuthenticationType.password,
             isEnabled: true,
           },
         ],

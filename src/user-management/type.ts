@@ -10,7 +10,7 @@ export enum Status {
 
 export type Profile = Pick<
   TC.User,
-  "uuid" | "firstName" | "lastName" | "email" | "lang"
+  "uuid" | "firstName" | "lastName" | "email"
 > & { instance: UOptionSet };
 
 export interface UserCache {

@@ -1,7 +1,7 @@
 import Koa from "koa";
-import * as T from "../../type";
 import * as CookiesService from "../cookies";
 import Cookies from "cookies";
+import { Locale } from "./type";
 
 export const readTokenHeaders = (headers: {
   authorization?: string;
@@ -75,3 +75,9 @@ export const extractBearerToken = (s: string): string =>
 
 export const extractOptBearerToken = (s?: string): string | undefined =>
   s ? extractBearerToken(s) : undefined;
+
+/**
+ * https://stackoverflow.com/questions/4904803/en-us-or-en-us-which-one-should-you-use
+ */
+export const localeToString = (locale: Locale) =>
+  locale.lang + "-" + locale.country;

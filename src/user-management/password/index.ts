@@ -37,7 +37,7 @@ export default class Password {
       {
         filters: {
           user: userFilter,
-          type: { id: UU.userAuthenticationPasswordId },
+          type: CT.AuthenticationType.password,
         },
       },
       false
@@ -64,11 +64,11 @@ export default class Password {
    * @returns generate link with special key so that the user is allowed to reset his password
    */
   forgotPassword = async (email: string): Promise<string> => {
-    const user = await this.userService.getUserByEmailWithPassword(email);
+    const { profile } = await this.userService.getByEmail(email);
 
     return A.createActionPayload(
-      user.profile.uuid,
-      { uuid: user.profile.instance.uuid },
+      profile.uuid,
+      { uuid: profile.instance.uuid },
       "RESET_PASSWORD",
       this.secretKey
     );

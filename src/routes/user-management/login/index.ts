@@ -6,9 +6,10 @@ import bodyParser from "koa-body";
 import m from "../../../middleware/auth";
 
 import { ObjectWithId } from "../../../type";
-import { Permissions } from "../../../middleware/auth/type";
+import { Locale, Permissions } from "../../../middleware/auth/type";
 import { Uuid } from "@nexys/utils/dist/types";
 import { LoginService } from "../../../user-management";
+import { localeDefault } from "../../../user-management/locale";
 
 /**  const instance = {
     uuid: process.env.InstanceUuid || "",
@@ -22,8 +23,6 @@ const LoginRoutes = <Profile extends ObjectWithId<Id>, Id>(
 ) => {
   const router = new Router();
 
-  const langDefault = { id: 1, name: "en" };
-
   router.post("/", bodyParser(), checkLogin, async (ctx) => {
     const { email, password } = ctx.request.body;
 
@@ -31,16 +30,16 @@ const LoginRoutes = <Profile extends ObjectWithId<Id>, Id>(
     const ip: string = ctx.request.ip;
 
     try {
-      const { profile, permissions, refreshToken } =
+      const { profile, locale, permissions, refreshToken } =
         await loginService.authenticate(
           email,
-          password,
+
           {
             uuid: instance.uuid,
           },
-          { userAgent, ip }
+          { userAgent, ip },
+          password
         );
-      const lang = langDefault;
 
       const nProfile: Profile = { id: profile.uuid, ...profile } as any;
 
@@ -49,7 +48,7 @@ const LoginRoutes = <Profile extends ObjectWithId<Id>, Id>(
         nProfile,
         refreshToken,
         { permissions },
-        lang,
+        locale,
         {
           secure: false,
         }
@@ -73,9 +72,12 @@ const LoginRoutes = <Profile extends ObjectWithId<Id>, Id>(
 
   router.post("/signup", bodyParser(), isSignupShape, async (ctx) => {
     const { password, ...signupProfile } = ctx.request.body;
+
+    const locale: Locale = localeDefault;
+
     const profile = {
       ...signupProfile,
-      lang: langDefault.name,
+      locale,
       instance,
       logDateAdded: new Date(),
     };

@@ -1,10 +1,11 @@
 import { Uuid } from "@nexys/utils/dist/types";
 import { QueryService } from "./type";
 import UserService from "./user";
-import UserTokenService, { createRefreshToken } from "./user/token";
+import UserTokenService from "./user/token";
 import * as U from "./password/utils";
 import * as T from "./type";
 import * as A from "./action-payload";
+import { Locale } from "../middleware/auth/type";
 
 export default class LoginService {
   userService: UserService;
@@ -16,24 +17,32 @@ export default class LoginService {
     this.secretKey = secretKey;
   }
 
+  /**
+   * authenticates a user
+   * @param password [optional] if login via password, password is required
+   */
   authenticate = async (
     email: string,
-    password: string,
     instance: { uuid: Uuid },
-    { userAgent, ip }: { userAgent?: string; ip: string }
+    { userAgent, ip }: { userAgent?: string; ip: string },
+    password?: string
   ): Promise<{
     profile: T.Profile;
+    locale: Locale;
     permissions: string[];
     refreshToken: string;
   }> => {
-    const { profile, status, hashedPassword } =
-      await this.userService.getUserByEmailWithPassword(email, instance);
+    const { profile, status, locale, auth } =
+      await this.userService.getUserByEmailWithAuth(email, instance);
 
     if (status !== T.Status.active) {
       throw new Error(`status not ok`);
     }
 
-    if (!(await U.matchPassword(password, hashedPassword))) {
+    if (
+      typeof password === "string" &&
+      !(await U.matchPassword(password, auth.value))
+    ) {
       throw new Error(`email and password combination don't match`);
     }
 
@@ -48,7 +57,7 @@ export default class LoginService {
       ip,
     });
 
-    return { profile, permissions, refreshToken };
+    return { profile, locale, permissions, refreshToken };
   };
 
   signup = async (
@@ -111,16 +120,24 @@ export default class LoginService {
   ): Promise<{
     profile: T.Profile;
     permissions: string[];
+    locale: Locale;
   }> => {
     const userUuid = await this.userTokenService.getFromRefreshToken(
       refreshToken
     );
 
-    const { profile } = await this.userService.getByUuid(userUuid);
+    const { profile, status, locale } = await this.userService.getByUuid(
+      userUuid
+    );
+
+    if (status !== T.Status.active) {
+      throw new Error(`status not ok`);
+    }
+
     const permissions =
       await this.userService.permissionService.permissionNamesByUser(
         profile.uuid
       );
-    return { profile, permissions };
+    return { profile, permissions, locale };
   };
 }

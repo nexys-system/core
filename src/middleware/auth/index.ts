@@ -1,8 +1,6 @@
 import Koa from "koa";
 import Compose from "koa-compose";
 
-import { OptionSet } from "@nexys/utils/dist/types";
-
 import JWT from "../../jwt";
 import * as T from "../../type";
 
@@ -14,7 +12,7 @@ import * as U from "./utils";
 import { LoginService } from "../../user-management";
 // see https://github.com/Nexysweb/koa-lib/blob/master/src/middleware/index.ts
 
-const dtExpires = 15 * 60; // after 15min, the access token expires and the refresh token is used to create a new session: - permissions, - status etc are refreshed in the process
+const dtExpires = 10 * 60; // after 15min, the access token expires and the refresh token is used to create a new session: - permissions, - status etc are refreshed in the process
 
 export default class Auth<
   Profile extends T.ObjectWithId<Id>,
@@ -99,7 +97,7 @@ export default class Auth<
       // this.jwt.verify<TA.RefreshToken<Profile>>(refreshToken);
       //console.log(refTokenValue);
 
-      const { profile, permissions }: { profile: any; permissions: string[] } =
+      const { profile, locale, permissions } =
         await this.loginService.reAuthenticate(refreshToken);
 
       const nProfile: Profile = { id: profile.uuid, ...profile } as any;
@@ -110,10 +108,7 @@ export default class Auth<
         userCache,
         nProfile,
         refreshToken,
-        {
-          id: 1,
-          name: "EN-us",
-        }
+        locale
       );
 
       U.login(profileWToken, ctx.cookies, cookieOpts);
@@ -140,7 +135,7 @@ export default class Auth<
     userCache: UserCache,
     profile: Profile,
     refreshToken: string,
-    locale: OptionSet = { id: 1, name: "en" }
+    locale: LT.Locale
   ): Promise<LT.LoginResponse<Profile, Id>> => {
     // set cache
     await this.setCache(profile, userCache);
@@ -152,7 +147,7 @@ export default class Auth<
       accessToken,
       refreshToken,
       profile,
-      locale,
+      locale: U.localeToString(locale),
     };
   };
 
@@ -161,7 +156,7 @@ export default class Auth<
     profile: Profile,
     refreshToken: string,
     userCache: UserCache,
-    locale: OptionSet = { id: 1, name: "en" },
+    locale: LT.Locale,
     cookieOpts: {
       secure: boolean;
       sameSite?: boolean | "strict" | "lax" | "none";

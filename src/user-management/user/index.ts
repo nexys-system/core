@@ -1,17 +1,16 @@
-import { Uuid } from "@nexys/utils/dist/types";
-import { QueryService } from "../type";
-import * as U from "../utils";
+import { Uuid, UOptionSet } from "@nexys/utils/dist/types";
+import { Locale } from "../../middleware/auth/type";
 import * as T from "../type";
+import * as U from "../utils";
 import * as CT from "../crud-type";
-import { UOptionSet } from "@nexys/utils/dist/types";
 import PermissionService from "../permission";
 import * as Status from "./status";
-import { Params } from "@nexys/fetchr/dist/query-builder/aggregate/type";
+import * as L from "../locale";
 
 export default class User {
-  qs: QueryService;
+  qs: T.QueryService;
   permissionService: PermissionService;
-  constructor(qs: QueryService) {
+  constructor(qs: T.QueryService) {
     this.qs = qs;
     this.permissionService = new PermissionService(qs);
   }
@@ -22,6 +21,7 @@ export default class User {
   ): Promise<{
     profile: T.Profile;
     status: T.Status;
+    locale: Locale;
     UserAuthentication?: CT.UserAuthentication[];
   }> => this.getByAttribute({ key: "uuid", value: uuid }, instanceIn);
 
@@ -31,6 +31,7 @@ export default class User {
   ): Promise<{
     profile: T.Profile;
     status: T.Status;
+    locale: Locale;
     UserAuthentication?: CT.UserAuthentication[];
   }> => this.getByAttribute({ key: "email", value: email }, instanceIn);
 
@@ -40,6 +41,7 @@ export default class User {
   ): Promise<{
     profile: T.Profile;
     status: T.Status;
+    locale: Locale;
     UserAuthentication?: CT.UserAuthentication[];
   }> => {
     const params: any = {
@@ -48,15 +50,22 @@ export default class User {
         firstName: true,
         lastName: true,
         email: true,
-        lang: true,
+        localeLang: true,
+        localeCountry: true,
         status: true,
         instance: { uuid: true, name: true },
       },
       filters: {
         [attribute.key]: attribute.value,
-        //instance:undefined// { uuid: instanceIn?.uuid || "" },
       },
-      references: { [U.Entity.UserAuthentication]: {} },
+      references: {
+        [U.Entity.UserAuthentication]: {
+          uuid: true,
+          type: true,
+          value: true,
+          isEnabled: true,
+        },
+      },
     };
 
     if (instanceIn) {
@@ -69,7 +78,8 @@ export default class User {
       firstName,
       lastName,
       email,
-      lang,
+      localeLang,
+      localeCountry,
       status,
       instance,
       UserAuthentication,
@@ -78,49 +88,56 @@ export default class User {
       firstName: string;
       lastName: string;
       email: string;
-      lang: string;
+      localeLang?: string;
+      localeCountry?: string;
       status: T.Status;
       instance: UOptionSet;
       UserAuthentication?: CT.UserAuthentication[];
     } = await this.qs.find(U.Entity.User, params, false);
 
-    const profile = { uuid, firstName, lastName, email, lang, instance };
+    const locale: Locale = {
+      country: localeCountry || L.countryDefault,
+      lang: localeLang || L.langDefault,
+    };
 
-    return { profile, status, UserAuthentication };
+    const profile: T.Profile = { uuid, firstName, lastName, email, instance };
+
+    return { profile, status, locale, UserAuthentication };
   };
 
-  getUserByEmailWithPassword = async (
+  getUserByEmailWithAuth = async (
     email: string,
-    instanceIn?: { uuid: Uuid }
+    instanceIn?: { uuid: Uuid },
+    authType: CT.AuthenticationType = CT.AuthenticationType.password
   ): Promise<{
     profile: T.Profile;
     status: T.Status;
-    hashedPassword: string;
-    auth: { uuid: Uuid };
+    locale: Locale;
+    auth: { uuid: Uuid; value: string };
   }> => {
     try {
-      const { profile, status, UserAuthentication } = await this.getByEmail(
-        email,
-        instanceIn
-      );
+      const { profile, status, locale, UserAuthentication } =
+        await this.getByEmail(email, instanceIn);
 
       const userAuthentication = UserAuthentication?.find(
-        (x) => x.type.id === U.userAuthenticationPasswordId
+        (x) => x.type === authType
       );
 
       if (!userAuthentication) {
         throw new Error(`account does not exist`);
       }
 
-      const hashedPassword = userAuthentication.value;
-
       return {
         profile,
         status,
-        hashedPassword,
-        auth: { uuid: userAuthentication.uuid },
+        locale,
+        auth: {
+          uuid: userAuthentication.uuid,
+          value: userAuthentication.value,
+        },
       };
     } catch (err) {
+      console.log(err);
       throw Error("no user could be found with email: " + email);
     }
   };
@@ -186,10 +203,10 @@ export default class User {
   insertAuth = async (
     uuid: Uuid,
     value: string,
-    typeId: number = U.userAuthenticationPasswordId
+    type: CT.AuthenticationType = CT.AuthenticationType.password
   ): Promise<{ uuid: string }> => {
     const row: Omit<CT.UserAuthentication, "uuid"> = {
-      type: { id: typeId },
+      type,
       user: { uuid },
       isEnabled: true,
       value,

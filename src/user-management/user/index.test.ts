@@ -6,12 +6,12 @@ const UserService = new I(M.qs as any);
 
 describe("user service", () => {
   test("getUserByEmailWithPassword", async () => {
-    const r = await UserService.getUserByEmailWithPassword(M.email);
+    const r = await UserService.getUserByEmailWithAuth(M.email);
 
-    const { profile, status, hashedPassword } = r;
+    const { profile, status, auth } = r;
 
     expect(status).toEqual(M.status);
-    expect(hashedPassword).toEqual(M.hashedPassword);
+    expect(auth.value).toEqual(M.hashedPassword);
     expect(profile).toEqual(M.profile);
   });
 });
