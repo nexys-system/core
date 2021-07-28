@@ -75,3 +75,10 @@ export const extractBearerToken = (s: string): string =>
 
 export const extractOptBearerToken = (s?: string): string | undefined =>
   s ? extractBearerToken(s) : undefined;
+
+export const isExpired = (iat: number, accessTokenExpires: number): boolean => {
+  const t = new Date().getTime() / 1000;
+  //console.log({ iat, t });
+
+  return iat + accessTokenExpires < t;
+};

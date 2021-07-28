@@ -13,8 +13,6 @@ import { LoginService } from "../../user-management";
 import { localeToString } from "../../user-management/locale";
 // see https://github.com/Nexysweb/koa-lib/blob/master/src/middleware/index.ts
 
-const dtExpires = 10 * 60; // after 15min, the access token expires and the refresh token is used to create a new session: - permissions, - status etc are refreshed in the process
-
 export default class Auth<
   Profile extends T.ObjectWithId<Id>,
   UserCache extends LT.Permissions,
@@ -24,6 +22,7 @@ export default class Auth<
   jwt: JWT;
   acceptHeaderToken: boolean;
   loginService: LoginService;
+  accessTokenExpires: number;
 
   /**
    *
@@ -34,12 +33,14 @@ export default class Auth<
     loginService: LoginService,
     cache: Cache,
     secret: string,
-    acceptHeaderToken: boolean = false
+    acceptHeaderToken: boolean = false,
+    accessTokenExpires: number = 10 * 60 // after 15min, the access token expires and the refresh token is used to create a new session: - permissions, - status etc are refreshed in the process
   ) {
     this.cache = cache;
     this.jwt = new JWT(secret);
     this.acceptHeaderToken = acceptHeaderToken;
     this.loginService = loginService;
+    this.accessTokenExpires = accessTokenExpires;
   }
 
   getProfile = async (
@@ -55,10 +56,8 @@ export default class Auth<
       // todo if beyond a certain time, gte refresh
 
       const { iat } = profile;
-      const t = new Date().getTime() / 1000;
-      //console.log({ iat, t });
 
-      if (iat && iat + dtExpires < t) {
+      if (iat && U.isExpired(iat, this.accessTokenExpires)) {
         //ctx.status = 401;
         //ctx.body = { message: "token expired" };
         return this.refresh(ctx);

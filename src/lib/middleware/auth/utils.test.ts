@@ -51,3 +51,9 @@ test("login", () => {
 
   expect(u).toEqual(profile);
 });
+
+test("is expired", () => {
+  const dt = new Date().getTime() / 1000;
+  expect(A.isExpired(dt - 1000, 1200)).toEqual(false);
+  expect(A.isExpired(dt - 2000, 1200)).toEqual(true);
+});
