@@ -113,7 +113,7 @@ class QueryService extends T.QueryService {
         .insert as MutateResponseInsert[];
       return t;
     }
-    console.log(JSON.stringify(data, null, 2));
+
     throw new HTTP.Error(
       `Something went wrong while inserting rows for ${entity} provided, see log for more information`,
       400

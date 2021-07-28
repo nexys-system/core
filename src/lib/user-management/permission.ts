@@ -205,15 +205,6 @@ export default class Permission {
       throw Error("no instance found");
     }
 
-    console.log(instance);
-
-    console.log({
-      filters: {
-        permission: { uuid: permission.uuid },
-        instance: { uuid: instance.uuid },
-      },
-    });
-
     // get permissionInstance
     const permissionInstance = await this.qs.find<CT.PermissionInstance>(
       U.Entity.PermissionInstance,
