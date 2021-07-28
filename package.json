@@ -3,7 +3,7 @@
   "version": "2.7.1",
   "license": "MIT",
   "scripts": {
-    "test": "jest",
+    "test": "rm -rf dist;jest",
     "build": "tsc",
     "buildpackage": "tsc -p tsconfig.build.json",
     "watch": "tsc-watch --onSuccess \"node ./dist/server/index.js\""

@@ -23,10 +23,16 @@ const database: FetchR.Database.Type.Database = {
   port: 3306,
 };
 
+const secretKey = "durbdhrbserjvcejg37fg3hcishfjkic"; // key must be 32 bytes for aes256
+
+const instance = {
+  name: "Imvesters",
+  uuid: "f12f49fa-7b3b-11eb-9846-42010aac0033",
+};
+
 const fetchR = new FetchR.default(database, model);
 const qs = new QueryService.default(fetchR);
 
-const secretKey = "durbdhrbserjvcejg37fg3hcishfjkic"; // key must be 32 bytes for aes256
 const cache = new Cache();
 
 const loginService = new UserManagementService.LoginService(qs, secretKey);
@@ -37,10 +43,7 @@ const passwordService = new UserManagementService.PasswordService(
 );
 
 const middlewareAuth = new MiddlewareAuth(loginService, cache, secretKey);
-const instance = {
-  name: "Imvesters",
-  uuid: "f12f49fa-7b3b-11eb-9846-42010aac0033",
-};
+
 const loginRoutes = UserManagementRoutes.Login(
   { loginService },
   middlewareAuth,
@@ -57,12 +60,6 @@ const router = new Router();
 
 router.use("/login", loginRoutes);
 router.use("/profile", profileRoutes);
-
-router.get("/fetch", async (ctx) => {
-  //const r = await fetchR.query({ User: { take: 3 } });
-
-  ctx.body = await qs.list("User", { take: 2 });
-});
 
 router.get("/", (ctx) => {
   ctx.body = { hello: "world" };

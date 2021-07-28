@@ -10,6 +10,7 @@ import * as CookiesService from "../cookies";
 
 import * as U from "./utils";
 import { LoginService } from "../../user-management";
+import { localeToString } from "../../user-management/locale";
 // see https://github.com/Nexysweb/koa-lib/blob/master/src/middleware/index.ts
 
 const dtExpires = 10 * 60; // after 15min, the access token expires and the refresh token is used to create a new session: - permissions, - status etc are refreshed in the process
@@ -147,7 +148,7 @@ export default class Auth<
       accessToken,
       refreshToken,
       profile,
-      locale: U.localeToString(locale),
+      locale: localeToString(locale),
     };
   };
 

@@ -1,9 +1,7 @@
 import Koa from "koa";
 import Router from "koa-router";
-import * as Middleware from "../../middleware";
-import { I18nService } from "./type";
 
-const { handleResponse } = Middleware;
+import I18nService from "../../services/i18n";
 
 export default (I18n: I18nService) => {
   const router: Router = new Router();
@@ -30,9 +28,7 @@ export default (I18n: I18nService) => {
   });
 
   router.get("/languages", async (ctx) => {
-    const r = () => I18n.getLanguages();
-
-    return handleResponse(r, ctx);
+    ctx.body = I18n.languages;
   });
 
   return router.routes();

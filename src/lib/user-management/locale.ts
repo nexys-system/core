@@ -13,7 +13,12 @@ export const headerAcceptLanguageToLocale = (
   if (!acceptLanguage) {
     return localeDefault;
   }
-  const [langString] = acceptLanguage.split(";");
+
+  return stringToLocale(acceptLanguage);
+};
+
+export const stringToLocale = (s: string) => {
+  const [langString] = s.split(";");
 
   const [lang, country] = langString.split("-");
 
@@ -22,3 +27,9 @@ export const headerAcceptLanguageToLocale = (
   }
   return { lang, country };
 };
+
+/**
+ * https://stackoverflow.com/questions/4904803/en-us-or-en-us-which-one-should-you-use
+ */
+export const localeToString = (locale: Locale) =>
+  locale.lang + "-" + locale.country;

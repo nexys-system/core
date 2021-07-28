@@ -1,14 +1,8 @@
 import { Uuid } from "@nexys/utils/dist/types";
+import I18nService from "../../services/i18n";
 
 export interface CMSService {
   get: (uuid: Uuid, lang: string) => any;
-}
-
-//
-export interface I18nService {
-  saveAll: (cache?: boolean) => Promise<void>;
-  getFile: (locale: string) => Promise<string>;
-  getLanguages: () => Promise<any>;
 }
 
 export interface NotificationService {
@@ -25,12 +19,3 @@ export interface ProductService {
   Notification: NotificationService;
   Email: EmailService;
 }
-
-// or
-/*
-abstract class I18nService {
-  abstract saveAll: (cache?: boolean) => Promise<void>;
-  abstract getFile: (locale: string) => Promise<string>;
-  abstract getLanguages: () => Promise<any>;
-}
-*/

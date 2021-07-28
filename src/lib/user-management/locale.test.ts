@@ -9,3 +9,7 @@ test("from accept languge", () => {
     lang: "en",
   });
 });
+
+test("to string", () => {
+  expect(L.localeToString({ lang: "fr", country: "CH" })).toEqual("fr-CH");
+});

@@ -75,9 +75,3 @@ export const extractBearerToken = (s: string): string =>
 
 export const extractOptBearerToken = (s?: string): string | undefined =>
   s ? extractBearerToken(s) : undefined;
-
-/**
- * https://stackoverflow.com/questions/4904803/en-us-or-en-us-which-one-should-you-use
- */
-export const localeToString = (locale: Locale) =>
-  locale.lang + "-" + locale.country;
