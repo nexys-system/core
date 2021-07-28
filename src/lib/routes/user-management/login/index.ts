@@ -116,6 +116,11 @@ const LoginRoutes = <Profile extends ObjectWithId<Id>, Id>(
     ctx.body = { success };
   });
 
+  router.all("/refresh", async (ctx) => {
+    const { profile } = await MiddlewareAuth.refresh(ctx);
+    ctx.body = profile;
+  });
+
   return router.routes();
 };
 

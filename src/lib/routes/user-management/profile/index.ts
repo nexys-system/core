@@ -36,12 +36,18 @@ const ProfileRoutes = <
     bodyParser(),
     MiddlewareAuth.isAuthenticated(),
     Validation.isShapeMiddleware({
-      firstName: {},
-      lastName: {},
+      firstName: { optional: true },
+      lastName: { optional: true },
     }),
     async (ctx) => {
       const data: { firstName: string; lastName: string } = ctx.request.body;
       const { uuid } = ctx.state.profile;
+
+      if (Object.keys(data).length === 0) {
+        ctx.status = 400;
+        ctx.body = { message: "the provided payload is empty, aborting" };
+        return;
+      }
 
       const r = await userService.update(uuid, data);
 
@@ -68,13 +74,18 @@ const ProfileRoutes = <
       const data: { password: string; old: string } = ctx.request.body;
       const { uuid, instance } = ctx.state.profile;
 
-      const r = await passwordService.setPassword(
-        uuid,
-        data.password,
-        { uuid: instance.uuid },
-        data.old
-      );
-      ctx.body = r;
+      try {
+        const r = await passwordService.setPassword(
+          uuid,
+          data.password,
+          { uuid: instance.uuid },
+          data.old
+        );
+        ctx.body = r;
+      } catch (err) {
+        ctx.status = 400;
+        ctx.body = err;
+      }
     }
   );
 

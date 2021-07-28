@@ -43,8 +43,16 @@ export default class Password {
       false
     );
 
-    if (oldPassword && !U.matchPassword(oldPassword, userAuth.value)) {
-      throw Error("the old password is not correct");
+    if (oldPassword) {
+      if (oldPassword === password) {
+        return Promise.reject({
+          message: "new and old passwords are the same, aborting",
+        });
+      }
+
+      if (!(await U.matchPassword(oldPassword, userAuth.value))) {
+        return Promise.reject({ message: "the old password is not correct" });
+      }
     }
 
     const value = await U.hashPassword(password);
