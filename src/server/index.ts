@@ -3,51 +3,38 @@ import Router from "koa-router";
 import * as FetchR from "@nexys/fetchr";
 import * as QueryService from "../lib/query/service";
 
-import fs from "fs";
-
 import * as UserManagementService from "../lib/user-management";
 import * as UserManagementRoutes from "../lib/routes/user-management";
 import MiddlewareAuth from "../lib/middleware/auth";
 import Cache from "../lib/cache/local";
 
-// init fetchr
-const model: FetchR.Type.Entity[] = JSON.parse(
-  fs.readFileSync(__dirname + "/../../src/server/model.json", "utf-8")
-);
+import * as Config from "./config";
 
-const database: FetchR.Database.Type.Database = {
-  username: "imvesters_user",
-  host: "34.65.74.208",
-  password: "lemanProperties",
-  database: "imvesters",
-  port: 3306,
-};
-
-const secretKey = "durbdhrbserjvcejg37fg3hcishfjkic"; // key must be 32 bytes for aes256
-
-const instance = {
-  name: "Imvesters",
-  uuid: "f12f49fa-7b3b-11eb-9846-42010aac0033",
-};
-
-const fetchR = new FetchR.default(database, model);
+const fetchR = new FetchR.default(Config.database, Config.model);
 const qs = new QueryService.default(fetchR);
 
 const cache = new Cache();
 
-const loginService = new UserManagementService.LoginService(qs, secretKey);
+const loginService = new UserManagementService.LoginService(
+  qs,
+  Config.secretKey
+);
 const userService = new UserManagementService.UserService(qs);
 const passwordService = new UserManagementService.PasswordService(
   qs,
-  secretKey
+  Config.secretKey
 );
 
-const middlewareAuth = new MiddlewareAuth(loginService, cache, secretKey);
+const middlewareAuth = new MiddlewareAuth(
+  loginService,
+  cache,
+  Config.secretKey
+);
 
 const loginRoutes = UserManagementRoutes.Login(
   { loginService },
   middlewareAuth,
-  instance
+  Config.instance
 );
 
 const profileRoutes = UserManagementRoutes.Profile(

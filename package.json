@@ -29,6 +29,7 @@
     "@types/koa-router": "^7.4.0",
     "@types/node-fetch": "^2.5.12",
     "bcryptjs": "^2.4.3",
+    "dotenv": "^10.0.0",
     "jsonwebtoken": "^8.5.1",
     "koa": "^2.11.0",
     "koa-basic-auth": "^4.0.0",
