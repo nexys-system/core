@@ -99,7 +99,9 @@ const LoginRoutes = <Profile extends ObjectWithId<Id>, Id>(
       ctx.body = { uuid };
     } catch (err) {
       console.log(err);
+      ctx.status = 400;
       ctx.body = err;
+      return;
     }
   });
 
@@ -112,7 +114,9 @@ const LoginRoutes = <Profile extends ObjectWithId<Id>, Id>(
       return;
     }
 
-    ctx.body = await loginService.activate(challenge);
+    const success = await loginService.activate(challenge);
+
+    ctx.body = { success };
   });
 
   return router.routes();

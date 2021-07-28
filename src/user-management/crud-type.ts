@@ -1,4 +1,4 @@
-import { Id, Uuid } from "@nexys/utils/dist/types";
+import { Uuid } from "@nexys/utils/dist/types";
 import { Status } from "./type";
 
 export interface User {

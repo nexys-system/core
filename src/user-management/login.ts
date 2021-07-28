@@ -66,6 +66,10 @@ export default class LoginService {
     locale: Locale,
     permissions: string[] = []
   ): Promise<{ uuid: Uuid; authentication: { uuid: Uuid }; token: string }> => {
+    if (await this.userService.exists(profile.email)) {
+      return Promise.reject({ message: "User already exists" });
+    }
+
     const { uuid } = await this.userService.insertByProfile(profile, locale);
 
     const hashedPassword = await U.hashPassword(password);
@@ -95,14 +99,31 @@ export default class LoginService {
   /**
    * after the user clicks on the link to activate his account
    */
-  activate = async (token: string): Promise<boolean> => {
+  activate = async (
+    token: string
+  ): Promise<{ success: boolean; message?: string }> => {
     const { uuid, instance } = A.decryptPayload(
       token,
       this.secretKey,
       "SET_ACTIVE"
     );
 
-    return this.userService.changeStatusAdmin(uuid, instance, T.Status.active);
+    const detail = await this.userService.detail(uuid, instance);
+
+    if (detail.status !== T.Status.pending) {
+      return {
+        success: false,
+        message:
+          "the user does not have the right status, this action was probably already invoked",
+      };
+    }
+
+    const success = await this.userService.changeStatusAdmin(
+      uuid,
+      instance,
+      T.Status.active
+    );
+    return { success };
   };
 
   logout = async (uuid: Uuid, refreshToken?: string): Promise<boolean> => {

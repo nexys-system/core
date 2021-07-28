@@ -170,6 +170,7 @@ export default class User {
       { uuid, instance },
       { status }
     );
+
     return r.success;
   };
 
@@ -254,5 +255,11 @@ export default class User {
     const r = await this.qs.delete(U.Entity.User, { uuid });
 
     return r.success;
+  };
+
+  exists = async (email: string): Promise<boolean> => {
+    const d = await this.qs.find(U.Entity.User, { filters: { email } }, true);
+
+    return !!d;
   };
 }

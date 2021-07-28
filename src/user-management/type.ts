@@ -41,7 +41,11 @@ export abstract class QueryService {
 
   abstract detail<A = any>(entity: string, params?: any): Promise<A>;
 
-  abstract find<A = any>(entity: string, p: any, b: boolean): Promise<A>;
+  abstract find<A = any>(
+    entity: string,
+    params: any,
+    optional: boolean
+  ): Promise<A>;
 
   abstract insert<A>(
     entity: string,

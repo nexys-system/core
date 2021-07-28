@@ -27,7 +27,8 @@ const database: FetchR.Database.Type.Database = {
 
 const fetchR = new FetchR.default(database, model);
 const qs = new QueryService.default(fetchR);
-const secretKey = "mysecretkey";
+
+const secretKey = "durbdhrbserjvcejg37fg3hcishfjkic"; // key must be 32 bytes for aes256
 const cache = new Cache();
 
 const loginService = new UserManagementService.LoginService(qs, secretKey);
