@@ -530,10 +530,10 @@
   dependencies:
     "@babel/runtime" "^7.5.5"
 
-"@nexys/oauth@^0.0.3":
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/@nexys/oauth/-/oauth-0.0.3.tgz#0c0f848020e50ffc2f9b18c718acb65724277d34"
-  integrity sha512-HXO1Ki45umVEUE0cXo3Tt7hOo3r3/VuocDU+KJ4RoBU3Qr9zumalIpt5r9ZCsUs0X4yJAAqnS7xIH0xw565TWQ==
+"@nexys/oauth@^0.0.4":
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/@nexys/oauth/-/oauth-0.0.4.tgz#2df8b98a9a5ef007e37625881174a38b1a529500"
+  integrity sha512-yva2NeB7BwmdFtBf5JrrVF/1IMHqw4KZXSO/FVnQ8RngOiuRBe5JRhMPTKifFmuyvcn4igKxpe71OeeKjVMaqg==
 
 "@nexys/sql-migrations@^0.0.1":
   version "0.0.1"
