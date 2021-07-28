@@ -512,10 +512,10 @@
   resolved "https://registry.yarnpkg.com/@nexys/crypto/-/crypto-1.0.3.tgz#4c0491af46b63bcd1118a4f248d0dff4797f91fa"
   integrity sha512-J8fIZQ4FKpB4nfXAJQUvPfN4ZPV2UVrIXWZDRxXabtBkRimfqnTRP1CfkDfLTzoouWMx7EZLU5eeSViH8yFLBA==
 
-"@nexys/fetchr@^0.2.6":
-  version "0.2.6"
-  resolved "https://registry.yarnpkg.com/@nexys/fetchr/-/fetchr-0.2.6.tgz#eac59d13ae9de79ac431156016bab88ecc041915"
-  integrity sha512-ycuiJEBybvwOJPwZnDN2uzUtAJQUXKPX9UifrJxH9Jbh8jSKOIXSA4TnqsnyCNBA9VX+0dOlo8IEIVCbP14oRA==
+"@nexys/fetchr@^0.2.7":
+  version "0.2.7"
+  resolved "https://registry.yarnpkg.com/@nexys/fetchr/-/fetchr-0.2.7.tgz#c866d9dafb49aebd3c1563eaee246734f96f182c"
+  integrity sha512-6ISbOAnWRjphDw6Pxfd9ecHsAB9dySw4RXdNx8q8biPqaz7GF3cVRx/khX2sr5Kl02Xm5xIzNw/XAcBbCPXoew==
   dependencies:
     "@nexys/sql-migrations" "^0.0.1"
     "@nexys/validation" "^2.1.0"

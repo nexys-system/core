@@ -11,11 +11,9 @@ import MiddlewareAuth from "../middleware/auth";
 import Cache from "../cache/local";
 
 // init fetchr
-const model = JSON.parse(
+const model: FetchR.Type.Entity[] = JSON.parse(
   fs.readFileSync(__dirname + "/../../src/server/model.json", "utf-8")
 );
-
-FetchR.Model.Utils.addColumnsToModel(model);
 
 const database: FetchR.Database.Type.Database = {
   username: "imvesters_user",

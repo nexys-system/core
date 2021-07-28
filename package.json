@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@nexys/crypto": "^1.0.3",
-    "@nexys/fetchr": "^0.2.6",
+    "@nexys/fetchr": "^0.2.7",
     "@nexys/http": "^1.0.0",
     "@nexys/oauth": "^0.0.3",
     "@nexys/utils": "^3.9.13",
