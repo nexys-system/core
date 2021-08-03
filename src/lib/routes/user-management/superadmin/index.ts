@@ -14,6 +14,7 @@ import {
   UserService,
   InstanceService,
   UserAuthentication,
+  UserToken,
 } from "../../../user-management";
 
 const SuperadminRoutes = <
@@ -27,12 +28,14 @@ const SuperadminRoutes = <
     instanceService,
     permissionService,
     userAuthenticationService,
+    userTokenService,
   }: {
     userService: UserService;
     instanceService: InstanceService;
     productService: T.productService;
     permissionService: PermissionService;
     userAuthenticationService: UserAuthentication;
+    userTokenService: UserToken;
   },
   MiddlewareAuth: m<Profile, UserCache, Id>
 ) => {
@@ -44,7 +47,7 @@ const SuperadminRoutes = <
   );
 
   const userRoutes = User<Profile, UserCache, Id>(
-    { userService, userAuthenticationService },
+    { userService, userAuthenticationService, userTokenService },
     MiddlewareAuth
   );
 

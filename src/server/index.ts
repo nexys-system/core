@@ -34,6 +34,7 @@ const permissionService = new UserManagementService.PermissionService(qs);
 const userAuthenticationService = new UserManagementService.UserAuthentication(
   qs
 );
+const userTokenService = new UserManagementService.UserToken(qs);
 const productService = {};
 
 const middlewareAuth = new MiddlewareAuth(
@@ -59,6 +60,7 @@ const superadminRoutes = UserManagementRoutes.Superadmin(
     instanceService,
     permissionService,
     userAuthenticationService,
+    userTokenService,
     productService,
   },
   middlewareAuth
