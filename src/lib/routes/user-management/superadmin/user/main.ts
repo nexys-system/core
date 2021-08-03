@@ -125,7 +125,7 @@ const UserRoutes = <
     MiddlewareAuth.isAuthorized("superadmin"),
     Validation.isShapeMiddleware({
       uuid: { extraCheck: VU.checkUuid },
-      status: { id: { type: "number", extraCheck: VU.checkId } },
+      status: { type: "number", extraCheck: VU.checkId },
     }),
     async (ctx) => {
       const { uuid, status }: { uuid: Uuid; status: Status } = ctx.request.body;

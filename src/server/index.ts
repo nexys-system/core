@@ -29,6 +29,13 @@ const passwordService = new UserManagementService.PasswordService(
   Config.secretKey
 );
 
+const instanceService = new UserManagementService.InstanceService(qs);
+const permissionService = new UserManagementService.PermissionService(qs);
+const userAuthenticationService = new UserManagementService.UserAuthentication(
+  qs
+);
+const productService = {};
+
 const middlewareAuth = new MiddlewareAuth(
   loginService,
   cache,
@@ -43,6 +50,17 @@ const loginRoutes = UserManagementRoutes.Login(
 
 const profileRoutes = UserManagementRoutes.Profile(
   { userService, passwordService },
+  middlewareAuth
+);
+
+const superadminRoutes = UserManagementRoutes.Superadmin(
+  {
+    userService,
+    instanceService,
+    permissionService,
+    userAuthenticationService,
+    productService,
+  },
   middlewareAuth
 );
 
@@ -87,6 +105,7 @@ router.get("/sso/github/redirect", async (ctx) => {
 
 router.use("/auth", loginRoutes);
 router.use("/profile", profileRoutes);
+router.use("/superadmin", superadminRoutes);
 
 router.get("/", (ctx) => {
   ctx.body = { hello: "world" };
@@ -98,4 +117,4 @@ const startApp = async (port: number) => {
   app.listen(port, () => console.log("Server started at port " + port));
 };
 
-startApp(3000);
+startApp(3001);

@@ -4,7 +4,6 @@ import * as T from "../type";
 import * as U from "../utils";
 import * as CT from "../crud-type";
 import PermissionService from "../permission";
-import * as Status from "./status";
 import * as L from "../locale";
 
 export default class User {

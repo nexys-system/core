@@ -16,7 +16,7 @@ import {
   UserAuthentication,
 } from "../../../user-management";
 
-const UserRoutes = <
+const SuperadminRoutes = <
   Profile extends ObjectWithId<Id>,
   UserCache extends Permissions,
   Id
@@ -66,4 +66,4 @@ const UserRoutes = <
   return router.routes();
 };
 
-export default UserRoutes;
+export default SuperadminRoutes;
