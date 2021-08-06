@@ -16,6 +16,7 @@ import * as Config from "./config";
 
 import * as OAuth from "@nexys/oauth";
 import { AuthenticationType } from "../lib/user-management/crud-type";
+import ProductContext from "../lib/services/product/context";
 
 const fetchR = new FetchR.default(Config.database, Config.model);
 const qs = new QueryService.default(fetchR);
@@ -38,7 +39,7 @@ const userAuthenticationService = new UserManagementService.UserAuthentication(
   qs
 );
 const userTokenService = new UserManagementService.UserToken(qs);
-const productService = {};
+const productContext = new ProductContext(Config.host, Config.appToken);
 
 const middlewareAuth = new MiddlewareAuth(
   loginService,
@@ -64,7 +65,7 @@ const superadminRoutes = UserManagementRoutes.Superadmin(
     permissionService,
     userAuthenticationService,
     userTokenService,
-    productService,
+    productContext,
   },
   middlewareAuth
 );
