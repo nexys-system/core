@@ -229,7 +229,21 @@
         "name": "status",
         "optional": false,
         "column": null,
-        "type": "Int"
+        "type": "Int",
+        "options": [
+          {
+            "id": 1,
+            "name": "ACTIVE"
+          },
+          {
+            "id": 2,
+            "name": "INACTIVE"
+          },
+          {
+            "id": 3,
+            "name": "PENDING"
+          }
+        ]
       },
       {
         "name": "localeCountry",
@@ -519,11 +533,11 @@
         "options": [
           {
             "id": 1,
-            "name": "To Do"
+            "name": "ToDo"
           },
           {
             "id": 2,
-            "name": "In Progress"
+            "name": "InProgress"
           },
           {
             "id": 3,

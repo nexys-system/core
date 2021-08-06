@@ -9,6 +9,8 @@ import * as UserManagementRoutes from "../lib/routes/user-management";
 import MiddlewareAuth from "../lib/middleware/auth";
 import Cache from "../lib/cache/local";
 
+import * as GraphQl from "./graph-ql";
+
 import * as Config from "./config";
 
 import * as OAuth from "@nexys/oauth";
@@ -72,8 +74,12 @@ const gh = new OAuth.Github(
   "http://localhost:3000" + "/sso/github/redirect"
 );
 
+const graphQLFromModel = new GraphQl.GraphQLFromModel(Config.model, qs);
+
 const app = App();
 const router = new Router();
+
+router.use("/graphql", GraphQl.getGraphQLRoutes(graphQLFromModel));
 
 router.get("/sso/red", async (ctx) => {
   ctx.redirect(gh.oAuthUrl());
