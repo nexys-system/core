@@ -83,7 +83,7 @@ const gQLSchema = GraphQLService.SchemaFactory.getSchemaFromJSONDDL(
 const app = App();
 const router = new Router();
 
-router.use("/graphql", GraphQl.getGraphQLRoutes(gQLSchema));
+router.use("/graphql", GraphQl.getGraphQLRoutes(gQLSchema, Config.appToken));
 
 router.get("/sso/red", async (ctx) => {
   ctx.redirect(gh.oAuthUrl());

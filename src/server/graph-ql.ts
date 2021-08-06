@@ -1,17 +1,22 @@
 import Router from "koa-router";
 import bodyParser from "koa-body";
-//import Auth from '../../middleware/auth';
+import * as Auth from "../lib/middleware/auth";
 
 import { graphql, printSchema, GraphQLSchema } from "graphql";
 
-export const getGraphQLRoutes = (gQLschema: GraphQLSchema) => {
+export const getGraphQLRoutes = (
+  gQLschema: GraphQLSchema,
+  appToken: string
+) => {
   const router: Router = new Router();
+
+  const auth = new Auth.App.default(appToken);
 
   router.all(
     "/schema",
     bodyParser(),
-    //Auth.isAuthorized("superadmin"),
-    //middlewareRoleExists,
+    auth.isAuthenticated,
+
     async (ctx) => {
       ctx.body = printSchema(gQLschema);
     }
@@ -20,8 +25,8 @@ export const getGraphQLRoutes = (gQLschema: GraphQLSchema) => {
   router.post(
     "/",
     bodyParser(),
-    //Auth.isAuthorized("superadmin"),
-    //middlewareRoleExists,
+    auth.isAuthenticated,
+
     async (ctx) => {
       const { body } = ctx.request;
       const { query } = body;
