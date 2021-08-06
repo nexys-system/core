@@ -16,7 +16,10 @@ class ProductService {
   ) => {
     const url = this.host + path;
     const body: string | undefined = data ? JSON.stringify(data) : undefined;
-    const headers = { "content-type": "application/json" };
+    const headers = {
+      "content-type": "application/json",
+      authorization: "bearer " + this.token,
+    };
 
     const options: FT.RequestInit = {
       method,
