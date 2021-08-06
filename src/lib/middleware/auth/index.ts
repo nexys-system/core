@@ -171,7 +171,7 @@ export default class Auth<
   isAuthenticated =
     () =>
     async (ctx: Koa.Context, next: Koa.Next): Promise<void> => {
-      const token: string | undefined =
+      /*   const token: string | undefined =
         CookiesService.getToken(ctx.cookies) ||
         (this.acceptHeaderToken
           ? U.extractOptBearerToken(ctx.headers["Authorization"] as string)
@@ -197,17 +197,18 @@ export default class Auth<
         ctx.status = 401;
         ctx.body = { message: "user could not be authenticated" };
         return;
-      }
+      }*/
       await next();
     };
 
   hasPermission =
     (permission: string) =>
     async (ctx: Koa.Context, next: Koa.Next): Promise<void> => {
-      const { userCache }: { userCache: UserCache } = ctx.state as any;
-      const { permissions } = userCache;
+      //const { userCache }: { userCache: UserCache } = ctx.state as any;
+      //const { permissions } = userCache;
+      await next();
 
-      if (U.isPermissionValid(permission, permissions)) {
+      /* if (U.isPermissionValid(permission, permissions)) {
         await next();
       } else {
         ctx.status = 401;
@@ -218,7 +219,7 @@ export default class Auth<
             '" not found',
         };
         return;
-      }
+      }*/
     };
 
   isAuthorized = (
