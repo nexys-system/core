@@ -1,7 +1,7 @@
 import Router from "koa-router";
 
 import m from "../../../middleware/auth";
-import * as T from "../type";
+
 import { ObjectWithId } from "../../../type";
 import { Permissions } from "../../../middleware/auth/type";
 
@@ -16,6 +16,7 @@ import {
   UserAuthentication,
   UserToken,
 } from "../../../user-management";
+import ProductContext from "../../../services/product/context";
 
 const SuperadminRoutes = <
   Profile extends ObjectWithId<Id>,
@@ -23,7 +24,7 @@ const SuperadminRoutes = <
   Id
 >(
   {
-    productService,
+    productContext,
     userService,
     instanceService,
     permissionService,
@@ -32,7 +33,7 @@ const SuperadminRoutes = <
   }: {
     userService: UserService;
     instanceService: InstanceService;
-    productService: T.productService;
+    productContext: ProductContext;
     permissionService: PermissionService;
     userAuthenticationService: UserAuthentication;
     userTokenService: UserToken;
@@ -56,15 +57,15 @@ const SuperadminRoutes = <
     MiddlewareAuth
   );
 
-  const mainRoutes = Main<Profile, UserCache, Id>(
-    { productService },
+  const contextRoutes = Main<Profile, UserCache, Id>(
+    { productContext },
     MiddlewareAuth
   );
 
   router.use("/user", userRoutes);
   router.use("/instance", instanceRoutes);
   router.use("/permission", permissionRoutes);
-  router.use(mainRoutes);
+  router.use("/context", contextRoutes);
 
   return router.routes();
 };

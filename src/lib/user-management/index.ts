@@ -4,10 +4,10 @@ import PermissionService from "./permission";
 import UserService from "./user";
 import UserAuthentication from "./user/authentication";
 import UserToken from "./user/token";
-
 import InstanceService from "./instance";
-import * as Types from "./type";
-import * as CrudTypes from "./crud-type";
+
+export * as Types from "./type";
+export * as CrudTypes from "./crud-type";
 
 export {
   LoginService,
@@ -17,6 +17,4 @@ export {
   UserAuthentication,
   UserToken,
   InstanceService,
-  Types,
-  CrudTypes,
 };
