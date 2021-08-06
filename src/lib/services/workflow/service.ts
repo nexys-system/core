@@ -1,6 +1,6 @@
 type Uuid = string;
 
-import ProductService from "../product-service";
+import ProductService from "../product/service";
 import {
   TransitionInput,
   WorkflowInstance,

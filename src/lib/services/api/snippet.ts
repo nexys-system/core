@@ -1,4 +1,4 @@
-import ProductService from "../product-service";
+import ProductService from "../product";
 
 class SnippetService extends ProductService {
   async exec(

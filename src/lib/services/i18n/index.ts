@@ -1,5 +1,5 @@
 import fs, { promises as fsp } from "fs";
-import ProductService from "../product-service";
+import ProductService from "../product";
 
 interface I18nValues {
   [k: string]: string;

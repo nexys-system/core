@@ -2,7 +2,7 @@ import FormData from "form-data";
 
 import * as Type from "./type";
 import fetch from "node-fetch";
-import ProductService from "../product-service";
+import ProductService from "../product/service";
 
 const pathPrefix = "/file/repository";
 

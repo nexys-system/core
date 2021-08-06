@@ -7,7 +7,7 @@ import {
   MandrillResponseUnit,
   Recipient,
 } from "./types";
-import ProductService from "../product-service";
+import ProductService from "../product";
 
 class EmailService extends ProductService {
   active: boolean;

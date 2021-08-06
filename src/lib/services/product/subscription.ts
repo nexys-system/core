@@ -1,4 +1,4 @@
-import ProductService from ".";
+import ProductService from "./service";
 
 class ProductServiceExtra extends ProductService {
   constructor(host: string, appToken: string) {

@@ -1,4 +1,4 @@
-import ProductService from "../product-service";
+import ProductService from "../product/service";
 
 class ChainService extends ProductService {
   // NOTE: simple constructor is generated

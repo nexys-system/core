@@ -1,5 +1,5 @@
 type Uuid = string;
-import ProductService from "../product-service";
+import ProductService from "../product/service";
 import * as Type from "./type";
 import * as Utils from "./utils";
 

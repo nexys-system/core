@@ -1,6 +1,6 @@
 export * as Workflow from "./workflow";
 export * as I18n from "./i18n";
-export * as ProductService from "./product-service";
+export * as ProductService from "./product";
 export * as API from "./api";
 
 import CMS from "./cms";
