@@ -530,6 +530,42 @@
   dependencies:
     "@babel/runtime" "^7.5.5"
 
+"@nexys/koa-lib@^3.0.1":
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/@nexys/koa-lib/-/koa-lib-3.0.1.tgz#c4eaafaff556717cc3de731b12ad3e73abe3d569"
+  integrity sha512-EPAtWAM3aCHbsUv/e3MXTEUMARR2dRQeE6VhVsMnKxZZVCL3Da9cA2LjzwyJEb5GNqx+a4RDE3/7TSQPkvh+SQ==
+  dependencies:
+    "@nexys/crypto" "^1.0.3"
+    "@nexys/fetchr" "^0.2.7"
+    "@nexys/http" "^1.0.0"
+    "@nexys/oauth" "^0.0.4"
+    "@nexys/utils" "^3.9.13"
+    "@nexys/validation" "^1.0.13"
+    "@types/bcryptjs" "^2.4.2"
+    "@types/graphql-fields" "^1.3.4"
+    "@types/jsonwebtoken" "^8.5.0"
+    "@types/koa" "^2.11.3"
+    "@types/koa-basic-auth" "^2.0.3"
+    "@types/koa-helmet" "^6.0.1"
+    "@types/koa-logger" "^3.1.1"
+    "@types/koa-mount" "^4.0.0"
+    "@types/koa-router" "^7.4.0"
+    "@types/node-fetch" "^2.5.12"
+    bcryptjs "^2.4.3"
+    dotenv "^10.0.0"
+    graphql "^15.5.1"
+    graphql-fields "^2.0.3"
+    jsonwebtoken "^8.5.1"
+    koa "^2.11.0"
+    koa-basic-auth "^4.0.0"
+    koa-body "^4.1.1"
+    koa-helmet "^6.0.0"
+    koa-logger "^3.2.1"
+    koa-mount "^4.0.0"
+    koa-router "^7.4.0"
+    node-cache "^5.1.0"
+    node-fetch "^2.6.1"
+
 "@nexys/oauth@^0.0.4":
   version "0.0.4"
   resolved "https://registry.yarnpkg.com/@nexys/oauth/-/oauth-0.0.4.tgz#2df8b98a9a5ef007e37625881174a38b1a529500"
