@@ -2,24 +2,9 @@ import Router from "koa-router";
 import bodyParser from "koa-body";
 //import Auth from '../../middleware/auth';
 
-import * as GraphQL from "../lib/graph-ql";
-import { graphql, printSchema } from "graphql";
-import QueryService from "../lib/query/service";
-import { Ddl } from "../lib/graph-ql/type";
+import { graphql, printSchema, GraphQLSchema } from "graphql";
 
-export class GraphQLFromModel {
-  model: Ddl[];
-  queryService: QueryService;
-  constructor(model: Ddl[], queryService: QueryService) {
-    this.model = model;
-    this.queryService = queryService;
-  }
-
-  getSchema = () =>
-    GraphQL.SchemaFactory.getSchemaFromJSONDDL(this.model, this.queryService);
-}
-
-export const getGraphQLRoutes = (G: GraphQLFromModel) => {
+export const getGraphQLRoutes = (gQLschema: GraphQLSchema) => {
   const router: Router = new Router();
 
   router.all(
@@ -28,7 +13,7 @@ export const getGraphQLRoutes = (G: GraphQLFromModel) => {
     //Auth.isAuthorized("superadmin"),
     //middlewareRoleExists,
     async (ctx) => {
-      ctx.body = printSchema(G.getSchema());
+      ctx.body = printSchema(gQLschema);
     }
   );
 
@@ -40,7 +25,7 @@ export const getGraphQLRoutes = (G: GraphQLFromModel) => {
     async (ctx) => {
       const { body } = ctx.request;
       const { query } = body;
-      ctx.body = await graphql(G.getSchema(), query);
+      ctx.body = await graphql(gQLschema, query);
     }
   );
 
