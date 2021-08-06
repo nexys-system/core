@@ -7,10 +7,7 @@ import * as U from "./utils";
 import QueryService from "../query/service";
 import { QueryProjection } from "@nexys/fetchr/dist/type";
 
-export const getQueryFromJSONDDL = (
-  def: T.Ddl[],
-  ProductQuery: QueryService
-): GL.GraphQLObjectType => {
+export const createTypesFromModel = (def: T.Ddl[]): T.GLTypes => {
   const QLtypes: T.GLTypes = new Map();
 
   const entities = [...def];
@@ -46,10 +43,10 @@ export const getQueryFromJSONDDL = (
     }
 
     // console.log("entering " + entity.name);
-    const fields: T.Args = {};
+    const fields: GL.GraphQLFieldConfigMap<any, any> = {};
 
     entity.fields.forEach((f) => {
-      const type = U.mapTypes(entity.name, f, QLtypes);
+      const type = U.mapOutputType(entity.name, f, QLtypes);
 
       if (type) {
         fields[f.name] = { type };
@@ -61,16 +58,15 @@ export const getQueryFromJSONDDL = (
       fields,
     });
 
-    // todo go thru fields
-    const args: T.Args = {}; // { uuid: { type: GL.GraphQLID } };
+    // args
+    const args: GL.GraphQLFieldConfigArgumentMap = {};
 
     entity.fields.forEach((f) => {
-      const type = U.mapTypes(entity.name, f);
+      const type = U.mapInputType(f, def);
 
-      if (type) {
-        args[f.name] = { type };
-      }
+      args[f.name] = { type };
     });
+    // end args
 
     QLtypes.set(entity.name, {
       objectType,
@@ -86,6 +82,15 @@ export const getQueryFromJSONDDL = (
         JSON.stringify(entities)
     );
   }
+
+  return QLtypes;
+};
+
+export const getQueryFromJSONDDL = (
+  def: T.Ddl[],
+  ProductQuery: QueryService
+): GL.GraphQLObjectType => {
+  const QLtypes: T.GLTypes = createTypesFromModel(def);
 
   const objectType: GL.Thunk<GL.GraphQLFieldConfigMap<any, any>> = {};
 
@@ -127,7 +132,7 @@ export const getQueryFromJSONDDL = (
 };
 
 export const getSchemaFromJSONDDL = (
-  ddlInput: T.DdlInput[],
+  ddlInput: T.Ddl[],
   ProductQuery: QueryService
 ): GL.GraphQLSchema => {
   const ddl = U.ddl(ddlInput);

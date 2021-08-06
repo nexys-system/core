@@ -4,22 +4,19 @@ import bodyParser from "koa-body";
 
 import * as GraphQL from "../lib/graph-ql";
 import { graphql, printSchema } from "graphql";
-import { DdlInput } from "../lib/graph-ql/type";
 import QueryService from "../lib/query/service";
+import { Ddl } from "../lib/graph-ql/type";
 
 export class GraphQLFromModel {
-  model: DdlInput[];
-  queryService: any;
-  constructor(model: DdlInput[], queryService: QueryService) {
+  model: Ddl[];
+  queryService: QueryService;
+  constructor(model: Ddl[], queryService: QueryService) {
     this.model = model;
     this.queryService = queryService;
   }
 
   getSchema = () =>
     GraphQL.SchemaFactory.getSchemaFromJSONDDL(this.model, this.queryService);
-
-  //getQuery = () =>
-  //GraphQL.SchemaFactory.getQueryFromJSONDDL(this.model, this.queryService);
 }
 
 export const getGraphQLRoutes = (G: GraphQLFromModel) => {
