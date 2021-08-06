@@ -6,7 +6,7 @@ import Validation, { Utils as VU } from "@nexys/validation";
 
 import { CMSService } from "./type";
 
-const { handleResponse } = Middleware;
+const { Response } = Middleware;
 
 export default (CMS: CMSService) => {
   const router: Router = new Router();
@@ -23,7 +23,7 @@ export default (CMS: CMSService) => {
       const { uuid, lang = "en" } = ctx.request.body;
       const r = () => CMS.get(uuid, lang);
 
-      await handleResponse(r, ctx);
+      await Response.handleResponse(r, ctx);
     }
   );
 

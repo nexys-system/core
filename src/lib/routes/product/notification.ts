@@ -5,14 +5,14 @@ import * as Middleware from "../../middleware";
 
 import { NotificationService } from "./type";
 
-const { handleResponse } = Middleware;
+const { Response } = Middleware;
 
 export default (Notification: NotificationService) => {
   const router: Router = new Router();
   router.all("/list", async (ctx: Koa.Context) => {
     const r = () => Notification.list();
 
-    await handleResponse(r, ctx);
+    await Response.handleResponse(r, ctx);
   });
 
   return router.routes();

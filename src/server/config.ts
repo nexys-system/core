@@ -28,3 +28,5 @@ export const ssoGithub = {
   client_id: "6763ce57887aaf5a2197",
   client_secret: "7d34944b9f420a950eb52a9447627702bc1685fe",
 };
+
+export const appToken = "mysupersafetoken";
