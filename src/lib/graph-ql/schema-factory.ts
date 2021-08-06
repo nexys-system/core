@@ -3,6 +3,7 @@ import graphqlFields from "graphql-fields";
 import * as GL from "graphql";
 import * as T from "./type";
 import * as U from "./utils";
+import * as UM from "./utils-mapping";
 
 import QueryService from "../query/service";
 import { QueryProjection } from "@nexys/fetchr/dist/type";
@@ -46,7 +47,7 @@ export const createTypesFromModel = (def: T.Ddl[]): T.GLTypes => {
     const fields: GL.GraphQLFieldConfigMap<any, any> = {};
 
     entity.fields.forEach((f) => {
-      const type = U.mapOutputType(entity.name, f, QLtypes);
+      const type = UM.mapOutputType(entity.name, f, QLtypes);
 
       if (type) {
         fields[f.name] = { type };
@@ -62,7 +63,7 @@ export const createTypesFromModel = (def: T.Ddl[]): T.GLTypes => {
     const args: GL.GraphQLFieldConfigArgumentMap = {};
 
     entity.fields.forEach((f) => {
-      const type = U.mapInputType(f, def);
+      const type = UM.mapInputType(f, def);
 
       args[f.name] = { type };
     });

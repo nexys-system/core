@@ -1,14 +1,16 @@
 import * as T from "./type";
 import * as GL from "graphql";
 
-export const ddl = (ddlComplete: T.Ddl[]): T.Ddl[] =>
+export const ddl = (
+  ddlComplete: (Omit<T.Ddl, "uuid"> & { uuid?: boolean })[]
+): T.Ddl[] =>
   ddlComplete.map((entity) => {
     const fields: T.Field[] = entity.fields.map((f) => {
       return {
         name: f.name,
         type: f.type,
-        options: f.options,
         optional: f.optional || false,
+        options: f.options,
       };
     });
 
@@ -22,7 +24,7 @@ export const ddl = (ddlComplete: T.Ddl[]): T.Ddl[] =>
 
     return {
       name: entity.name,
-      uuid: entity.uuid || false,
+      uuid: isUuid,
       fields,
     };
   });
@@ -59,79 +61,6 @@ const availableTypes = [
 
 export const isFieldType = (s: string): s is T.FieldType =>
   availableTypes.includes(s);
-
-export const mapInputType = (
-  { name, type }: T.Field,
-  def: T.Ddl[]
-): GL.GraphQLInputType => {
-  // if the field is not a standard field (i.e foreign key)
-  // allow the user to filter by id/uuid
-  if (!isFieldType(type)) {
-    const entity = def.find((e) => e.name === type);
-
-    if (entity) {
-      if (entity.uuid) {
-        return foreignUuid;
-      } else {
-        return foreignId;
-      }
-    }
-
-    throw Error("map inputtype: entity could not be found");
-  }
-
-  return mapScalarType(type, name);
-};
-
-export const mapOutputType = (
-  _entity: string,
-  { name, type }: T.Field,
-  entityTypes: T.GLTypes = new Map()
-): GL.GraphQLOutputType | undefined => {
-  if (!isFieldType(type)) {
-    const foreignEntity = entityTypes.get(type);
-
-    if (!foreignEntity) {
-      return undefined;
-    }
-
-    return foreignEntity.objectType;
-  }
-
-  return mapScalarType(type, name);
-};
-
-const mapScalarType = (
-  type: T.FieldType,
-  name?: string
-): GL.GraphQLScalarType => {
-  if (
-    // (name === "id" && type === "Int") ||
-    // id in graphql is a string
-    name &&
-    (name === "uuid" || name === "id") &&
-    type === "String"
-  ) {
-    return GL.GraphQLID;
-  }
-
-  switch (type) {
-    case "Int":
-      // to consider (not practial becaues returns a string
-      // return  toEnum(entity, t)
-      return GL.GraphQLInt;
-    case "Float":
-    case "BigDecimal":
-      return GL.GraphQLFloat;
-    case "Boolean":
-      return GL.GraphQLBoolean;
-    case "LocalDate":
-    case "LocalDateTime":
-      return GL.GraphQLString; // date returns a string
-    case "String":
-      return GL.GraphQLString;
-  }
-};
 
 // not used
 const mapTypesString = ({ name, type }: T.Field): string => {

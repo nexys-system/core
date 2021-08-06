@@ -23,7 +23,7 @@ export interface Field {
 
 export interface Ddl {
   name: string;
-  uuid?: boolean;
+  uuid: boolean;
   fields: Field[];
 }
 
@@ -31,3 +31,6 @@ export type GLTypes = Map<
   string,
   { objectType: GL.GraphQLObjectType; args: GL.GraphQLFieldConfigArgumentMap }
 >;
+
+// https://graphql.org/graphql-js/basic-types/
+export type GLBasicType = "ID" | "String" | "Boolean" | "Int" | "Float";
