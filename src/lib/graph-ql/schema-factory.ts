@@ -47,9 +47,11 @@ export const createTypesFromModel = (def: T.Ddl[]): T.GLTypes => {
     const fields: GL.GraphQLFieldConfigMap<any, any> = {};
 
     entity.fields.forEach((f) => {
-      const type = UM.mapOutputType(entity.name, f, QLtypes);
+      const pType = UM.mapOutputType(entity.name, f, QLtypes);
 
-      if (type) {
+      if (pType) {
+        const type = f.optional === true ? pType : new GL.GraphQLNonNull(pType);
+
         fields[f.name] = { type };
       }
     });

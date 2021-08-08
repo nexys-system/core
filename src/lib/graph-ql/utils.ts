@@ -119,7 +119,7 @@ const getSchemaFromDDL = (def: T.Ddl[]) => {
 
 export const foreignUuid = new GL.GraphQLInputObjectType({
   name: "ForeignUuid",
-  fields: { uuid: { type: GL.GraphQLID } },
+  fields: { uuid: { type: new GL.GraphQLNonNull(GL.GraphQLID) } },
 });
 
 /*new GL.GraphQLObjectType({
@@ -129,5 +129,5 @@ export const foreignUuid = new GL.GraphQLInputObjectType({
 
 export const foreignId = new GL.GraphQLInputObjectType({
   name: "ForeignId",
-  fields: { id: { type: GL.GraphQLInt } },
+  fields: { id: { type: new GL.GraphQLNonNull(GL.GraphQLInt) } },
 });
