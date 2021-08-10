@@ -8,6 +8,8 @@
 
 Nexys typescript web framework (built on top of Koa and Nexys System SDK)
 
+to
+
 ## Setup
 
 ### App init
@@ -25,7 +27,7 @@ import RouteModule from './route/module';
 import LibServices from "./service/product-service";
 
 const app = App();
-// reference to service/module: 
+// reference to service/module:
 app.use(Mount('/pathTorouteModule', RouteModule));
 
 // this is the reference to the product route modules (i18n, notification, cms)
@@ -62,4 +64,3 @@ import cache from '../service/cache';
 // - `cache`reference to the cache
 export default new Middleware.Auth<Login.Profile, Login.UserCache>(cache);
 ```
-
