@@ -530,42 +530,6 @@
   dependencies:
     "@babel/runtime" "^7.5.5"
 
-"@nexys/koa-lib@^3.0.1":
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/@nexys/koa-lib/-/koa-lib-3.0.1.tgz#c4eaafaff556717cc3de731b12ad3e73abe3d569"
-  integrity sha512-EPAtWAM3aCHbsUv/e3MXTEUMARR2dRQeE6VhVsMnKxZZVCL3Da9cA2LjzwyJEb5GNqx+a4RDE3/7TSQPkvh+SQ==
-  dependencies:
-    "@nexys/crypto" "^1.0.3"
-    "@nexys/fetchr" "^0.2.7"
-    "@nexys/http" "^1.0.0"
-    "@nexys/oauth" "^0.0.4"
-    "@nexys/utils" "^3.9.13"
-    "@nexys/validation" "^1.0.13"
-    "@types/bcryptjs" "^2.4.2"
-    "@types/graphql-fields" "^1.3.4"
-    "@types/jsonwebtoken" "^8.5.0"
-    "@types/koa" "^2.11.3"
-    "@types/koa-basic-auth" "^2.0.3"
-    "@types/koa-helmet" "^6.0.1"
-    "@types/koa-logger" "^3.1.1"
-    "@types/koa-mount" "^4.0.0"
-    "@types/koa-router" "^7.4.0"
-    "@types/node-fetch" "^2.5.12"
-    bcryptjs "^2.4.3"
-    dotenv "^10.0.0"
-    graphql "^15.5.1"
-    graphql-fields "^2.0.3"
-    jsonwebtoken "^8.5.1"
-    koa "^2.11.0"
-    koa-basic-auth "^4.0.0"
-    koa-body "^4.1.1"
-    koa-helmet "^6.0.0"
-    koa-logger "^3.2.1"
-    koa-mount "^4.0.0"
-    koa-router "^7.4.0"
-    node-cache "^5.1.0"
-    node-fetch "^2.6.1"
-
 "@nexys/oauth@^0.0.4":
   version "0.0.4"
   resolved "https://registry.yarnpkg.com/@nexys/oauth/-/oauth-0.0.4.tgz#2df8b98a9a5ef007e37625881174a38b1a529500"
@@ -792,13 +756,6 @@
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/@types/keygrip/-/keygrip-1.0.2.tgz#513abfd256d7ad0bf1ee1873606317b33b1b2a72"
   integrity sha512-GJhpTepz2udxGexqos8wgaBx4I/zWIDPh/KOGEwAqtuGDkOUJu5eFvwmdBX4AmB8Odsr+9pHCQqiAqDL/yKMKw==
-
-"@types/koa-basic-auth@^2.0.3":
-  version "2.0.4"
-  resolved "https://registry.yarnpkg.com/@types/koa-basic-auth/-/koa-basic-auth-2.0.4.tgz#d7627f18720778709f884381dd90f70ce5d9b6d8"
-  integrity sha512-PJKvoF5OMGlEEzUnctZDGRQVqV12xB0V4KplDJvHQDX9egh9ADFa456zGXRNnhNr43t3Fe4/VzD6ziM61uM5RQ==
-  dependencies:
-    "@types/koa" "*"
 
 "@types/koa-compose@*":
   version "3.2.5"
@@ -1143,13 +1100,6 @@ base@^0.11.1:
     isobject "^3.0.1"
     mixin-deep "^1.2.0"
     pascalcase "^0.1.1"
-
-basic-auth@^2.0.0:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/basic-auth/-/basic-auth-2.0.1.tgz#b998279bf47ce38344b4f3cf916d4679bbf51e3a"
-  integrity sha512-NF+epuEdnUYVlGuhaxbbq+dvJttwLnGY+YixlXlME5KpQ5W3CnXA5cVTneY3SPbPDRkcjMbifrwmFYcClgOZeg==
-  dependencies:
-    safe-buffer "5.1.2"
 
 bcryptjs@^2.4.3:
   version "2.4.3"
@@ -2991,14 +2941,6 @@ kleur@^3.0.3:
   resolved "https://registry.yarnpkg.com/kleur/-/kleur-3.0.3.tgz#a79c9ecc86ee1ce3fa6206d1216c501f147fc07e"
   integrity sha512-eTIzlVOSUR+JxdDFepEYcBMtZ9Qqdef+rnzWdRZuMbOywu5tO2w2N7rqjoANZ5k9vywhL6Br1VRjUIgTQx4E8w==
 
-koa-basic-auth@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/koa-basic-auth/-/koa-basic-auth-4.0.0.tgz#7df593771aeb5fe09c6259db206e2e627da64616"
-  integrity sha512-eV1sGVAizDuFWNpY43VF3Z1ND4PotQZB/igxHNrcJXzXw+Flmj8Uv+4hP9LyNXyvqLJz/X5bmXeMu84AAGD9Jw==
-  dependencies:
-    basic-auth "^2.0.0"
-    tsscmp "^1.0.6"
-
 koa-body@^4.1.1:
   version "4.2.0"
   resolved "https://registry.yarnpkg.com/koa-body/-/koa-body-4.2.0.tgz#37229208b820761aca5822d14c5fc55cee31b26f"
@@ -4393,7 +4335,7 @@ tsc-watch@^4.4.0:
     string-argv "^0.1.1"
     strip-ansi "^6.0.0"
 
-tsscmp@1.0.6, tsscmp@^1.0.6:
+tsscmp@1.0.6:
   version "1.0.6"
   resolved "https://registry.yarnpkg.com/tsscmp/-/tsscmp-1.0.6.tgz#85b99583ac3589ec4bfef825b5000aa911d605eb"
   integrity sha512-LxhtAkPDTkVCMQjt2h6eBVY28KCjikZqZfMcC15YBeNjkgUpdCfBu5HoiOTDu86v6smE8yOjyEktJ8hlbANHQA==

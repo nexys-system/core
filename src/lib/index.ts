@@ -5,6 +5,7 @@ export * as Middleware from "./middleware";
 export * as Routes from "./routes/product";
 export * as GraphQl from "./graph-ql";
 export * as UserManagement from "./routes/user-management";
+export * as Query from "./query";
 
 import App from "./app";
 
