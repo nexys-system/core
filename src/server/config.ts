@@ -1,14 +1,12 @@
 import * as FetchR from "@nexys/fetchr";
-import fs from "fs";
 import dotenv from "dotenv";
+import model from "./model";
 
 dotenv.config();
 
-// init fetchr
-export const model: FetchR.Type.Entity[] = JSON.parse(
-  fs.readFileSync(__dirname + "/../../src/server/model.json", "utf-8")
-);
+export { model };
 
+// init fetchr
 export const database: FetchR.Database.Type.Database = {
   username: process.env.DATABASE_USER || "",
   host: process.env.DATABASE_HOST || "",

@@ -6,7 +6,11 @@ import * as U from "./utils";
 import * as UM from "./utils-mapping";
 
 import QueryService from "../query/service";
-import { QueryProjection } from "@nexys/fetchr/dist/type";
+import { QueryFilters, QueryProjection } from "@nexys/fetchr/dist/type";
+
+export interface Model {
+  [entity: string]: { projection?: {}; filters?: QueryFilters };
+}
 
 export const createTypesFromModel = (def: T.Ddl[]): T.GLTypes => {
   const QLtypes: T.GLTypes = new Map();
@@ -91,36 +95,46 @@ export const createTypesFromModel = (def: T.Ddl[]): T.GLTypes => {
 
 export const getQueryFromJSONDDL = (
   def: T.Ddl[],
-  ProductQuery: QueryService
+  ProductQuery: QueryService,
+  constraints?: Model
 ): GL.GraphQLObjectType => {
   const QLtypes: T.GLTypes = createTypesFromModel(def);
 
-  const objectType: GL.Thunk<GL.GraphQLFieldConfigMap<any, any>> = {};
+  const fields: GL.Thunk<GL.GraphQLFieldConfigMap<any, any>> = {};
 
   def.forEach((entity) => {
-    objectType[entity.name] = {
+    fields[entity.name] = {
       type: new GL.GraphQLList(getType(entity.name, QLtypes)),
       args: getArgs(entity.name, QLtypes),
 
       resolve: (
         _data: any,
-        { _take, _skip, ...filters }: any,
+        { _take, _skip, ...queryFilters }: any,
         _context,
         resolveInfo
       ) => {
-        const take = Number(_take) || 10;
-
         const projection = formatGFields(graphqlFields(resolveInfo));
 
-        console.log(JSON.stringify(projection, null, 2));
+        // prepare filters
+        if (constraints && !constraints[entity.name]) {
+          return null;
+        }
 
-        //console.log(_take);
-        //console.log(filters);
+        const constraintsFilter: QueryFilters = constraints
+          ? constraints[entity.name].filters || {}
+          : {};
+
+        const filters: QueryFilters = { ...constraintsFilter, ...queryFilters };
+        // end prepare filters
+
+        const take: number | undefined = Number(_take) || 10; // never return more than 10 entries unless explicitly specified
+        const skip: number | undefined = _skip ? Number(_skip) : undefined;
+
         return ProductQuery.list(entity.name, {
           projection,
           filters,
           take,
-          skip: _skip,
+          skip,
         });
       },
     };
@@ -128,7 +142,7 @@ export const getQueryFromJSONDDL = (
 
   const query: GL.GraphQLObjectType = new GL.GraphQLObjectType({
     name: "Query",
-    fields: objectType,
+    fields,
   });
 
   return query;
