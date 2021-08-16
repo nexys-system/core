@@ -26,6 +26,9 @@ export enum AuthenticationType {
   password = 1,
   google = 2,
   github = 3,
+  linkedin = 4,
+  microsoft = 5,
+  ibm = 6,
 }
 
 export interface UserAuthentication {
