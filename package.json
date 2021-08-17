@@ -13,10 +13,10 @@
     "type": "git"
   },
   "dependencies": {
-    "@nexys/crypto": "^1.0.3",
+    "@nexys/crypto": "^1.0.4",
     "@nexys/fetchr": "^0.2.7",
     "@nexys/http": "^1.0.0",
-    "@nexys/utils": "^3.9.13",
+    "@nexys/utils": "^3.9.14",
     "@nexys/validation": "^2.1.1",
     "@types/bcryptjs": "^2.4.2",
     "@types/graphql-fields": "^1.3.4",
