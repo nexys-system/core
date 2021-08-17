@@ -31,7 +31,8 @@ const UserRoutes = <
       instance: { uuid: { extraCheck: VU.checkUuid } },
     }),
     async (ctx) => {
-      const { uuid, instance } = ctx.request.body;
+      const { uuid, instance }: { uuid: string; instance: { uuid: string } } =
+        ctx.request.body;
       ctx.body = await permissionService.listByUserAssigned({ uuid, instance });
     }
   );
@@ -42,7 +43,7 @@ const UserRoutes = <
     MiddlewareAuth.isAuthorized(Permission.superadmin),
     Validation.isShapeMiddleware({
       user: { uuid: { extraCheck: VU.checkUuid } },
-      permission: { uuid: { extraCheck: VU.checkUuid } },
+      permission: { type: "number" },
       assigned: { type: "boolean" },
     }),
     async (ctx) => {
@@ -52,19 +53,19 @@ const UserRoutes = <
         assigned,
       }: {
         user: { uuid: Uuid };
-        permission: { uuid: Uuid };
+        permission: Permission;
         assigned: boolean;
       } = ctx.request.body;
 
-      if (assigned) {
+      if (assigned === false) {
         ctx.body = await permissionService.revokeFromUser(
-          permission.uuid,
+          permission as any,
           user
         );
         return;
       }
 
-      ctx.body = await permissionService.assignToUser2(permission.uuid, user);
+      ctx.body = await permissionService.assignToUser2(permission as any, user);
     }
   );
 

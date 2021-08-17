@@ -63,8 +63,9 @@ export default class Permission<P = CT.Permission> {
     const permissionList = await this.listByInstance(user.instance);
 
     const r: {
-      permissionInstance: { permission: P };
+      permissionInstance: { uuid: Uuid };
       uuid: Uuid;
+      user: { uuid: Uuid };
     }[] = await this.qs.list(U.Entity.UserPermission, query);
 
     return permissionList.map((permission) => {
@@ -73,7 +74,7 @@ export default class Permission<P = CT.Permission> {
       };
 
       const f = r.find(
-        (x) => x.permissionInstance.permission === permission.permission
+        (x) => x.permissionInstance.uuid === permission.permissionInstance.uuid
       );
 
       if (f) {
@@ -89,7 +90,7 @@ export default class Permission<P = CT.Permission> {
   }): Promise<{ permission: P; permissionInstance: { uuid: Uuid } }[]> => {
     const query: QueryParams = {
       filters: { instance },
-      projection: { permission: { name: true, uuid: true } },
+      projection: { permission: true },
     };
 
     /*if (names.length > 0) {
@@ -195,7 +196,7 @@ export default class Permission<P = CT.Permission> {
   };
 
   permissionInstanceFromUser = async (
-    permission: { uuid: Uuid },
+    permission: Permission,
     user: { uuid: Uuid }
   ) => {
     const { instance }: { instance: { uuid: Uuid } } =
@@ -229,11 +230,11 @@ export default class Permission<P = CT.Permission> {
   };
 
   assignToUser2 = async (
-    uuid: Uuid,
+    permission: Permission,
     user: { uuid: Uuid } //; instance: { uuid: Uuid } } todo for admin permission
   ) => {
     const permissionInstance = await this.permissionInstanceFromUser(
-      { uuid },
+      permission,
       user
     );
 
@@ -250,11 +251,11 @@ export default class Permission<P = CT.Permission> {
    * @param user
    */
   revokeFromUser = async (
-    uuid: Uuid,
+    permission: Permission,
     user: { uuid: Uuid } //; instance: { uuid: Uuid } }  todo for admin permission
   ) => {
     const permissionInstance = await this.permissionInstanceFromUser(
-      { uuid },
+      permission,
       user
     );
 
