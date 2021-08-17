@@ -2,6 +2,8 @@ import { UOptionSet, Uuid } from "@nexys/utils/dist/types";
 import * as TC from "./crud-type";
 import * as TQ from "@nexys/fetchr";
 
+export type Permission = number;
+
 export enum Status {
   active = 1,
   inactive = 3,

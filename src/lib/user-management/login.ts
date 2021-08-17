@@ -1,11 +1,13 @@
 import { Uuid } from "@nexys/utils/dist/types";
+
+import { Locale } from "../middleware/auth/type";
+
+import * as T from "./type";
 import { QueryService } from "./type";
 import UserService from "./user";
 import UserTokenService from "./user/token";
 import * as U from "./password/utils";
-import * as T from "./type";
 import * as A from "./action-payload";
-import { Locale } from "../middleware/auth/type";
 import { AuthenticationType } from "./crud-type";
 
 export default class LoginService {
@@ -55,7 +57,7 @@ export default class LoginService {
   ): Promise<{
     profile: T.Profile;
     locale: Locale;
-    permissions: string[];
+    permissions: number[];
     refreshToken: string;
   }> => {
     const { profile, status, locale, auth } = await this.preAuthenticate(
@@ -94,7 +96,7 @@ export default class LoginService {
     profile: Omit<T.Profile, "uuid">,
     password: string,
     locale: Locale,
-    permissions: string[] = []
+    permissions: T.Permission[] = []
   ): Promise<{ uuid: Uuid; authentication: { uuid: Uuid }; token: string }> => {
     const exists = await this.userService.exists(profile.email);
 
@@ -173,7 +175,7 @@ export default class LoginService {
     refreshToken: string
   ): Promise<{
     profile: T.Profile;
-    permissions: string[];
+    permissions: T.Permission[];
     locale: Locale;
   }> => {
     const userUuid = await this.userTokenService.getFromRefreshToken(

@@ -1,6 +1,27 @@
 import { Uuid } from "@nexys/utils/dist/types";
 import { Status } from "./type";
 
+export enum AuthenticationType {
+  password = 1,
+  google = 2,
+  github = 3,
+  linkedin = 4,
+  microsoft = 5,
+  ibm = 6,
+}
+
+export enum Permission {
+  app = 1,
+  admin = 2,
+  superadmin = 3,
+}
+
+export interface Instance {
+  uuid: Uuid;
+  name: string;
+  dateAdded: Date;
+}
+
 export interface User {
   uuid: Uuid;
   firstName: string;
@@ -22,15 +43,6 @@ export interface UserToken {
   ip?: string;
 }
 
-export enum AuthenticationType {
-  password = 1,
-  google = 2,
-  github = 3,
-  linkedin = 4,
-  microsoft = 5,
-  ibm = 6,
-}
-
 export interface UserAuthentication {
   uuid: Uuid;
   value: string;
@@ -39,26 +51,14 @@ export interface UserAuthentication {
   user: { uuid: Uuid } | User;
 }
 
-export interface Instance {
+export interface PermissionInstance {
   uuid: Uuid;
-  name: string;
-  dateAdded: Date;
-}
-
-export interface Permission {
-  uuid: Uuid;
-  name: string;
-  description?: string;
+  instance: { uuid: Uuid } | Instance;
+  permission: Permission;
 }
 
 export interface UserPermission {
   uuid: Uuid;
   permissionInstance: { uuid: Uuid } | PermissionInstance;
   user: { uuid: Uuid } | User;
-}
-
-export interface PermissionInstance {
-  uuid: Uuid;
-  instance: { uuid: Uuid } | Instance;
-  permission: { uuid: Uuid } | Permission;
 }

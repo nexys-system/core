@@ -547,17 +547,17 @@
   resolved "https://registry.yarnpkg.com/@nexys/utils/-/utils-3.9.14.tgz#db7e3581dd3f15990334842111be35d5aba443ca"
   integrity sha512-ab+iVapztGguPbHaACoNXtn65iWh+hSqNOoKnIQkmldsQ4yUsRpPhs+Us+x2g5A3/ShwxREAz8DMLp0rpYcWig==
 
-"@nexys/validation@^1.0.13":
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/@nexys/validation/-/validation-1.2.1.tgz#1ebec95691fc4991eb13bd373f6a758ab5f9bf91"
-  integrity sha512-LiTuP73Ly2sQGT/IUd3gCVUJYSlv4ht+jP1WrGLvHAwyQI30vcmr6njBRI1qbN+/BUyOaBd0yuk8HWklmN0qng==
-  dependencies:
-    "@nexys/utils" "^3.9.14"
-
 "@nexys/validation@^2.1.0":
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/@nexys/validation/-/validation-2.1.0.tgz#b55d5961ce149f118a9e3ba9bd0737eb37bce653"
   integrity sha512-go2vyFzWn0V/zGZtEe8hxMcHnKRDnJLYFjczgKkg43NYhfDWSptDPBnERqdG2PERLeF7eQj63rgiBiy7kfUQtw==
+  dependencies:
+    "@nexys/utils" "^3.9.14"
+
+"@nexys/validation@^2.1.1":
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/@nexys/validation/-/validation-2.1.1.tgz#231d973569f76872a3d108e66fa0ebad7c1829bc"
+  integrity sha512-7c+uqAJJ9khkEIfNVM4+dpE82Ql4iDvznrMGx5Qc/8qrE1LY98W4THKijW5nBpF30TKSn1ggRnGfvbNaaL3/Lw==
   dependencies:
     "@nexys/utils" "^3.9.14"
 

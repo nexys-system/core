@@ -419,24 +419,6 @@ const model: Entity[] = [
     ],
   },
   {
-    name: "Permission",
-    uuid: true,
-    fields: [
-      {
-        name: "name",
-        optional: false,
-
-        type: "String",
-      },
-      {
-        name: "description",
-        optional: true,
-
-        type: "String",
-      },
-    ],
-  },
-  {
     name: "UserPermission",
     uuid: true,
     fields: [
@@ -468,7 +450,12 @@ const model: Entity[] = [
         name: "permission",
         optional: false,
 
-        type: "Permission",
+        type: "Int",
+        options: [
+          { id: 1, name: "app" },
+          { id: 1, name: "admin" },
+          { id: 1, name: "superadmin" },
+        ],
       },
     ],
   },

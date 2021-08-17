@@ -1,7 +1,9 @@
 import * as T from "../../type";
 
-export interface Permissions {
-  permissions: string[];
+export type Permission = number;
+
+export interface Permissions<P = Permission> {
+  permissions: P[];
 }
 
 export interface UserState<
@@ -13,8 +15,12 @@ export interface UserState<
   userCache: UserCache;
 }
 
-export interface LoginResponse<Profile extends T.ObjectWithId<Id>, Id> {
-  permissions: string[];
+export interface LoginResponse<
+  Profile extends T.ObjectWithId<Id>,
+  Id,
+  P = Permission
+> {
+  permissions: P[];
   profile: Profile;
   locale: string;
   accessToken: string;

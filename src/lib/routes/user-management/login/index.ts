@@ -10,7 +10,10 @@ import { Locale, Permissions } from "../../../middleware/auth/type";
 import { Uuid } from "@nexys/utils/dist/types";
 import { LoginService } from "../../../user-management";
 import { headerAcceptLanguageToLocale } from "../../../user-management/locale";
-import { AuthenticationType } from "../../../user-management/crud-type";
+import {
+  AuthenticationType,
+  Permission,
+} from "../../../user-management/crud-type";
 
 /**  const instance = {
     uuid: process.env.InstanceUuid || "",
@@ -89,7 +92,7 @@ const LoginRoutes = <Profile extends ObjectWithId<Id>, Id>(
         profile,
         password,
         locale,
-        ["app"]
+        [Permission.app]
       );
 
       console.log("should send email with " + token);

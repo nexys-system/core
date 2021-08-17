@@ -1,11 +1,11 @@
-import { AuthenticationType } from "./crud-type";
+import { AuthenticationType, Permission } from "./crud-type";
 import * as T from "./type";
 import { Entity } from "./utils";
 
 export const userUuid = "myUuid";
 export const email = "john@doe.com";
 
-export const permissions = ["app", "admin"];
+export const permissions: Permission[] = [Permission.app, Permission.admin];
 export const profile: T.Profile = {
   uuid: userUuid,
   firstName: "John",
@@ -38,8 +38,8 @@ class QueryService extends T.QueryService {
   list = <A = any>(entity: string, _query: any): Promise<A[]> => {
     if (entity === "UserPermission") {
       return Promise.resolve([
-        { permissionInstance: { permission: { name: "app" } } },
-        { permissionInstance: { permission: { name: "admin" } } },
+        { permissionInstance: { permission: Permission.app } },
+        { permissionInstance: { permission: Permission.admin } },
       ] as any as A[]);
     }
     return Promise.resolve([]);

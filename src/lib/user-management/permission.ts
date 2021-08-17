@@ -1,29 +1,38 @@
-import { Uuid } from "@nexys/utils/dist/types";
+import { Uuid, UOptionSet } from "@nexys/utils/dist/types";
+import { QueryParams } from "@nexys/fetchr/dist/type";
+
 import { QueryService } from "./type";
 import * as U from "./utils";
-import { UOptionSet } from "@nexys/utils/dist/types";
-//import * as QT from "../../query/types";
 import * as CT from "./crud-type";
 
-interface Params {}
+const allDefaultPermissions: CT.Permission[] = Object.keys(CT.Permission)
+  .filter((k) => typeof k == "number")
+  .map((x) => x as any);
 
-export default class Permission {
+export default class Permission<P = CT.Permission> {
   qs: QueryService;
-  constructor(qs: QueryService) {
+  list: P[];
+
+  constructor(
+    qs: QueryService,
+    allPermissions: P[] = allDefaultPermissions as any
+  ) {
     this.qs = qs;
+    this.list = allPermissions;
   }
-  permissionNamesByUser = async (uuid: Uuid): Promise<string[]> => {
+
+  permissionNamesByUser = async (uuid: Uuid): Promise<P[]> => {
     const list = await this.listByUser(uuid);
 
-    return list.map((x) => x.name);
+    return list.map((x) => x.permission);
   };
 
   listByUser = async (
     uuid: Uuid
-  ): Promise<(UOptionSet & { userPermission: { uuid: Uuid } })[]> => {
+  ): Promise<{ permission: P; userPermission: { uuid: Uuid } }[]> => {
     const r: {
       uuid: Uuid;
-      permissionInstance: { permission: { uuid: Uuid; name: string } };
+      permissionInstance: { permission: P };
     }[] = await this.qs.list(U.Entity.UserPermission, {
       projection: {
         permissionInstance: {
@@ -35,8 +44,7 @@ export default class Permission {
     });
 
     return r.map((x) => ({
-      uuid: x.permissionInstance.permission.uuid,
-      name: x.permissionInstance.permission.name,
+      permission: x.permissionInstance.permission,
       userPermission: { uuid: x.uuid },
     }));
   };
@@ -44,8 +52,8 @@ export default class Permission {
   listByUserAssigned = async (user: {
     uuid: Uuid;
     instance: { uuid: Uuid };
-  }): Promise<(UOptionSet & { assigned?: Uuid })[]> => {
-    const query: Params = {
+  }): Promise<{ permission: P; assigned?: Uuid }[]> => {
+    const query: QueryParams = {
       filters: { user },
       projection: {
         permissionInstance: { permission: { name: true, uuid: true } },
@@ -55,19 +63,19 @@ export default class Permission {
     const permissionList = await this.listByInstance(user.instance);
 
     const r: {
-      permissionInstance: { permission: UOptionSet };
+      permissionInstance: { permission: P };
       uuid: Uuid;
     }[] = await this.qs.list(U.Entity.UserPermission, query);
 
     return permissionList.map((permission) => {
-      const y: UOptionSet & { assigned?: Uuid } = {
-        uuid: permission.uuid,
-        name: permission.name,
+      const y: { permission: P; assigned?: Uuid } = {
+        permission: permission.permission,
       };
 
       const f = r.find(
-        (x) => x.permissionInstance.permission.uuid === permission.uuid
+        (x) => x.permissionInstance.permission === permission.permission
       );
+
       if (f) {
         y.assigned = f.uuid;
       }
@@ -78,8 +86,8 @@ export default class Permission {
 
   listByInstance = async (instance: {
     uuid: Uuid;
-  }): Promise<(UOptionSet & { permissionInstance: { uuid: Uuid } })[]> => {
-    const query: Params = {
+  }): Promise<{ permission: P; permissionInstance: { uuid: Uuid } }[]> => {
+    const query: QueryParams = {
       filters: { instance },
       projection: { permission: { name: true, uuid: true } },
     };
@@ -90,19 +98,16 @@ export default class Permission {
 
     const r = await this.qs.list(U.Entity.PermissionInstance, query);
 
-    return r.map(
-      (x: { permission: { uuid: string; name: string }; uuid: string }) => ({
-        uuid: x.permission.uuid,
-        name: x.permission.name,
-        permissionInstance: { uuid: x.uuid },
-      })
-    );
+    return r.map((x: { permission: P; uuid: string }) => ({
+      permission: x.permission,
+      permissionInstance: { uuid: x.uuid },
+    }));
   };
 
   listByInstanceAssigned = async (instance: {
     uuid: Uuid;
-  }): Promise<(UOptionSet & { assigned?: Uuid })[]> => {
-    const query: Params = {
+  }): Promise<{ permission: P; assigned?: Uuid }[]> => {
+    const query: QueryParams = {
       filters: { instance },
       projection: { permission: { name: true, uuid: true } },
     };
@@ -111,43 +116,35 @@ export default class Permission {
       query.filters.permission = { name: { $in: names } };
     }*/
 
-    const permissionList = await this.list();
-
-    const r: { permission: UOptionSet; uuid: Uuid }[] = await this.qs.list(
+    const r: { permission: P; uuid: Uuid }[] = await this.qs.list(
       U.Entity.PermissionInstance,
       query
     );
 
-    return permissionList.map(
-      (permission: { assigned?: string; uuid: string; name: string }) => {
-        const y: UOptionSet & { assigned?: Uuid } = {
-          uuid: permission.uuid,
-          name: permission.name,
-        };
+    return this.list.map((permission) => {
+      const f = r.find((x) => x.permission === permission);
 
-        const f = r.find((x) => x.permission.uuid === permission.uuid);
-        if (f) {
-          y.assigned = f.uuid;
-        }
-
-        return y;
+      if (f) {
+        return { permission, assigned: "assigned" };
       }
-    );
+
+      return { permission };
+    });
   };
 
   getByNames = async (
     instance: { uuid: Uuid },
-    names: string[]
-  ): Promise<(UOptionSet & { permissionInstance: { uuid: Uuid } })[]> => {
+    names: P[]
+  ): Promise<{ permission: P; permissionInstance: { uuid: Uuid } }[]> => {
     if (names.length === 0) {
       throw Error(
-        "you must indicate at least one permission. If what's expected is all permissions, user listbyInstance"
+        "you must indicate at least one permission. If what's expected is all permissions, user list by instance"
       );
     }
 
     const l = await this.listByInstance(instance);
 
-    return l.filter((x) => names.includes(x.name));
+    return l.filter((x) => names.includes(x.permission));
   };
 
   /**
@@ -261,7 +258,7 @@ export default class Permission {
   };
 
   assignToUserByNames = async (
-    names: string[],
+    names: P[],
     user: { uuid: Uuid; instance: { uuid: Uuid } }
   ) => {
     const permissions = await this.getByNames(user.instance, names);
@@ -272,37 +269,4 @@ export default class Permission {
   };
 
   // general permissions (no conditions, superadmin functionalities)
-
-  list = async () => this.qs.list<CT.Permission>(U.Entity.Permission);
-
-  detail = async (uuid: Uuid) =>
-    this.qs.detail<CT.Permission>(U.Entity.Permission, uuid);
-
-  insert = async (name: string) => {
-    const row: Omit<CT.Permission, "uuid"> = { name };
-
-    const r = await this.qs.insertUuid<CT.Permission>(U.Entity.Permission, row);
-
-    return { uuid: r.uuid };
-  };
-
-  update = async (
-    uuid: Uuid,
-    name: string,
-    description?: string
-  ): Promise<boolean> => {
-    const r = await this.qs.update<CT.Permission>(
-      U.Entity.Permission,
-      { uuid },
-      { name, description }
-    );
-
-    return r.success;
-  };
-
-  delete = async (uuid: Uuid): Promise<boolean> => {
-    const r = await this.qs.delete(U.Entity.Permission, { uuid });
-
-    return r.success;
-  };
 }
