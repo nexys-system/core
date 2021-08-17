@@ -2,7 +2,7 @@ import Router from "koa-router";
 
 import * as GraphQLService from "../../lib/graph-ql";
 
-import * as Product from "../product";
+import Product from "../product";
 
 import * as GraphQl from "../graph-ql";
 import * as Config from "../config";

@@ -5,7 +5,7 @@ import * as Config from "../config";
 import * as OAuth from "@nexys/oauth";
 import { AuthenticationType } from "../../lib/user-management/crud-type";
 
-import * as Product from "../product";
+import Product from "../product";
 
 const gh = new OAuth.Github(
   Config.ssoGithub.client_id,

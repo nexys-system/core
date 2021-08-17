@@ -3,40 +3,20 @@ import Router from "koa-router";
 import * as UserManagementRoutes from "../../lib/routes/user-management";
 import * as Config from "../config";
 
-import {
-  middlewareAuth,
-  productContext,
-  userTokenService,
-  userAuthenticationService,
-  permissionService,
-  instanceService,
-  passwordService,
-  userService,
-  loginService,
-} from "../product";
+import P from "../product";
 
 const loginRoutes = UserManagementRoutes.Login(
-  { loginService },
-  middlewareAuth,
+  { loginService: P.loginService },
+  P.middlewareAuth,
   Config.instance
 );
 
 const profileRoutes = UserManagementRoutes.Profile(
-  { userService, passwordService },
-  middlewareAuth
+  { userService: P.userService, passwordService: P.passwordService },
+  P.middlewareAuth
 );
 
-const superadminRoutes = UserManagementRoutes.Superadmin(
-  {
-    userService,
-    instanceService,
-    permissionService,
-    userAuthenticationService,
-    userTokenService,
-    productContext,
-  },
-  middlewareAuth
-);
+const superadminRoutes = UserManagementRoutes.Superadmin(P, P.middlewareAuth);
 
 const router = new Router();
 

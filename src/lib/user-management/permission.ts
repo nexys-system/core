@@ -6,8 +6,8 @@ import * as U from "./utils";
 import * as CT from "./crud-type";
 
 const allDefaultPermissions: CT.Permission[] = Object.keys(CT.Permission)
-  .filter((k) => typeof k == "number")
-  .map((x) => x as any);
+  .map((x) => Number(x))
+  .filter((k) => !isNaN(k));
 
 export default class Permission<P = CT.Permission> {
   qs: QueryService;

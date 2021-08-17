@@ -67,6 +67,10 @@ const SuperadminRoutes = <
   router.use("/permission", permissionRoutes);
   router.use("/context", contextRoutes);
 
+  router.all("/", (ctx) => {
+    ctx.body = { message: "superadmin" };
+  });
+
   return router.routes();
 };
 
