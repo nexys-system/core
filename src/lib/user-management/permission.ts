@@ -106,10 +106,10 @@ export default class Permission<P = CT.Permission> {
 
   listByInstanceAssigned = async (instance: {
     uuid: Uuid;
-  }): Promise<{ permission: P; assigned?: Uuid }[]> => {
+  }): Promise<{ permission: P; assigned?: boolean }[]> => {
     const query: QueryParams = {
       filters: { instance },
-      projection: { permission: { name: true, uuid: true } },
+      projection: { permission: true },
     };
 
     /*if (names.length > 0) {
@@ -125,7 +125,7 @@ export default class Permission<P = CT.Permission> {
       const f = r.find((x) => x.permission === permission);
 
       if (f) {
-        return { permission, assigned: "assigned" };
+        return { permission, assigned: true };
       }
 
       return { permission };
@@ -152,11 +152,15 @@ export default class Permission<P = CT.Permission> {
    * @param uuids : these are permission uuids
    * @param user: user and uuid
    */
-  assignToInstance = (uuids: Uuid[], instance: { uuid: Uuid }) => {
-    const permissions = uuids.map((uuid) => ({
+  assignToInstance = (
+    permissionIdxs: Permission[],
+    instance: { uuid: Uuid }
+  ) => {
+    const permissions = permissionIdxs.map((permission) => ({
       instance,
-      permission: { uuid },
+      permission,
     }));
+
     return this.qs.insertMultiple(U.Entity.PermissionInstance, permissions);
   };
 
@@ -165,9 +169,12 @@ export default class Permission<P = CT.Permission> {
    * @param uuids
    * @param user
    */
-  revokeFromInstance = async (uuids: Uuid[], instance: { uuid: Uuid }) =>
+  revokeFromInstance = async (
+    permissionIdxs: Permission[],
+    instance: { uuid: Uuid }
+  ) =>
     this.qs.delete(U.Entity.PermissionInstance, {
-      permission: { uuid: { $in: uuids } },
+      permission: { $in: permissionIdxs },
       instance,
     });
 

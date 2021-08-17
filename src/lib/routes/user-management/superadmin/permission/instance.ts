@@ -37,7 +37,7 @@ const InstanceService = <
     MiddlewareAuth.isAuthorized(Permission.superadmin),
     Validation.isShapeMiddleware({
       instance: { uuid: { extraCheck: VU.checkUuid } },
-      permission: { uuid: { extraCheck: VU.checkUuid } },
+      permission: { type: "number" },
       assigned: { type: "boolean" },
     }),
     async (ctx) => {
@@ -47,20 +47,20 @@ const InstanceService = <
         assigned,
       }: {
         instance: { uuid: Uuid };
-        permission: { uuid: Uuid };
+        permission: number;
         assigned: boolean;
       } = ctx.request.body;
 
-      if (assigned) {
+      if (assigned === false) {
         ctx.body = await permissionService.revokeFromInstance(
-          [permission.uuid],
+          [permission as any],
           instance
         );
         return;
       }
 
       ctx.body = await permissionService.assignToInstance(
-        [permission.uuid],
+        [permission as any],
         instance
       );
     }
