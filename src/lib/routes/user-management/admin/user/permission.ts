@@ -8,6 +8,7 @@ import { ObjectWithId } from "../../../../type";
 import { Permissions } from "../../../../middleware/auth/type";
 import { PermissionService } from "../../../../user-management";
 import { Uuid } from "@nexys/utils/dist/types";
+import { Permission } from "../../../../user-management/crud-type";
 
 const PermissionRoutes = <
   Profile extends ObjectWithId<Id>,
@@ -22,7 +23,7 @@ const PermissionRoutes = <
   router.post(
     "/list",
     bodyParser(),
-    MiddlewareAuth.isAuthorized("admin"),
+    MiddlewareAuth.isAuthorized(Permission.admin),
     Validation.isShapeMiddleware({
       uuid: {
         extraCheck: VU.checkUuid,
@@ -38,7 +39,7 @@ const PermissionRoutes = <
   router.post(
     "/toggle",
     bodyParser(),
-    MiddlewareAuth.isAuthorized("admin"),
+    MiddlewareAuth.isAuthorized(Permission.admin),
     Validation.isShapeMiddleware({
       user: { uuid: { extraCheck: VU.checkUuid } },
       permission: { uuid: { extraCheck: VU.checkUuid } },

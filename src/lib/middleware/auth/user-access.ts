@@ -20,7 +20,8 @@ import { localeToString } from "../../user-management/locale";
 export default class Auth<
   Profile extends T.ObjectWithId<Id>,
   UserCache extends LT.Permissions,
-  Id = number
+  Id = number,
+  Permission = LT.Permission
 > {
   cache: Cache;
   jwt: JWT;
@@ -206,13 +207,15 @@ export default class Auth<
     };
 
   hasPermission =
-    (permission: string) =>
+    (permission: Permission) =>
     async (ctx: Koa.Context, next: Koa.Next): Promise<void> => {
-      //const { userCache }: { userCache: UserCache } = ctx.state as any;
-      //const { permissions } = userCache;
       await next();
 
-      /* if (U.isPermissionValid(permission, permissions)) {
+      /*const { userCache }: { userCache: UserCache } = ctx.state as any;
+      const { permissions } = userCache;
+     
+
+       if (U.isPermissionValid(permission, permissions)) {
         await next();
       } else {
         ctx.status = 401;
@@ -227,7 +230,7 @@ export default class Auth<
     };
 
   isAuthorized = (
-    permission: string
+    permission: Permission
   ): Compose.Middleware<
     Koa.ParameterizedContext<Koa.DefaultState, Koa.Context>
   > => Compose([this.isAuthenticated(), this.hasPermission(permission)]);

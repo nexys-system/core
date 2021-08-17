@@ -9,7 +9,7 @@ import { Permissions } from "../../../../middleware/auth/type";
 
 import { UserService } from "../../../../user-management";
 import { Uuid } from "@nexys/utils/dist/types";
-import { User } from "../../../../user-management/crud-type";
+import { Permission, User } from "../../../../user-management/crud-type";
 import * as T from "../../../../user-management/type";
 
 const UserRoutes = <
@@ -25,7 +25,7 @@ const UserRoutes = <
   router.all(
     "/list",
     bodyParser(),
-    MiddlewareAuth.isAuthorized("admin"),
+    MiddlewareAuth.isAuthorized(Permission.admin),
     async (ctx) => {
       const { instance } = ctx.state.profile;
       ctx.body = await userService.list(instance);
@@ -35,7 +35,7 @@ const UserRoutes = <
   router.post(
     "/detail",
     bodyParser(),
-    MiddlewareAuth.isAuthorized("admin"),
+    MiddlewareAuth.isAuthorized(Permission.admin),
     Validation.isShapeMiddleware({
       uuid: { extraCheck: VU.checkUuid },
     }),
@@ -49,7 +49,7 @@ const UserRoutes = <
   router.post(
     "/insert",
     bodyParser(),
-    MiddlewareAuth.isAuthorized("admin"),
+    MiddlewareAuth.isAuthorized(Permission.admin),
     Validation.isShapeMiddleware({
       firstName: {},
       lastName: {},
@@ -76,7 +76,7 @@ const UserRoutes = <
   router.post(
     "/update",
     bodyParser(),
-    MiddlewareAuth.isAuthorized("admin"),
+    MiddlewareAuth.isAuthorized(Permission.admin),
     Validation.isShapeMiddleware({
       uuid: { extraCheck: VU.checkUuid },
       firstName: {},
@@ -97,7 +97,7 @@ const UserRoutes = <
   router.post(
     "/delete",
     bodyParser(),
-    MiddlewareAuth.isAuthorized("admin"),
+    MiddlewareAuth.isAuthorized(Permission.admin),
     Validation.isShapeMiddleware({
       uuid: { extraCheck: VU.checkUuid },
     }),
@@ -111,7 +111,7 @@ const UserRoutes = <
   router.post(
     "/status/change",
     bodyParser(),
-    MiddlewareAuth.isAuthorized("admin"),
+    MiddlewareAuth.isAuthorized(Permission.admin),
     Validation.isShapeMiddleware({
       uuid: { extraCheck: VU.checkUuid },
       status: { type: "number" },

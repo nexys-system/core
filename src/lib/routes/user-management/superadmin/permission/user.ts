@@ -8,6 +8,7 @@ import { Permissions } from "../../../../middleware/auth/type";
 
 import { ObjectWithId } from "../../../../type";
 import { PermissionService } from "../../../../user-management";
+import { Permission } from "../../../../user-management/crud-type";
 
 const UserRoutes = <
   Profile extends ObjectWithId<Id>,
@@ -22,7 +23,7 @@ const UserRoutes = <
   router.post(
     "/list",
     bodyParser(),
-    MiddlewareAuth.isAuthorized("superadmin"),
+    MiddlewareAuth.isAuthorized(Permission.superadmin),
     Validation.isShapeMiddleware({
       uuid: {
         extraCheck: VU.checkUuid,
@@ -38,7 +39,7 @@ const UserRoutes = <
   router.post(
     "/toggle",
     bodyParser(),
-    MiddlewareAuth.isAuthorized("superadmin"),
+    MiddlewareAuth.isAuthorized(Permission.superadmin),
     Validation.isShapeMiddleware({
       user: { uuid: { extraCheck: VU.checkUuid } },
       permission: { uuid: { extraCheck: VU.checkUuid } },

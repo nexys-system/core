@@ -6,6 +6,7 @@ import { Permissions } from "../../../../middleware/auth/type";
 
 import { ObjectWithId } from "../../../../type";
 import { PermissionService } from "../../../../user-management";
+import { Permission } from "../../../../user-management/crud-type";
 
 const PermissionRoutes = <
   Profile extends ObjectWithId<Id>,
@@ -20,7 +21,7 @@ const PermissionRoutes = <
   router.get(
     "/list",
     bodyParser(),
-    MiddlewareAuth.isAuthorized("superadmin"),
+    MiddlewareAuth.isAuthorized(Permission.superadmin),
     async (ctx) => {
       ctx.body = permissionService.list;
     }

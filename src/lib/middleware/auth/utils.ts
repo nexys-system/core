@@ -53,9 +53,9 @@ export const logout = (ctx: Koa.Context) => {
 
 export const cacheUserPrefix: string = "user-";
 
-export const isPermissionValid = (
-  permissionRequired: string,
-  userPermissions: string[]
+export const isPermissionValid = <A>(
+  permissionRequired: A,
+  userPermissions: A[]
 ): boolean => userPermissions.includes(permissionRequired);
 
 export const extractBasicAuthToken = (s: string): string => s.slice(6);

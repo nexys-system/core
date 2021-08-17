@@ -7,6 +7,7 @@ import { Permissions } from "../../../middleware/auth/type";
 
 import { ObjectWithId } from "../../../type";
 import ProductContext from "../../../services/product/context";
+import { Permission } from "../../../user-management/crud-type";
 
 const ProductService = <
   Profile extends ObjectWithId<Id>,
@@ -18,8 +19,8 @@ const ProductService = <
 ) => {
   const router = new Router();
 
-  router.all("/", MiddlewareAuth.isAuthorized("superadmin"), (ctx) => {
-    ctx.body = { app: "superadmin" };
+  router.all("/", MiddlewareAuth.isAuthorized(Permission.superadmin), (ctx) => {
+    ctx.body = { app: Permission[Permission.superadmin] };
   });
 
   router.all("/request/list", async (ctx) => {

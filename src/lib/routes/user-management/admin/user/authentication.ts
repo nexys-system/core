@@ -23,7 +23,7 @@ const AuthRoutes = <
   router.post(
     "/list",
     bodyParser(),
-    MiddlewareAuth.isAuthorized("admin"),
+    MiddlewareAuth.isAuthorized(T.Permission.admin),
     Validation.isShapeMiddleware({ uuid: { extraCheck: VU.checkUuid } }),
     async (ctx) => {
       const { uuid } = ctx.request.body;
@@ -34,7 +34,7 @@ const AuthRoutes = <
   router.post(
     "/detail",
     bodyParser(),
-    MiddlewareAuth.isAuthorized("admin"),
+    MiddlewareAuth.isAuthorized(T.Permission.admin),
     Validation.isShapeMiddleware({
       uuid: { extraCheck: VU.checkUuid },
     }),
@@ -47,7 +47,7 @@ const AuthRoutes = <
   router.post(
     "/insert",
     bodyParser(),
-    MiddlewareAuth.isAuthorized("admin"),
+    MiddlewareAuth.isAuthorized(T.Permission.admin),
     Validation.isShapeMiddleware(
       {
         type: { id: { type: "number" } },
@@ -69,7 +69,7 @@ const AuthRoutes = <
   router.post(
     "/update",
     bodyParser(),
-    MiddlewareAuth.isAuthorized("admin"),
+    MiddlewareAuth.isAuthorized(T.Permission.admin),
     Validation.isShapeMiddleware({
       uuid: { extraCheck: VU.checkUuid },
       type: { id: { type: "number" } },
@@ -89,7 +89,7 @@ const AuthRoutes = <
   router.post(
     "/delete",
     bodyParser(),
-    MiddlewareAuth.isAuthorized("admin"),
+    MiddlewareAuth.isAuthorized(T.Permission.admin),
     Validation.isShapeMiddleware({
       uuid: { extraCheck: VU.checkUuid },
     }),

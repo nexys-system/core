@@ -6,6 +6,7 @@ import m from "../../../middleware/auth";
 import { Permissions } from "../../../middleware/auth/type";
 import { ObjectWithId } from "../../../type";
 import { InstanceService } from "../../../user-management";
+import { Permission } from "../../../user-management/crud-type";
 
 const InstanceRoute = <
   Profile extends ObjectWithId<Id>,
@@ -20,7 +21,7 @@ const InstanceRoute = <
   router.get(
     "/list",
     bodyParser(),
-    MiddlewareAuth.isAuthorized("superadmin"),
+    MiddlewareAuth.isAuthorized(Permission.superadmin),
     async (ctx) => {
       ctx.body = await instanceService.list();
     }
@@ -29,7 +30,7 @@ const InstanceRoute = <
   router.post(
     "/detail",
     bodyParser(),
-    MiddlewareAuth.isAuthorized("superadmin"),
+    MiddlewareAuth.isAuthorized(Permission.superadmin),
     Validation.isShapeMiddleware({
       uuid: { extraCheck: VU.checkUuid },
     }),
@@ -42,7 +43,7 @@ const InstanceRoute = <
   router.post(
     "/insert",
     bodyParser(),
-    MiddlewareAuth.isAuthorized("superadmin"),
+    MiddlewareAuth.isAuthorized(Permission.superadmin),
     Validation.isShapeMiddleware({
       name: {},
       dateAdded: { type: "string" },
@@ -56,7 +57,7 @@ const InstanceRoute = <
   router.post(
     "/update",
     bodyParser(),
-    MiddlewareAuth.isAuthorized("superadmin"),
+    MiddlewareAuth.isAuthorized(Permission.superadmin),
     Validation.isShapeMiddleware({
       uuid: { extraCheck: VU.checkUuid },
       name: {},
@@ -71,7 +72,7 @@ const InstanceRoute = <
   router.post(
     "/delete",
     bodyParser(),
-    MiddlewareAuth.isAuthorized("superadmin"),
+    MiddlewareAuth.isAuthorized(Permission.superadmin),
     Validation.isShapeMiddleware({
       uuid: { extraCheck: VU.checkUuid },
     }),
@@ -85,7 +86,7 @@ const InstanceRoute = <
   router.post(
     "/exists",
     bodyParser(),
-    MiddlewareAuth.isAuthorized("superadmin"),
+    MiddlewareAuth.isAuthorized(Permission.superadmin),
     Validation.isShapeMiddleware({
       name: {},
     }),

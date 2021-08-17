@@ -7,6 +7,7 @@ import { Permissions } from "../../../../middleware/auth/type";
 
 import { ObjectWithId } from "../../../../type";
 import { UserToken } from "../../../../user-management";
+import { Permission } from "../../../../user-management/crud-type";
 
 const UserTokenService = <
   Profile extends ObjectWithId<Id>,
@@ -21,7 +22,7 @@ const UserTokenService = <
   router.post(
     "/list",
     bodyParser(),
-    MiddlewareAuth.isAuthorized("superadmin"),
+    MiddlewareAuth.isAuthorized(Permission.superadmin),
     Validation.isShapeMiddleware({ uuid: { extraCheck: VU.checkUuid } }),
     async (ctx) => {
       const { uuid } = ctx.request.body;
@@ -32,7 +33,7 @@ const UserTokenService = <
   router.post(
     "/delete",
     bodyParser(),
-    MiddlewareAuth.isAuthorized("superadmin"),
+    MiddlewareAuth.isAuthorized(Permission.superadmin),
     Validation.isShapeMiddleware({
       uuid: { extraCheck: VU.checkUuid },
     }),

@@ -8,6 +8,7 @@ import { Permissions } from "../../../../middleware/auth/type";
 
 import { ObjectWithId } from "../../../../type";
 import { PermissionService } from "../../../../user-management";
+import { Permission } from "../../../../user-management/crud-type";
 
 const InstanceService = <
   Profile extends ObjectWithId<Id>,
@@ -22,7 +23,7 @@ const InstanceService = <
   router.post(
     "/list",
     bodyParser(),
-    MiddlewareAuth.isAuthorized("superadmin"),
+    MiddlewareAuth.isAuthorized(Permission.superadmin),
     Validation.isShapeMiddleware({ uuid: { extraCheck: VU.checkUuid } }),
     async (ctx) => {
       const { uuid } = ctx.request.body;
@@ -33,7 +34,7 @@ const InstanceService = <
   router.post(
     "/toggle",
     bodyParser(),
-    MiddlewareAuth.isAuthorized("superadmin"),
+    MiddlewareAuth.isAuthorized(Permission.superadmin),
     Validation.isShapeMiddleware({
       instance: { uuid: { extraCheck: VU.checkUuid } },
       permission: { uuid: { extraCheck: VU.checkUuid } },

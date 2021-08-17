@@ -10,6 +10,7 @@ import { Uuid } from "@nexys/utils/dist/types";
 import { UserService } from "../../../../user-management";
 
 import { Status } from "../../../../user-management/type";
+import { Permission } from "../../../../user-management/crud-type";
 
 const UserRoutes = <
   Profile extends ObjectWithId<Id>,
@@ -24,7 +25,7 @@ const UserRoutes = <
   router.post(
     "/list",
     bodyParser(),
-    MiddlewareAuth.isAuthorized("superadmin"),
+    MiddlewareAuth.isAuthorized(Permission.superadmin),
     Validation.isShapeMiddleware({ uuid: { extraCheck: VU.checkUuid } }),
     async (ctx) => {
       const instance = ctx.request.body;
@@ -35,7 +36,7 @@ const UserRoutes = <
   router.post(
     "/detail",
     bodyParser(),
-    MiddlewareAuth.isAuthorized("superadmin"),
+    MiddlewareAuth.isAuthorized(Permission.superadmin),
     Validation.isShapeMiddleware({
       uuid: { extraCheck: VU.checkUuid },
       instance: { uuid: { extraCheck: VU.checkUuid } },
@@ -49,7 +50,7 @@ const UserRoutes = <
   router.post(
     "/insert",
     bodyParser(),
-    MiddlewareAuth.isAuthorized("superadmin"),
+    MiddlewareAuth.isAuthorized(Permission.superadmin),
     Validation.isShapeMiddleware({
       firstName: {},
       lastName: {},
@@ -73,7 +74,7 @@ const UserRoutes = <
   router.post(
     "/update",
     bodyParser(),
-    MiddlewareAuth.isAuthorized("superadmin"),
+    MiddlewareAuth.isAuthorized(Permission.superadmin),
     Validation.isShapeMiddleware({
       uuid: { extraCheck: VU.checkUuid },
       firstName: {},
@@ -94,7 +95,7 @@ const UserRoutes = <
   router.post(
     "/delete",
     bodyParser(),
-    MiddlewareAuth.isAuthorized("superadmin"),
+    MiddlewareAuth.isAuthorized(Permission.superadmin),
     Validation.isShapeMiddleware({
       uuid: { extraCheck: VU.checkUuid },
     }),
@@ -108,7 +109,7 @@ const UserRoutes = <
   router.post(
     "/exists",
     bodyParser(),
-    MiddlewareAuth.isAuthorized("superadmin"),
+    MiddlewareAuth.isAuthorized(Permission.superadmin),
     Validation.isShapeMiddleware({
       email: { extraCheck: VU.emailCheck },
       instance: { uuid: { extraCheck: VU.checkUuid } },
@@ -122,7 +123,7 @@ const UserRoutes = <
   router.post(
     "/status/change",
     bodyParser(),
-    MiddlewareAuth.isAuthorized("superadmin"),
+    MiddlewareAuth.isAuthorized(Permission.superadmin),
     Validation.isShapeMiddleware({
       uuid: { extraCheck: VU.checkUuid },
       status: { type: "number", extraCheck: VU.checkId },
