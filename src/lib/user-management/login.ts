@@ -33,7 +33,8 @@ export default class LoginService {
 
       return this.userService.getUserByAttributeWithAuth(
         { key: "uuid", value: authRow.user.uuid },
-        instance
+        instance,
+        authMode.type
       );
     }
 
