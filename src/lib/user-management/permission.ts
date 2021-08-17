@@ -36,7 +36,7 @@ export default class Permission<P = CT.Permission> {
     }[] = await this.qs.list(U.Entity.UserPermission, {
       projection: {
         permissionInstance: {
-          permission: { uuid: true, name: true },
+          permission: true,
           uuid: true,
         },
       },
