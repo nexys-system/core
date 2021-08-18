@@ -1,6 +1,6 @@
 # Nexys web framework
 
-[![CI](https://github.com/nexys-system/core-ts/workflows/CI/badge.svg)](https://github.com/nexys-system/core-ts/actions)
+[![CI](https://github.com/nexys-system/core/workflows/CI/badge.svg)](https://github.com/nexys-system/core/actions)
 [![NPM package](https://badge.fury.io/js/%40nexys%2Fcore.svg)](https://www.npmjs.com/package/@nexys/core)
 [![NPM package](https://img.shields.io/npm/v/@nexys/core.svg)](https://www.npmjs.com/package/@nexys/core)
 [![Bundleophobia](https://badgen.net/bundlephobia/min/@nexys/core)](https://bundlephobia.com/result?p=@nexys/core)
