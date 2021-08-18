@@ -400,7 +400,7 @@ const model: Entity[] = [
         type: "String",
       },
       {
-        name: "dateAdded",
+        name: "logDateAdded",
         optional: false,
 
         type: "LocalDateTime",

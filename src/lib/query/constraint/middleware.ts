@@ -63,6 +63,7 @@ class MiddlewareConstraints extends Constraints {
 
       await next();
     } catch (err) {
+      console.log("get role", err);
       ctx.body = { error: "this role does not exist" };
       ctx.status = 404;
       return;

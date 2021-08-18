@@ -18,6 +18,7 @@ class CrudRoutes<
   Id
 > {
   model: Entity[];
+  router: Router;
   constructor(
     model: Entity[],
     qs: QueryService,
@@ -30,12 +31,14 @@ class CrudRoutes<
     const router: Router = new Router();
 
     router.post(
-      "/query/:role",
+      "/:role/data",
       bodyParser(),
       MiddlewareAuth.isAuthenticated(),
       middleware.roleExists,
       async (ctx: Koa.Context) => {
         const query: FT.Query = ctx.request.body;
+
+        console.log(query);
 
         const { constraints } = ctx.state as {
           constraints: {
@@ -49,9 +52,10 @@ class CrudRoutes<
     );
 
     router.post(
-      "/mutate",
-      MiddlewareAuth.isAuthenticated(),
+      "/:role/mutate",
       bodyParser(),
+      MiddlewareAuth.isAuthenticated(),
+      middleware.roleExists,
       async (ctx: Koa.Context) => {
         const profile: T.Profile = ctx.state.profile as T.Profile;
         const query: FT.Mutate = ctx.request.body;
@@ -66,6 +70,8 @@ class CrudRoutes<
         ctx.body = await qs.mutateWithConstraint(query, constraints.mutate); //;
       }
     );
+
+    this.router = router;
   }
 }
 
