@@ -1,9 +1,9 @@
 # Nexys web framework
 
-[![CI](https://github.com/nexys-system/koa-lib-ts/workflows/CI/badge.svg)](https://github.com/nexys-system/koa-lib-ts/actions)
-[![NPM package](https://badge.fury.io/js/%40nexys%2Fkoa-lib.svg)](https://www.npmjs.com/package/@nexys/koa-lib)
-[![NPM package](https://img.shields.io/npm/v/@nexys/koa-lib.svg)](https://www.npmjs.com/package/@nexys/koa-lib)
-[![Bundleophobia](https://badgen.net/bundlephobia/min/@nexys/koa-lib)](https://bundlephobia.com/result?p=@nexys/koa-lib)
+[![CI](https://github.com/nexys-system/core-ts/workflows/CI/badge.svg)](https://github.com/nexys-system/core-ts/actions)
+[![NPM package](https://badge.fury.io/js/%40nexys%2Fcore.svg)](https://www.npmjs.com/package/@nexys/core)
+[![NPM package](https://img.shields.io/npm/v/@nexys/core.svg)](https://www.npmjs.com/package/@nexys/core)
+[![Bundleophobia](https://badgen.net/bundlephobia/min/@nexys/core)](https://bundlephobia.com/result?p=@nexys/core)
 [![Prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://prettier.io/)
 
 Nexys typescript web framework (built on top of Koa and Nexys System SDK)
@@ -18,7 +18,7 @@ path suggestion: `src/app.ts`
 
 ```
 import Mount from 'koa-mount';
-import { App, Routes } from '@nexys/koa-lib';
+import { App, Routes } from '@nexys/core';
 
 // import module/service
 import RouteModule from './route/module';
@@ -45,7 +45,7 @@ export const startApp = async (port: number) => {
 path suggestion: `src/service/cache.ts`
 
 ```
-import { Cache } from '@nexys/koa-lib';
+import { Cache } from '@nexys/core';
 export default new Cache.Local({persistent: true });
 ```
 
@@ -54,7 +54,7 @@ export default new Cache.Local({persistent: true });
 path suggestion: `src/middleware/auth.ts`
 
 ```
-import { Middleware} from '@nexys/koa-lib';
+import { Middleware} from '@nexys/core';
 import * as Login from '../service/login';
 import cache from '../service/cache';
 
