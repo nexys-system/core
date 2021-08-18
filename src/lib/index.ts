@@ -8,5 +8,6 @@ export * as UserManagement from "./routes/user-management";
 export * as Query from "./query";
 
 import App from "./app";
+import Product from "./product";
 
-export { App };
+export { App, Product };

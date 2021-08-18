@@ -9,7 +9,7 @@ import Cache from "./cache/cache";
 
 import ProductContext from "./services/product/context";
 
-interface Configuration {
+export interface Configuration {
   secretKey: string;
   host: string;
   appToken: string;
