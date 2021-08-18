@@ -16,6 +16,12 @@ import {
 import * as Fetchr from "@nexys/fetchr";
 
 import * as T from "../user-management/type";
+import { QueryConstraint } from "./constraint/type";
+
+import * as QueryBuilder from "./constraint/query-builder";
+import * as TT from "./constraint/type";
+import { Entity } from "./model/type";
+import { mutatePostProcessing } from "./constraint/utils";
 
 type QueryResponse = any;
 
@@ -209,6 +215,43 @@ class QueryService extends T.QueryService {
 
     return re.delete;
   }
+
+  dataWithConstraint = async (
+    query: Query,
+    constraints: QueryConstraint,
+    model: Entity[]
+  ): Promise<QueryResponse> => {
+    QueryBuilder.Data.constructQueryPermission(
+      query,
+      constraints.filterConstraintsMap,
+      constraints.projectionConstraintsMap,
+      model
+    );
+    return this.data(query);
+  };
+
+  mutateWithConstraint = async (
+    query: Mutate,
+    constraints: TT.MutateConstraint
+  ): Promise<{ status: number; body: MutateResponse | string }> => {
+    query = QueryBuilder.Mutate.constructMutatePermission(
+      query,
+      constraints.filterConstraintsMap,
+      constraints.dataConstraintsMap,
+      constraints.append
+    );
+
+    try {
+      const r = await this.mutate(query);
+
+      return mutatePostProcessing(r);
+    } catch (err) {
+      return {
+        status: 500,
+        body: "internal server error when querying mutate",
+      };
+    }
+  };
 }
 
 export default QueryService;

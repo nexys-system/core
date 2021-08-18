@@ -1,15 +1,4 @@
-interface Field {
-  name: string;
-  type: string;
-  optional: boolean;
-  options?: any[];
-}
-
-interface Entity {
-  name: string;
-  uuid: boolean;
-  fields: Field[];
-}
+import { Entity } from "../lib/query/model/type";
 
 const model: Entity[] = [
   {
