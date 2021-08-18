@@ -2,16 +2,27 @@ import Koa from "koa";
 import Router from "koa-router";
 import bodyParser from "koa-body";
 
-import MiddlewareConstraints from "./middleware";
+import MiddlewareConstraints from "../query/constraint/middleware";
 
-import { Entity } from "../model/type";
-import * as T from "../constraint/type";
-import QueryService from "../service";
+import { Entity } from "../query/model/type";
+import * as T from "../query/constraint/type";
+import QueryService from "../query/service";
 import * as FT from "@nexys/fetchr/dist/type";
+import m from "../middleware/auth";
+import { ObjectWithId } from "../type";
+import { Permissions } from "../middleware/auth/type";
 
-class CrudRoutes {
+class CrudRoutes<
+  Profile extends ObjectWithId<Id>,
+  UserCache extends Permissions,
+  Id
+> {
   model: Entity[];
-  constructor(model: Entity[], qs: QueryService) {
+  constructor(
+    model: Entity[],
+    qs: QueryService,
+    MiddlewareAuth: m<Profile, UserCache, Id>
+  ) {
     this.model = model;
 
     const middleware = new MiddlewareConstraints(this.model);
@@ -21,7 +32,7 @@ class CrudRoutes {
     router.post(
       "/query/:role",
       bodyParser(),
-      //  Auth.isAuthenticated(),
+      MiddlewareAuth.isAuthenticated(),
       middleware.roleExists,
       async (ctx: Koa.Context) => {
         const query: FT.Query = ctx.request.body;
@@ -39,7 +50,7 @@ class CrudRoutes {
 
     router.post(
       "/mutate",
-      //  Auth.isAuthenticated(),
+      MiddlewareAuth.isAuthenticated(),
       bodyParser(),
       async (ctx: Koa.Context) => {
         const profile: T.Profile = ctx.state.profile as T.Profile;
