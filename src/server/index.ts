@@ -24,4 +24,6 @@ const startApp = async (port: number) => {
   app.listen(port, () => console.log("Server started at port " + port));
 };
 
-startApp(3001);
+const port = process.env.PORT ? Number(process.env.PORT) : 3001;
+
+startApp(port);

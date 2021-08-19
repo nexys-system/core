@@ -227,6 +227,7 @@ class QueryService extends T.QueryService {
       constraints.projectionConstraintsMap,
       model
     );
+    console.log(JSON.stringify(query));
     return this.data(query);
   };
 

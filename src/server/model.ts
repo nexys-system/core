@@ -2,192 +2,6 @@ import { Entity } from "../lib/query/model/type";
 
 const model: Entity[] = [
   {
-    name: "Investor",
-    uuid: true,
-    fields: [
-      {
-        name: "phone",
-        optional: true,
-
-        type: "String",
-      },
-      {
-        name: "company",
-        optional: true,
-
-        type: "String",
-      },
-      {
-        name: "iban",
-        optional: true,
-
-        type: "String",
-      },
-      {
-        name: "bic",
-        optional: true,
-
-        type: "String",
-      },
-      {
-        name: "user",
-        optional: false,
-
-        type: "User",
-      },
-    ],
-  },
-  {
-    name: "Property",
-    uuid: true,
-    fields: [
-      {
-        name: "street",
-        optional: false,
-
-        type: "String",
-      },
-      {
-        name: "zip",
-        optional: false,
-
-        type: "String",
-      },
-      {
-        name: "city",
-        optional: false,
-
-        type: "String",
-      },
-      {
-        name: "categoryId",
-        optional: false,
-
-        type: "Int",
-        options: [
-          {
-            id: 1,
-            name: "test",
-          },
-        ],
-      },
-      {
-        name: "typeId",
-        optional: false,
-
-        type: "Int",
-      },
-      {
-        name: "statusId",
-        optional: false,
-
-        type: "Int",
-      },
-      {
-        name: "purchasePrice",
-        optional: false,
-
-        type: "BigDecimal",
-      },
-      {
-        name: "sharePrice",
-        optional: false,
-
-        type: "BigDecimal",
-      },
-    ],
-  },
-  {
-    name: "InvestorProperty",
-    uuid: true,
-    fields: [
-      {
-        name: "user",
-        optional: false,
-
-        type: "Investor",
-      },
-      {
-        name: "property",
-        optional: false,
-
-        type: "Property",
-      },
-      {
-        name: "n_shares",
-        optional: false,
-
-        type: "BigDecimal",
-      },
-    ],
-  },
-  {
-    name: "Transaction",
-    uuid: true,
-    fields: [
-      {
-        name: "property",
-        optional: false,
-
-        type: "Property",
-      },
-      {
-        name: "user",
-        optional: false,
-
-        type: "Investor",
-      },
-      {
-        name: "amount",
-        optional: false,
-
-        type: "BigDecimal",
-      },
-      {
-        name: "date",
-        optional: false,
-
-        type: "LocalDate",
-      },
-      {
-        name: "typeId",
-        optional: false,
-
-        type: "Int",
-      },
-    ],
-  },
-  {
-    name: "Referral",
-    uuid: true,
-    fields: [
-      {
-        name: "user",
-        optional: false,
-
-        type: "Investor",
-      },
-      {
-        name: "email",
-        optional: false,
-
-        type: "String",
-      },
-      {
-        name: "logDateAdded",
-        optional: false,
-
-        type: "LocalDateTime",
-      },
-      {
-        name: "statusId",
-        optional: false,
-
-        type: "Int",
-      },
-    ],
-  },
-  {
     name: "User",
     uuid: true,
     fields: [
@@ -235,15 +49,15 @@ const model: Entity[] = [
         options: [
           {
             id: 1,
-            name: "ACTIVE",
+            name: "active",
           },
           {
             id: 2,
-            name: "INACTIVE",
+            name: "inactive",
           },
           {
             id: 3,
-            name: "PENDING",
+            name: "pending",
           },
         ],
       },
@@ -252,104 +66,6 @@ const model: Entity[] = [
         optional: true,
 
         type: "String",
-      },
-    ],
-  },
-  {
-    name: "UserStatus",
-    uuid: false,
-    fields: [
-      {
-        name: "name",
-        optional: false,
-
-        type: "String",
-      },
-    ],
-  },
-  {
-    name: "Tenant",
-    uuid: true,
-    fields: [
-      {
-        name: "phone",
-        optional: false,
-
-        type: "String",
-      },
-      {
-        name: "user",
-        optional: false,
-
-        type: "User",
-      },
-    ],
-  },
-  {
-    name: "TenantProperty",
-    uuid: true,
-    fields: [
-      {
-        name: "rent",
-        optional: false,
-
-        type: "BigDecimal",
-      },
-      {
-        name: "dateStart",
-        optional: false,
-
-        type: "LocalDate",
-      },
-      {
-        name: "dateEnd",
-        optional: true,
-
-        type: "LocalDate",
-      },
-      {
-        name: "property",
-        optional: false,
-
-        type: "Property",
-      },
-      {
-        name: "tenant",
-        optional: false,
-
-        type: "Tenant",
-      },
-    ],
-  },
-  {
-    name: "TenantRent",
-    uuid: true,
-    fields: [
-      {
-        name: "tenantProperty",
-        optional: false,
-
-        type: "TenantProperty",
-      },
-      {
-        name: "statusId",
-        optional: false,
-
-        type: "Int",
-        options: [
-          {
-            id: 1,
-            name: "pending",
-          },
-          {
-            id: 2,
-            name: "paid",
-          },
-          {
-            id: 3,
-            name: "overdue",
-          },
-        ],
       },
     ],
   },
@@ -384,6 +100,10 @@ const model: Entity[] = [
           {
             id: 1,
             name: "password",
+          },
+          {
+            id: 7,
+            name: "ibm",
           },
         ],
       },
@@ -441,116 +161,19 @@ const model: Entity[] = [
 
         type: "Int",
         options: [
-          { id: 1, name: "app" },
-          { id: 1, name: "admin" },
-          { id: 1, name: "superadmin" },
-        ],
-      },
-    ],
-  },
-  {
-    name: "MaintenanceType",
-    uuid: false,
-    fields: [
-      {
-        name: "name",
-        optional: false,
-
-        type: "String",
-      },
-    ],
-  },
-  {
-    name: "Maintenance",
-    uuid: true,
-    fields: [
-      {
-        name: "property",
-        optional: false,
-
-        type: "Property",
-      },
-      {
-        name: "tenancy",
-        optional: true,
-
-        type: "TenantProperty",
-      },
-      {
-        name: "subject",
-        optional: false,
-
-        type: "String",
-      },
-      {
-        name: "type",
-        optional: false,
-
-        type: "MaintenanceType",
-      },
-      {
-        name: "priorityId",
-        optional: false,
-
-        type: "Int",
-        options: [
           {
             id: 1,
-            name: "Low",
+            name: "app",
           },
           {
             id: 2,
-            name: "Default",
+            name: "admin",
           },
           {
             id: 3,
-            name: "Emergency",
+            name: "superadmin",
           },
         ],
-      },
-      {
-        name: "description",
-        optional: true,
-
-        type: "String",
-      },
-      {
-        name: "statusId",
-        optional: false,
-
-        type: "Int",
-        options: [
-          {
-            id: 1,
-            name: "ToDo",
-          },
-          {
-            id: 2,
-            name: "InProgress",
-          },
-          {
-            id: 3,
-            name: "Done",
-          },
-        ],
-      },
-    ],
-  },
-  {
-    name: "Service",
-    uuid: true,
-    fields: [
-      {
-        name: "name",
-        optional: false,
-
-        type: "String",
-      },
-      {
-        name: "date",
-        optional: false,
-
-        type: "String",
       },
     ],
   },
@@ -558,6 +181,12 @@ const model: Entity[] = [
     name: "UserToken",
     uuid: true,
     fields: [
+      {
+        name: "user",
+        optional: false,
+
+        type: "User",
+      },
       {
         name: "token",
         optional: false,
@@ -569,12 +198,6 @@ const model: Entity[] = [
         optional: false,
 
         type: "LocalDateTime",
-      },
-      {
-        name: "user",
-        optional: false,
-
-        type: "User",
       },
       {
         name: "ip",
@@ -590,6 +213,177 @@ const model: Entity[] = [
       },
     ],
   },
+  {
+    name: "Company",
+    uuid: false,
+    fields: [
+      {
+        name: "name",
+        optional: false,
+
+        type: "String",
+      },
+      {
+        name: "country",
+        optional: false,
+
+        type: "Country",
+      },
+      {
+        name: "ceid",
+        optional: true,
+
+        type: "String",
+      },
+      {
+        name: "wwid",
+        optional: true,
+
+        type: "String",
+      },
+      {
+        name: "isObserved",
+        optional: false,
+
+        type: "Boolean",
+      },
+      {
+        name: "tssFriendly",
+        optional: false,
+
+        type: "Boolean",
+      },
+      {
+        name: "targetedId",
+        optional: false,
+
+        type: "Int",
+      },
+    ],
+  },
+
+  {
+    name: "Country",
+    uuid: false,
+    fields: [
+      {
+        name: "name",
+        optional: false,
+
+        type: "String",
+      },
+      {
+        name: "iso3166Alpha2",
+        optional: false,
+
+        type: "String",
+      },
+      {
+        name: "iso3166Alpha3",
+        optional: false,
+
+        type: "String",
+      },
+      {
+        name: "market",
+        optional: false,
+
+        type: "Market",
+      },
+    ],
+  },
+  {
+    name: "Market",
+    uuid: false,
+    fields: [
+      {
+        name: "name",
+        optional: false,
+
+        type: "String",
+      },
+      {
+        name: "geo",
+        optional: false,
+
+        type: "Geo",
+      },
+    ],
+  },
+  {
+    name: "Geo",
+    uuid: false,
+    fields: [
+      {
+        name: "name",
+        optional: false,
+
+        type: "String",
+      },
+      {
+        name: "short",
+        optional: false,
+
+        type: "String",
+      },
+    ],
+  },
+  {
+    name: "Domain",
+    uuid: true,
+    fields: [
+      {
+        name: "name",
+        optional: false,
+        type: "String",
+      },
+      {
+        name: "company",
+        optional: false,
+        type: "Company",
+      },
+    ],
+  },
+  {
+    name: "Address",
+    uuid: true,
+    fields: [
+      {
+        name: "street",
+        optional: false,
+        type: "String",
+      },
+      {
+        name: "zip",
+        optional: false,
+        type: "String",
+      },
+      {
+        name: "country",
+        optional: false,
+        type: "Country",
+      },
+      {
+        name: "company",
+        optional: false,
+        type: "Company",
+      },
+    ],
+  },
 ];
+
+const companyUnit = model.find((x) => x.name === "Company");
+
+if (!companyUnit) {
+  throw Error("cannot find company entity");
+}
+
+const bpUnit = {
+  ...companyUnit,
+  uuid: false,
+  name: "BusinessPartner",
+  table: "company",
+};
+model.push(bpUnit);
 
 export default model;
