@@ -235,12 +235,15 @@ class QueryService extends T.QueryService {
     query: Mutate,
     constraints: TT.MutateConstraint
   ): Promise<{ status: number; body: MutateResponse | string }> => {
+    console.log(JSON.stringify(query));
     query = QueryBuilder.Mutate.constructMutatePermission(
       query,
       constraints.filterConstraintsMap,
       constraints.dataConstraintsMap,
       constraints.append
     );
+
+    console.log(JSON.stringify(query));
 
     try {
       const r = await this.mutate(query);
