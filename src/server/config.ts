@@ -27,5 +27,5 @@ export const ssoGithub = {
   client_secret: "7d34944b9f420a950eb52a9447627702bc1685fe",
 };
 
-export const host = "https://flow.nexys.io";
+export const host = "https://flow-test.nexys.io";
 export const appToken = process.env.APP_TOKEN || "";

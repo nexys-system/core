@@ -6,6 +6,12 @@ import Cache from "../lib/cache/local";
 
 import * as Config from "./config";
 
+import WorkflowService from "../lib/services/workflow";
+import EmailService from "../lib/services/email";
+
+export const email = new EmailService(Config.host, Config.appToken);
+export const workflow = new WorkflowService(Config.host, Config.appToken);
+
 const fetchR = new FetchR.default(Config.database, Config.model);
 export const qs = new QueryService(fetchR);
 export const cache = new Cache();

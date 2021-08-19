@@ -6,6 +6,10 @@ import graphQLRoutes from "./routes/graphql";
 import ssoRoutes from "./routes/sso";
 import crudRoutes from "./routes/crud";
 
+//
+import mdmRoutes from "./routes/mdm";
+//
+
 const app = App();
 const router = new Router();
 
@@ -13,6 +17,7 @@ router.use(userManagementRoutes);
 router.use("/graphql", graphQLRoutes);
 router.use("/sso", ssoRoutes);
 router.use("/crud", crudRoutes);
+router.use("/mdm", mdmRoutes);
 
 router.get("/", (ctx) => {
   ctx.body = { hello: "world" };
