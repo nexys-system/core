@@ -184,7 +184,7 @@ export default class Auth<
 
       if (token === undefined) {
         ctx.status = 401;
-        ctx.body = { message: "please provide a token" };
+        ctx.body = { message: "isAuthenticated: please provide a token" };
         return;
       }
 

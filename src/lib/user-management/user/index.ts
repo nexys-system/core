@@ -109,7 +109,6 @@ export default class User {
     value: string
   ): Promise<CT.UserAuthentication> => {
     try {
-      console.log({ filters: { type, value } });
       return await this.qs.find<CT.UserAuthentication>(
         U.Entity.UserAuthentication,
         { filters: { type, value } },

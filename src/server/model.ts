@@ -354,7 +354,22 @@ const model: Entity[] = [
         type: "String",
       },
       {
+        name: "street2",
+        optional: true,
+        type: "String",
+      },
+      {
+        name: "street3",
+        optional: true,
+        type: "String",
+      },
+      {
         name: "zip",
+        optional: false,
+        type: "String",
+      },
+      {
+        name: "city",
         optional: false,
         type: "String",
       },
