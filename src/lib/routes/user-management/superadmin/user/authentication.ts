@@ -51,7 +51,7 @@ const UserAuthenticationService = <
     MiddlewareAuth.isAuthorized(T.Permission.superadmin),
     Validation.isShapeMiddleware(
       {
-        type: { id: { type: "number" } },
+        type: { type: "number" },
         value: {},
         isEnabled: { type: "boolean" },
         user: { uuid: { extraCheck: VU.checkUuid } },
