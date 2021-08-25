@@ -385,6 +385,42 @@ const model: Entity[] = [
       },
     ],
   },
+  {
+    name: "CompanyLog",
+    uuid: true,
+    fields: [
+      {
+        name: "oldValue",
+        optional: false,
+
+        type: "String",
+      },
+      {
+        name: "logUser",
+        optional: false,
+
+        type: "User",
+      },
+      {
+        name: "logDateAdded",
+        optional: false,
+
+        type: "LocalDateTime",
+      },
+      {
+        name: "company",
+        optional: false,
+
+        type: "Company",
+      },
+      {
+        name: "attribute",
+        optional: false,
+
+        type: "String",
+      },
+    ],
+  },
 ];
 
 const companyUnit = model.find((x) => x.name === "Company");

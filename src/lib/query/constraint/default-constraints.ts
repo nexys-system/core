@@ -17,7 +17,7 @@ class DefaultConstraints {
     this.model = model;
   }
 
-  public getSuperadmin = () => {
+  public getSuperadmin = (profile: T.Profile) => {
     const data: T.QueryConstraint = {
       filterConstraintsMap: new Map(),
       projectionConstraintsMap: new Map(
@@ -33,7 +33,7 @@ class DefaultConstraints {
     const mutate: T.MutateConstraint = {
       filterConstraintsMap: new Map(),
       dataConstraintsMap: new Map(),
-      append: {}, //defaultAppend(user, instance)
+      append: defaultAppend(profile),
     };
     return { data, mutate };
   };
