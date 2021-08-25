@@ -238,13 +238,11 @@ const model: Entity[] = [
       {
         name: "wwid",
         optional: true,
-
         type: "String",
       },
       {
         name: "isObserved",
         optional: false,
-
         type: "Boolean",
       },
       {
@@ -256,9 +254,9 @@ const model: Entity[] = [
       {
         name: "targetedId",
         optional: false,
-
         type: "Int",
       },
+      { name: "logUser", optional: true, type: "User" },
     ],
   },
 

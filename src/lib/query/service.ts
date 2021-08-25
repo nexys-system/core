@@ -250,6 +250,7 @@ class QueryService extends T.QueryService {
 
       return mutatePostProcessing(r);
     } catch (err) {
+      console.error(err);
       return {
         status: 500,
         body: "internal server error when querying mutate",
