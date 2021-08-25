@@ -6,6 +6,7 @@ import * as OAuth from "@nexys/oauth";
 import { AuthenticationType } from "../../lib/user-management/crud-type";
 
 import Product from "../product";
+import { getIPandUserAgent } from "../../lib/routes/user-management/login/utils";
 
 const gh = new OAuth.Github(
   Config.ssoGithub.client_id,
@@ -29,7 +30,7 @@ router.get("/github/redirect", async (ctx) => {
       profile.login,
       Config.instance,
       { type: AuthenticationType.github },
-      { ip: "" }
+      getIPandUserAgent(ctx)
     );
 
     await Product.middlewareAuth.authOutput(
@@ -57,7 +58,7 @@ router.get("/username", async (ctx) => {
       login,
       Config.instance,
       { type: AuthenticationType.ibm },
-      { ip: "" }
+      getIPandUserAgent(ctx)
     );
 
     await Product.middlewareAuth.authOutput(
