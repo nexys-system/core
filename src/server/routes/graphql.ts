@@ -7,7 +7,7 @@ import Product from "../product";
 import * as GraphQl from "../graph-ql";
 import * as Config from "../config";
 
-const gQLSchema = GraphQLService.SchemaFactory.getSchemaFromJSONDDL(
+const gQLSchema = GraphQLService.SchemaFactory.getSchemaFromModel(
   Config.model,
   Product.qs
 );
