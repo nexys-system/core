@@ -59,7 +59,7 @@ const LoginRoutes = <Profile extends ObjectWithId<Id>, Id>(
       );
     } catch (err) {
       ctx.status = 400;
-      ctx.body = { error: err.message };
+      ctx.body = { error: (err as any).message };
       return;
     }
   });
