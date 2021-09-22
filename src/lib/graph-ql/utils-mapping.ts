@@ -26,7 +26,6 @@ export const mapInputType = (
 };
 
 export const mapOutputType = (
-  _entity: string,
   { name, type }: T.Field,
   entityTypes: T.GLTypes = new Map()
 ): GL.GraphQLOutputType | undefined => {

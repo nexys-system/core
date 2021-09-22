@@ -6,12 +6,15 @@ import * as U from "./utils";
 import * as UM from "./utils-mapping";
 
 import QueryService from "../query/service";
-import { QueryFilters, QueryProjection } from "@nexys/fetchr/dist/type";
+import { QueryFilters } from "@nexys/fetchr/dist/type";
 
-export interface Model {
-  [entity: string]: { projection?: {}; filters?: QueryFilters };
-}
-
+/**
+ * creates GL types from the model
+ * Note that first entities with no dependencies will need to be added
+ * This will break for self referncing entities!
+ * @param def
+ * @returns
+ */
 export const createTypesFromModel = (def: T.Ddl[]): T.GLTypes => {
   const QLtypes: T.GLTypes = new Map();
 
@@ -22,6 +25,7 @@ export const createTypesFromModel = (def: T.Ddl[]): T.GLTypes => {
   const maxIteration = 1000; // to avoid an infinite loop, in most cases (logically) after i = entities.length*2 it should be done
   while (entities.length > 0 && i < maxIteration) {
     i++;
+    // get observed entity (first of the array of entities)
     // observed entity - remove entity from array
     const entity = entities.splice(index0, 1)[0];
 
@@ -31,7 +35,7 @@ export const createTypesFromModel = (def: T.Ddl[]): T.GLTypes => {
       .map((x) => x.type);
 
     // among the foreign keys fields, look if they were already handled,
-    // if yes the observed entity can be hjandled since all fks are already present
+    // if yes the observed entity can be handled since all fks are already present
     const canBeHandled = fieldsTypeFk
       .map((entity) => entities.find((e) => e.name === entity))
       .map((x) => x === undefined)
@@ -47,19 +51,26 @@ export const createTypesFromModel = (def: T.Ddl[]): T.GLTypes => {
       continue;
     }
 
-    // console.log("entering " + entity.name);
+    // initialize fields
     const fields: GL.GraphQLFieldConfigMap<any, any> = {};
 
-    entity.fields.forEach((f) => {
-      const pType = UM.mapOutputType(entity.name, f, QLtypes);
+    // populate fields
+    entity.fields.forEach((field) => {
+      const pType: GL.GraphQLOutputType | undefined = UM.mapOutputType(
+        field,
+        QLtypes
+      );
 
       if (pType) {
-        const type = f.optional === true ? pType : new GL.GraphQLNonNull(pType);
+        const type: GL.GraphQLOutputType =
+          field.optional === true ? pType : new GL.GraphQLNonNull(pType);
 
-        fields[f.name] = { type };
+        // add field to GLField for observed entity
+        fields[field.name] = { type };
       }
     });
 
+    // create GraphQL Object
     const objectType = new GL.GraphQLObjectType({
       name: entity.name,
       fields,
@@ -75,6 +86,7 @@ export const createTypesFromModel = (def: T.Ddl[]): T.GLTypes => {
     });
     // end args
 
+    // add to the list of types
     QLtypes.set(entity.name, {
       objectType,
       args,
@@ -96,7 +108,7 @@ export const createTypesFromModel = (def: T.Ddl[]): T.GLTypes => {
 export const getQueryFromJSONDDL = (
   def: T.Ddl[],
   ProductQuery: QueryService,
-  constraints?: Model
+  constraints?: T.Model
 ): GL.GraphQLObjectType => {
   const QLtypes: T.GLTypes = createTypesFromModel(def);
 
@@ -104,8 +116,8 @@ export const getQueryFromJSONDDL = (
 
   def.forEach((entity) => {
     fields[entity.name] = {
-      type: new GL.GraphQLList(getType(entity.name, QLtypes)),
-      args: getArgs(entity.name, QLtypes),
+      type: new GL.GraphQLList(U.getType(entity.name, QLtypes)),
+      args: U.getArgs(entity.name, QLtypes),
 
       resolve: (
         _data: any,
@@ -113,7 +125,7 @@ export const getQueryFromJSONDDL = (
         _context,
         resolveInfo
       ) => {
-        const projection = formatGFields(graphqlFields(resolveInfo));
+        const projection = U.formatGFields(graphqlFields(resolveInfo));
 
         // prepare filters
         if (constraints && !constraints[entity.name]) {
@@ -149,55 +161,10 @@ export const getQueryFromJSONDDL = (
 };
 
 export const getSchemaFromJSONDDL = (
-  ddlInput: T.Ddl[],
+  def: T.Ddl[],
   ProductQuery: QueryService
 ): GL.GraphQLSchema => {
-  const ddl = U.ddl(ddlInput);
+  const ddl = U.ddl(def);
   const query = getQueryFromJSONDDL(ddl, ProductQuery);
   return new GL.GraphQLSchema({ query });
-};
-
-interface GField {
-  [field: string]: {} | GField;
-}
-
-const formatGFields = (a: GField): QueryProjection => {
-  Object.keys(a).forEach((k) => {
-    if (Object.keys(a[k]).length === 0) {
-      a[k] = true;
-    } else {
-      formatGFields(a[k]);
-    }
-  });
-
-  return a;
-};
-
-const getType = (entity: string, QLtypes: T.GLTypes): GL.GraphQLObjectType => {
-  const r = QLtypes.get(entity);
-  //console.log(r);
-  //console.log(entity);
-
-  if (!r || !r.objectType) {
-    throw Error("could not find entity " + entity);
-  }
-
-  return r.objectType;
-};
-
-const getArgs = (
-  entity: string,
-  QLtypes: T.GLTypes
-): GL.GraphQLFieldConfigArgumentMap => {
-  const r = QLtypes.get(entity);
-
-  if (!r || !r.args) {
-    throw Error("could not find entity " + entity);
-  }
-
-  return {
-    ...r.args,
-    _take: { type: GL.GraphQLInt },
-    _skip: { type: GL.GraphQLInt },
-  };
 };

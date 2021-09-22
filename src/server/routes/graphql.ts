@@ -14,6 +14,6 @@ const gQLSchema = GraphQLService.SchemaFactory.getSchemaFromJSONDDL(
 
 const router = new Router();
 
-router.use("/", GraphQl.getGraphQLRoutes(gQLSchema, Config.appToken));
+router.use(GraphQl.getGraphQLRoutes(gQLSchema, Config.appToken));
 
 export default router.routes();
