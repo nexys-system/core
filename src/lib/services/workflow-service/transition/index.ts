@@ -12,7 +12,7 @@ import {
 } from "../types";
 
 import HTTP from "@nexys/http";
-import { WorkflowInstance } from "../../workflow2/type";
+import { WorkflowInstance } from "../../workflow/type";
 
 /**
  * list outgoing transitions from node

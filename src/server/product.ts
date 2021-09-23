@@ -6,7 +6,7 @@ import Cache from "../lib/cache/local";
 
 import * as Config from "./config";
 
-import WorkflowService from "../lib/services/workflow2";
+import WorkflowService from "../lib/services/workflow";
 import EmailService from "../lib/services/email";
 import NotificationService from "../lib/services/notification";
 

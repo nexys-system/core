@@ -5,7 +5,7 @@ import * as NexysQueryService from "../../../../nexys/nexys";
 
 import { OptionSet, WorkflowState } from "../types";
 import { Context } from "../../../../nexys/context";
-import { WorkflowInstance } from "../../workflow2/type";
+import { WorkflowInstance } from "../../workflow/type";
 
 const entity = "WorkflowInstance";
 
