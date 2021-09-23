@@ -13,7 +13,7 @@ export const getQueryFromModel = (
   ProductQuery: QueryService,
   constraints?: T.Model
 ): GL.GraphQLObjectType => {
-  const QLtypes: T.GLTypes = createTypesFromModel(def);
+  const QLtypes: T.GLTypes = createTypesFromModel(def, constraints);
 
   const fields: GL.Thunk<GL.GraphQLFieldConfigMap<any, any>> = {};
 

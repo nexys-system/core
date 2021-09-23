@@ -10,7 +10,10 @@ import * as UM from "./utils-mapping";
  * @param def
  * @returns
  */
-export const createTypesFromModel = (def: T.Ddl[]): T.GLTypes => {
+export const createTypesFromModel = (
+  def: T.Ddl[],
+  constraints?: T.Model
+): T.GLTypes => {
   const QLtypes: T.GLTypes = new Map();
 
   const entities = [...def];
@@ -50,20 +53,43 @@ export const createTypesFromModel = (def: T.Ddl[]): T.GLTypes => {
     const fields: GL.GraphQLFieldConfigMap<any, any> = {};
 
     // populate fields
-    entity.fields.forEach((field) => {
-      const pType: GL.GraphQLOutputType | undefined = UM.mapOutputType(
-        field,
-        QLtypes
-      );
+    entity.fields
+      // only add fields that are in constraints projections (if constraints exists)
+      .filter((field) => {
+        if (!constraints) {
+          return true;
+        }
 
-      if (pType) {
-        const type: GL.GraphQLOutputType =
-          field.optional === true ? pType : new GL.GraphQLNonNull(pType);
+        if (["id", "uuid"].includes(field.name)) {
+          return true;
+        }
 
-        // add field to GLField for observed entity
-        fields[field.name] = { type };
-      }
-    });
+        const { projection } = constraints[entity.name];
+
+        if (!projection) {
+          return true;
+        }
+
+        if (projection[field.name] === true) {
+          return true;
+        }
+
+        return false;
+      })
+      .forEach((field) => {
+        const pType: GL.GraphQLOutputType | undefined = UM.mapOutputType(
+          field,
+          QLtypes
+        );
+
+        if (pType) {
+          const type: GL.GraphQLOutputType =
+            field.optional === true ? pType : new GL.GraphQLNonNull(pType);
+
+          // add field to GLField for observed entity
+          fields[field.name] = { type };
+        }
+      });
 
     // create GraphQL Object
     const objectType = new GL.GraphQLObjectType({

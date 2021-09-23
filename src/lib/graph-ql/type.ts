@@ -1,4 +1,4 @@
-import { QueryFilters } from "@nexys/fetchr/dist/type";
+import { QueryFilters, QueryProjection } from "@nexys/fetchr/dist/type";
 import * as GL from "graphql";
 
 export interface FieldOption {
@@ -37,7 +37,7 @@ export type GLTypes = Map<
 export type GLBasicType = "ID" | "String" | "Boolean" | "Int" | "Float";
 
 export interface Model {
-  [entity: string]: { projection?: {}; filters?: QueryFilters };
+  [entity: string]: { projection?: QueryProjection; filters?: QueryFilters };
 }
 
 export interface GField {
