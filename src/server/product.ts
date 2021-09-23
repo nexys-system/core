@@ -8,9 +8,14 @@ import * as Config from "./config";
 
 import WorkflowService from "../lib/services/workflow";
 import EmailService from "../lib/services/email";
+import NotificationService from "../lib/services/notification";
 
 export const email = new EmailService(Config.host, Config.appToken);
 export const workflow = new WorkflowService(Config.host, Config.appToken);
+export const notifications = new NotificationService(
+  Config.host,
+  Config.appToken
+);
 
 const fetchR = new FetchR.default(Config.database, Config.model);
 export const qs = new QueryService(fetchR);

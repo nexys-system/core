@@ -16,3 +16,13 @@ export interface BusinessPartner {
 }
 
 export type Company = BusinessPartner;
+
+type Id = number;
+
+export interface Country {
+  id: Id;
+  name: string;
+  iso3166Alpha2: string;
+  iso3166Alpha3: string;
+  market: { id: Id };
+}

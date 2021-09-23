@@ -8,6 +8,7 @@ import crudRoutes from "./routes/crud";
 
 //
 import mdmRoutes from "./routes/mdm";
+import signupRoutes from "./routes/signup";
 //
 
 const app = App();
@@ -18,6 +19,7 @@ router.use("/graphql", graphQLRoutes);
 router.use("/sso", ssoRoutes);
 router.use("/crud", crudRoutes);
 router.use("/mdm", mdmRoutes);
+router.use("/signup", signupRoutes);
 
 router.get("/", (ctx) => {
   ctx.body = { hello: "world" };
