@@ -7,9 +7,10 @@ import { OptionSet, WorkflowState } from "../types";
 import { Context } from "../../../../nexys/context";
 import { WorkflowInstance } from "../../workflow/type";
 
+import { Uuid } from "@nexys/utils/dist/types";
+
 const entity = "WorkflowInstance";
 
-// TODO: format method
 export const insert = async (
   workflow: string,
   context: Context
@@ -43,6 +44,16 @@ export const detail = async (uuid: string): Promise<WorkflowInstance> => {
   const instance: WorkflowInstance = { ...result };
   return instance;
 };
+
+export const list = async (workflow: { uuid: Uuid }, { instance }: Context) =>
+  NexysQueryService.list(entity, {
+    projection: { uuid: true, logDateAdded: true },
+    filters: {
+      workflow,
+      instance: { uuid: instance },
+    },
+    order: { by: "logDateAdded", desc: true },
+  });
 
 /**
  * this is  a hack because of not well written getStat
