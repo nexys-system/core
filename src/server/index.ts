@@ -11,6 +11,8 @@ import mdmRoutes from "./routes/mdm";
 import signupRoutes from "./routes/signup";
 //
 
+import NexysRoutes from "./routes/nexys";
+
 const app = App();
 const router = new Router();
 
@@ -20,6 +22,7 @@ router.use("/sso", ssoRoutes);
 router.use("/crud", crudRoutes);
 router.use("/mdm", mdmRoutes);
 router.use("/signup", signupRoutes);
+router.use("/nexys", NexysRoutes);
 
 router.get("/", (ctx) => {
   ctx.body = { hello: "world" };

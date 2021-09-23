@@ -86,12 +86,12 @@ class LocalCache extends Cache {
     if (this.cache.has(key)) {
       const data = this.cache.get<A>(key);
       if (!data) {
-        throw Error("key could not be found in cache");
+        throw Error("key could not be found in cache: " + key);
       } else {
         return this.deserialize<A>(data);
       }
     } else {
-      throw Error("key could not be found in cache");
+      throw Error("key could not be found in cache: " + key);
     }
   }
 

@@ -1,6 +1,6 @@
 import Product from "../../product";
 import * as CT from "../../crud";
-import { QueryParams } from "@nexys/fetchr/dist/type";
+import { QueryParams, QueryProjection } from "@nexys/fetchr/dist/type";
 
 export const listNamesAndCeids = async (
   partialName: string,
@@ -12,14 +12,16 @@ export const listNamesAndCeids = async (
     return Promise.resolve([]);
   }
 
+  const projection: QueryProjection<CT.Company> = {
+    ceid: true,
+    name: true,
+  };
+
   const p: QueryParams = {
-    projection: {
-      ceId: true,
-      name: true,
-    },
+    projection,
     filters: {
       name: { $regex: "^" + partialName },
-      country: { iso2: countryCode },
+      country: { iso3166Alpha2: countryCode },
     },
     take: 20,
   };

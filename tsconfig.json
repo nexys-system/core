@@ -63,5 +63,7 @@
     /* Advanced Options */
     "forceConsistentCasingInFileNames": true /* Disallow inconsistently-cased references to the same file. */,
     "skipLibCheck": true /* enabled because of https://github.com/DefinitelyTyped/DefinitelyTyped/issues/46639  */
-  }
+  },"include":[
+    "./src"
+],
 }
