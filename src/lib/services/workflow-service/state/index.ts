@@ -1,12 +1,7 @@
 import Utils from "@nexys/utils";
 
 import * as NexysQueryService from "../../../../nexys/nexys";
-import {
-  WorkflowState,
-  OptionSet,
-  TransitionStateCrud,
-  TransitionStateCrudOut,
-} from "../types";
+import { WorkflowState, OptionSet, TransitionStateCrudOut } from "../types";
 
 import { Uuid } from "@nexys/utils/dist/types";
 import { QueryParams } from "@nexys/fetchr/dist/type";
