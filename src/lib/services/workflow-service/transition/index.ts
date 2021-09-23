@@ -1,6 +1,6 @@
 import * as WorkflowService from "../index";
 
-import StateService from "../state";
+import * as StateService from "../state";
 
 import {
   WorkflowState,
@@ -13,6 +13,8 @@ import {
 
 import HTTP from "@nexys/http";
 import { WorkflowInstance } from "../../workflow/type";
+
+import { Context } from "../../../../nexys/context";
 
 /**
  * list outgoing transitions from node
@@ -43,7 +45,10 @@ export const listOutgoing = async (
  * @param instance workflow instance
  * @return list of transitions
  */
-const listForNode = async (node: Node, context: any): Promise<Transition[]> => {
+const listForNode = async (
+  node: Node,
+  context: Context
+): Promise<Transition[]> => {
   if (!node.workflow.uuid) {
     throw Error("uuid was not existent");
   }
@@ -60,8 +65,8 @@ const listForNode = async (node: Node, context: any): Promise<Transition[]> => {
  */
 const listForState = async (
   instance: WorkflowInstance,
-  state: null | WorkflowState<any>,
-  context: any
+  state: WorkflowState<any> | undefined,
+  context: Context
 ): Promise<Transition[]> => {
   if (!instance.workflow.uuid) {
     throw Error("uuid was not existent");
@@ -70,11 +75,8 @@ const listForState = async (
   const workflow = await WorkflowService.find(instance.workflow.uuid, context);
   console.log(workflow);
 
-  const startNode: Node | null = state && state.node;
-  return await listOutgoing(
-    workflow.transitions,
-    startNode === null ? undefined : startNode
-  );
+  const startNode: Node | undefined = state && state.node;
+  return await listOutgoing(workflow.transitions, startNode);
 };
 
 /**
@@ -84,10 +86,28 @@ const listForState = async (
  */
 export const listForInstance = async (
   instance: WorkflowInstance,
-  context: any
+  context: Context
 ): Promise<Transition[]> => {
-  const state = await StateService.getLatest(instance.uuid);
+  const state = await StateService.getLatest(
+    instance.uuid,
+    context.instance.uuid
+  );
   return listForState(instance, state, context);
+};
+
+const getPrevState = async <A>(
+  instance: WorkflowInstance,
+  context: Context
+): Promise<WorkflowState<A> | undefined> => {
+  try {
+    const state = await StateService.getLatest<A>(
+      instance.uuid,
+      context.instance.uuid
+    );
+    return state;
+  } catch (err) {
+    return undefined;
+  }
 };
 
 /**
@@ -99,10 +119,13 @@ export const listForInstance = async (
 export const findAndExec = async <A>(
   instance: WorkflowInstance,
   input: TransitionInput,
-  context: any
+  context: Context
 ): Promise<TransitionState<A>> => {
   // NOTE: fetch state
-  const prevState = await StateService.getLatest(instance.uuid);
+  const prevState: WorkflowState<A> | undefined = await getPrevState(
+    instance,
+    context
+  );
   const prevStateData = (prevState && prevState.data) || {};
 
   // NOTE: find transition
@@ -135,7 +158,7 @@ export const exec = async <A>(
   transition: Transition,
   stateData: any,
   input: ActionInput,
-  context: any,
+  context: Context,
   _implicit: boolean = false
 ): Promise<TransitionState<A>> => {
   let data = Object.assign({}, stateData, input.data);
@@ -168,9 +191,22 @@ export const exec = async <A>(
   const message: string = `Transition ${uuid} of workflow instance ${instance.uuid} executed.`;
   console.info(message);
 
+  if (transition.request) {
+    // TODO: handle response headers?
+    console.log("[todo] fire request");
+    /*result = await APIService.Request.findAndExec(
+      request.uuid,
+      actionInput,
+      context
+    );*/
+  }
+
   // NOTE: insert new state with modified data, TODO: use cache
   await StateService.insert(nodeEnd.uuid, instance.uuid, data);
-  const state = await StateService.getLatest<A>(instance.uuid);
+  const state = await StateService.getLatest<A>(
+    instance.uuid,
+    context.instance.uuid
+  );
 
   if (!state) {
     throw Error("state non existent");

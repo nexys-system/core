@@ -1,7 +1,16 @@
 import Utils from "@nexys/utils";
 
 import * as NexysQueryService from "../../../../nexys/nexys";
-import { WorkflowState, OptionSet } from "../types";
+import {
+  WorkflowState,
+  OptionSet,
+  TransitionStateCrud,
+  TransitionStateCrudOut,
+} from "../types";
+
+import { Uuid } from "@nexys/utils/dist/types";
+import { QueryParams } from "@nexys/fetchr/dist/type";
+import { Context } from "../../../../nexys/context";
 
 // TODO: solve with cache
 
@@ -45,41 +54,62 @@ export const insert = async (
 /**
  * get latest state of the workflow (instance) => get from cache
  */
-export const getLatest = async <A>(
-  instance: string
-): Promise<WorkflowState<A> | null> => {
-  const params: any = {
-    filters: {
-      workflowInstance: { uuid: instance },
-    },
-    projection: {
-      workflowInstance: {
-        instance: false,
-        logUser: false,
-      },
-      node: {
-        instance: false,
-      },
-      secretKey: false,
-      logDateAdded: false,
-    },
-    order: {
-      by: "logDateAdded",
-      direction: "desc",
-    },
-  };
 
-  const result: any = await NexysQueryService.find(
-    "WorkflowState",
-    params,
-    true
-  );
-  if (!result) return result;
+const getParams = (
+  workflowInstanceUuid: Uuid,
+  instanceUuid: Uuid
+): QueryParams => ({
+  filters: {
+    workflowInstance: {
+      uuid: workflowInstanceUuid,
+      instance: { uuid: instanceUuid },
+    },
+  },
+  projection: {
+    workflowInstance: {
+      instance: false,
+      logUser: false,
+    },
+    node: {
+      instance: false,
+    },
+    secretKey: false,
+    logDateAdded: false,
+  },
+  order: {
+    by: "logDateAdded",
+    desc: true,
+  },
+});
+
+/**
+ * get latest state of the workflow (instance) => get from cache
+ */
+export const getLatest = async <A>(
+  workflowInstanceUuid: Uuid,
+  instanceUuid: Uuid
+): Promise<WorkflowState<A>> => {
+  const params = getParams(workflowInstanceUuid, instanceUuid);
+
+  const result = await NexysQueryService.find("WorkflowState", params, true);
+
+  if (!result) {
+    throw Error("could not find transition state");
+  }
 
   return format(result);
 };
 
-export default {
-  insert,
-  getLatest,
+export const list = async (
+  workflowInstanceUuid: Uuid,
+  { instance }: Context
+): Promise<WorkflowState<any>[]> => {
+  const params = getParams(workflowInstanceUuid, instance.uuid);
+
+  const result: TransitionStateCrudOut[] = await NexysQueryService.list(
+    "WorkflowState",
+    params
+  );
+
+  return result.map((x) => format(x));
 };

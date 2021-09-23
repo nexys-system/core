@@ -1,5 +1,5 @@
 import * as TransitionService from "../transition";
-import StateService from "../state";
+import * as StateService from "../state";
 
 import * as NexysQueryService from "../../../../nexys/nexys";
 
@@ -72,11 +72,12 @@ const getWorkflowInstance = async (
 
 export const getState = async <A>(
   uuid: string,
-  context: any
+  context: Context
 ): Promise<WorkflowState<A>> => {
-  const state: WorkflowState<A> = (await StateService.getLatest(
-    uuid
-  )) as WorkflowState<A>;
+  const state: WorkflowState<A> = await StateService.getLatest(
+    uuid,
+    context.instance.uuid
+  );
 
   /*if (!state) {
     throw Error('state empy')
