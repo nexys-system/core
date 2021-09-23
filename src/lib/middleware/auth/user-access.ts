@@ -38,7 +38,7 @@ export default class Auth<
     loginService: LoginService,
     cache: Cache,
     secret: string,
-    acceptHeaderToken: boolean = false,
+    acceptHeaderToken: boolean = true,
     accessTokenExpires: number = 10 * 60 // after 15min, the access token expires and the refresh token is used to create a new session: - permissions, - status etc are refreshed in the process
   ) {
     this.cache = cache;
@@ -179,7 +179,7 @@ export default class Auth<
       const token: string | undefined =
         CookiesService.getToken(ctx.cookies) ||
         (this.acceptHeaderToken
-          ? U.extractOptBearerToken(ctx.headers["Authorization"] as string)
+          ? U.extractOptBearerToken(ctx.headers["authorization"] as string)
           : undefined);
 
       if (token === undefined) {
