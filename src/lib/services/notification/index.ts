@@ -8,7 +8,7 @@ import * as NotificationService from "../../../nexys/notification";
 export { Type };
 import { context } from "../../../nexys/context";
 
-class NotificationServicew extends ProductService {
+class NotificationServiceWrapper extends ProductService {
   async listAdmin(
     types: Type.NotificationType[],
     userUuid?: Uuid,
@@ -58,4 +58,4 @@ class NotificationServicew extends ProductService {
   }
 }
 
-export default NotificationServicew;
+export default NotificationServiceWrapper;
