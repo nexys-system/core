@@ -12,7 +12,8 @@ class NotificationServiceWrapper extends ProductService {
   async listAdmin(
     types: Type.NotificationType[],
     userUuid?: Uuid,
-    lang: string = "en"
+    lang: string = "en",
+    overrideProductId?: number
   ): Promise<Type.Out[]> {
     const payload = {
       types,
@@ -24,15 +25,27 @@ class NotificationServiceWrapper extends ProductService {
       throw new Error("types array undefined");
     }
 
-    return await NotificationService.list(types, lang, context, userUuid);
+    return await NotificationService.list(
+      types,
+      lang,
+      context,
+      userUuid,
+      overrideProductId
+    );
   }
 
   async list(
     types: Type.NotificationType[] = ["signup"],
     userUuid?: Uuid,
-    lang: string = "en"
+    lang: string = "en",
+    overrideProductId?: number
   ): Promise<Type.OutPublic[]> {
-    const r: Type.Out[] = await this.listAdmin(types, userUuid, lang);
+    const r: Type.Out[] = await this.listAdmin(
+      types,
+      userUuid,
+      lang,
+      overrideProductId
+    );
 
     return Utils.toPublic(r);
   }

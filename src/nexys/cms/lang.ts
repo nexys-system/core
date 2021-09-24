@@ -1,6 +1,5 @@
 import * as CMS from "./cms";
 
-import { HTTP } from "@nexys/lib";
 import Utils from "@nexys/utils";
 
 import { replaceParams } from "./utils";
@@ -46,7 +45,7 @@ export const get = async (
   if (entry) {
     let { title = "", content } = entry;
     if (!content) {
-      throw new HTTP.Error({ message: "CMS content is undefined" });
+      throw Error("CMS content is undefined");
     }
 
     if (params) {
@@ -61,8 +60,6 @@ export const get = async (
       isHtml: cms.isHtml as boolean,
     };
   } else {
-    throw new HTTP.Error({
-      message: `CMS entry not available for language ${lang}`,
-    });
+    throw Error(`CMS entry not available for language ${lang}`);
   }
 };

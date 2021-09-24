@@ -1,8 +1,6 @@
 import * as CMS from "./cms";
 import * as CMSLang from "./lang";
 
-import { HTTP } from "@nexys/lib";
-
 describe("get by language", () => {
   const uuid = "c4c73c6e-4241-11e9-a96c-dac139d6861d";
   (CMS as any).get = jest.fn();
@@ -10,13 +8,13 @@ describe("get by language", () => {
   test("not available", async () => {
     (CMS.get as any).mockReturnValueOnce({});
 
-    await expect(CMSLang.get(uuid)).rejects.toThrow(HTTP.Error);
+    await expect(CMSLang.get(uuid)).rejects.toThrow(Error);
   });
 
   test("undefined content", async () => {
     (CMS.get as any).mockReturnValueOnce({ en: { title: "" } });
 
-    await expect(CMSLang.get(uuid)).rejects.toThrow(HTTP.Error);
+    await expect(CMSLang.get(uuid)).rejects.toThrow(Error);
   });
 
   test("get english (default)", async () => {

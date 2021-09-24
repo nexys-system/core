@@ -11,14 +11,41 @@ import { OutPublic } from "../../../lib/services/notification/type";
 
 const { delay } = Utils.promise;
 
+/** mappginf the app to the nexys product id, in order to get the notification */
+const appToProductId = (a: T.TssApp): number => {
+  switch (a) {
+    case T.TssApp.madeEasy:
+      return 51;
+    default:
+      return 2;
+  }
+};
+
+const appToHost = (a: T.TssApp): string => {
+  switch (a) {
+    case T.TssApp.madeEasy:
+      return "https://test.tssmadeeasy.com";
+    default:
+      return "https://test.tssacademy.biz";
+  }
+};
+
 export const list = async (uuid: Utils.types.Uuid): Promise<OutPublic[]> => {
   const state = await PS.workflow.state(uuid);
-  console.log(state);
+
   if (state.node.uuid !== "afa159fb-8171-11ea-90f0-42010aac0009") {
     throw Error("workflow does not have the right state");
   }
 
-  return PS.notifications.list();
+  const { app }: { app: T.TssApp } = state.data;
+
+  // get notifications for the product of interest
+  return PS.notifications.list(
+    undefined,
+    undefined,
+    undefined,
+    appToProductId(app)
+  );
 };
 
 export const updateAndLogin = async ({
@@ -46,17 +73,12 @@ export const updateAndLogin = async ({
 
   console.log("data on finish ");
   console.log(s);
-  if (s.app === T.TssApp.madeEasy) {
-    console.log("TSSME case");
-    const secretKey = "IBM-SignupGateway2021-auth-TSSA-TSSME";
-    const token = jwt.sign(s, secretKey);
-    // const host = 'https://test.tssmadeeasy.com';
-    const host = "http://localhost:8081";
 
-    return {
-      redirect: host + "/signup/redirect?q=" + token,
-    };
-  }
+  const secretKey = "IBM-SignupGateway2021-auth-TSSA-TSSME";
+  const token = jwt.sign(s, secretKey);
+  const host = appToHost(s.app);
 
-  throw Error("could not map output service");
+  return {
+    redirect: host + "/signup/redirect?q=" + token,
+  };
 };

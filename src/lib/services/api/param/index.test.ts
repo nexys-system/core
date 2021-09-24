@@ -333,8 +333,7 @@ test("map output error", () => {
   try {
     ParamService.mapParams(mappingOut, params, false);
   } catch (err) {
-    expect((err as any).status).toBe(400);
-    expect((err as any).body).toEqual("No array mapping found");
+    expect(err).toEqual(Error("No array mapping found"));
   }
 });
 

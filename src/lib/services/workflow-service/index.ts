@@ -1,6 +1,6 @@
 // NOTE: What is a workflow? https://www.process.st/what-is-a-workflow/
 // NOTE: keep tabs on apache airflow
-import { HTTP } from "@nexys/lib";
+
 import { Uuid } from "@nexys/utils/dist/types";
 
 import { Context } from "../../../nexys/context";
@@ -15,7 +15,7 @@ export const find = (uuid: Uuid, context: Pick<Context, "workflow">) => {
   const workflow = workflows.find((workflow) => workflow.uuid === uuid);
 
   if (!workflow) {
-    throw new HTTP.Error({ error: "The workflow could not be found" });
+    throw Error("The workflow could not be found");
   }
 
   return workflow;

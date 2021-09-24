@@ -1,4 +1,3 @@
-import { HTTP } from "@nexys/lib";
 import * as Input from "./input";
 import * as Output from "./output";
 import * as Type from "./type";
@@ -106,7 +105,7 @@ const mapParam = (
 
     /* handle if return values do not match */
 
-    throw new HTTP.Error(
+    throw Error(
       `No fitting parameter found for mapping ${input.name} -> ${output.name}`
     );
   }
@@ -210,7 +209,7 @@ export const mapParams = (
         const rootParam = mapRootArray(arrayMapping, rootArray);
         return rootParam.concat(headerParams);
       } else {
-        throw new HTTP.Error("No array mapping found");
+        throw Error("No array mapping found");
       }
     }
   } else {

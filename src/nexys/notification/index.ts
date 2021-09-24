@@ -11,8 +11,11 @@ export const list = async (
   types: string[],
   language: string,
   context: Context,
-  userUuid?: Uuid
+  userUuid?: Uuid,
+  overrideProductId?: number
 ): Promise<T.Response[]> => {
+  const productId = overrideProductId || context.product.id;
+
   const params: QueryParams = {
     projection: {
       status: {},
@@ -21,7 +24,7 @@ export const list = async (
     },
     filters: {
       instance: { uuid: context.instance.uuid },
-      product: { id: context.product.id },
+      product: { id: productId },
       type: {
         name: { $in: types },
       },
