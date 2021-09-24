@@ -10,11 +10,9 @@ import * as InstanceService from "./instance";
  * find workflow
  * @params uuid
  */
-export const find = (uuid: Uuid, context: Context) => {
-  const workflows = context.workflow || [];
+export const find = (uuid: Uuid, context: Pick<Context, "workflow">) => {
+  const workflows = context.workflow;
   const workflow = workflows.find((workflow) => workflow.uuid === uuid);
-
-  console.log(context.workflow?.length);
 
   if (!workflow) {
     throw new HTTP.Error({ error: "The workflow could not be found" });

@@ -1,5 +1,4 @@
 import { Uuid } from "@nexys/utils/dist/types";
-import { saveContent } from "../context";
 import * as NexysQueryService from "../nexys";
 
 interface Transition {}
@@ -41,11 +40,5 @@ export const fetch = async (context: { instance: { uuid: Uuid } }) => {
     params
   );
 
-  const r = result.map(format);
-
-  // save into context
-
-  await saveContent(r, "workflow");
-
-  return r;
+  return result.map(format);
 };

@@ -9,7 +9,12 @@ import {
 } from "./types";
 import ProductService from "../product";
 
-class EmailService extends ProductService {
+import * as EmailService from "../../../nexys/email";
+import * as EmailLogService from "../../../nexys/email/logs";
+
+import { context } from "../../../nexys/context";
+
+class EmailService2 extends ProductService {
   active: boolean;
   constructor(host: string, authToken: string, active: boolean = true) {
     super(host, authToken);
@@ -36,7 +41,7 @@ class EmailService extends ProductService {
       throw Error("The Email Service is not configured to send emails");
     }
 
-    return await this.request("/email", payload, "POST");
+    return EmailService.send(payload, context) as any;
   };
 
   async findAndSend(
@@ -46,14 +51,6 @@ class EmailService extends ProductService {
   ) {
     const recipients = U.parseRecipients(to);
 
-    const payload: CMSPayload = { recipients };
-
-    if (U.isUuid(uuidOrKey)) {
-      payload.uuid = uuidOrKey;
-    } else {
-      payload.key = uuidOrKey;
-    }
-
     if (!this.active) {
       console.warn("The Email Service is not configured to send emails");
       // console.log(`Logging CMS uuid ${uuid} with params ${JSON.stringify(params)} the recipients are: ${JSON.stringify(recipients)}`);
@@ -61,11 +58,15 @@ class EmailService extends ProductService {
       return false;
     }
 
-    return await this.request("/email/cms", { ...payload, params }, "POST");
+    const lang = "en";
+
+    const email = { recipients }; //, sendAt };
+
+    return EmailService.findAndSend(uuidOrKey, lang, email, params, context);
   }
 
   logs = async (): Promise<{ uuid: Uuid; logDateAdded: Date }[]> =>
-    this.request("/email/log/list");
+    EmailLogService.list(context);
 }
 
-export default EmailService;
+export default EmailService2;

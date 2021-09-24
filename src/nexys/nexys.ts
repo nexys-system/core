@@ -78,14 +78,15 @@ export const find = async <A>(
   return null;
 };
 
-export const detail = async (
+export const detail = async <A>(
   entity: string,
   uuid: string,
-  projection: QueryProjection
+  projection: QueryProjection,
+  references?: any
 ) => {
-  const params: QueryParams = { projection, filters: { uuid } };
+  const params: QueryParams = { projection, filters: { uuid }, references };
 
-  return find(entity, params);
+  return find<A>(entity, params);
 };
 
 export const insert = async <Id>(

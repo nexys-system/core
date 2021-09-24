@@ -3,9 +3,12 @@ import ProductService from "../product/service";
 import * as Type from "./type";
 import * as Utils from "./utils";
 
-export { Type };
+import * as NotificationService from "../../../nexys/notification";
 
-class NotificationService extends ProductService {
+export { Type };
+import { context } from "../../../nexys/context";
+
+class NotificationServicew extends ProductService {
   async listAdmin(
     types: Type.NotificationType[],
     userUuid?: Uuid,
@@ -17,7 +20,11 @@ class NotificationService extends ProductService {
       userUuid,
     };
 
-    return await this.request("/notification", payload, "POST");
+    if (!types || !Array.isArray(types) || types.length === 0) {
+      throw new Error("types array undefined");
+    }
+
+    return await NotificationService.list(types, lang, context, userUuid);
   }
 
   async list(
@@ -35,11 +42,11 @@ class NotificationService extends ProductService {
    * @param uuids list of notification uuids
    */
   async accept(userUuid: Uuid, uuid: Uuid): Promise<Type.OutAccept[]> {
-    return await this.request(
-      "/notification/accept",
-      { uuid, userUuid },
-      "POST"
-    );
+    return NotificationService.accept(
+      uuid,
+      userUuid,
+      context.instance.uuid
+    ) as any as Type.OutAccept[];
   }
 
   /*
@@ -47,8 +54,8 @@ class NotificationService extends ProductService {
    * @param uuid: user uuid
    */
   async byUser(uuid: Uuid): Promise<Type.OutAccept[]> {
-    return await this.request("/notification/byUser", { uuid }, "POST");
+    return await NotificationService.listByUser(uuid, context.instance);
   }
 }
 
-export default NotificationService;
+export default NotificationServicew;

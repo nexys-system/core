@@ -2,6 +2,8 @@ import * as WorkflowService from "../index";
 
 import * as StateService from "../state";
 
+import * as RequestService from "../../api/request-service";
+
 import {
   WorkflowState,
   TransitionInput,
@@ -192,13 +194,18 @@ export const exec = async <A>(
   console.info(message);
 
   if (transition.request) {
+    let data = Object.assign({}, stateData, input.data);
+
+    const { params, headers, query } = input;
+    const actionInput: ActionInput = { data, params, headers, query };
+
     // TODO: handle response headers?
     console.log("[todo] fire request");
-    /*result = await APIService.Request.findAndExec(
-      request.uuid,
+    result = await RequestService.findAndExec(
+      transition.request.uuid,
       actionInput,
       context
-    );*/
+    );
   }
 
   // NOTE: insert new state with modified data, TODO: use cache
