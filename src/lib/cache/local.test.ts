@@ -22,7 +22,7 @@ describe("local cache", () => {
     try {
       result = cache.get("test");
     } catch (err) {
-      expect(err).toEqual(errorGen + "test");
+      expect((err as any).toString()).toEqual(errorGen + "test");
     }
   });
 
@@ -37,7 +37,7 @@ describe("local cache", () => {
     try {
       result = cache.get("test");
     } catch (err) {
-      expect(err).toEqual(errorGen + "test");
+      expect((err as any).toString()).toEqual(errorGen + "test");
     }
   });
 
@@ -65,7 +65,7 @@ describe("local cache", () => {
     try {
       result = cache.get("test");
     } catch (err) {
-      expect(err).toEqual(errorGen + "test");
+      expect((err as any).toString()).toEqual(errorGen + "test");
     }
   });
 });
