@@ -1,4 +1,6 @@
 import fs, { promises as fsp } from "fs";
+import { decodedAppToken } from "../server/config";
+import { Env } from "../server/config/type";
 
 import { ContextEmail } from "./email/type";
 
@@ -6,12 +8,6 @@ const path = "assets";
 
 type Workflow = any;
 type Request = any;
-
-enum Env {
-  prod,
-  test,
-  dev,
-}
 
 export interface Context {
   env: Env;
@@ -45,9 +41,9 @@ export const getFileContentAsArray = <A>(file: ContextFile): A[] => {
   }
 };
 
-const instance = { uuid: "2c5d0535-26ab-11e9-9284-fa163e41f33d" };
-const env = Env.dev;
-const product = { id: 3 };
+const instance = { uuid: decodedAppToken.instance };
+const env = decodedAppToken.env;
+const product = { id: decodedAppToken.product };
 const email: ContextEmail = {
   apiKey: "",
   sender: { email: "fds", name: "fd" },
