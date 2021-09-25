@@ -6,10 +6,10 @@ on: [push]
 #      - v*
 
 env:
-  DOCKERHUB_URL: docker.pkg.github.com/nexys-io/nexys-system-server/nexys
+  DOCKERHUB_URL: docker.pkg.github.com/nexys-system/core/master
 
 jobs:
-  test:
+  docker:
     runs-on: ubuntu-latest
     steps:
       - name: Login to DockerHub Registry
@@ -18,6 +18,7 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: 14
+      - run: yarn
       - run: yarn build
       - name: create docker container
         run: docker build --build-arg GIT_SHA=$GITHUB_SHA --build-arg GIT_VERSION=${GITHUB_REF##*/}  --tag $DOCKERHUB_URL:latest --tag $DOCKERHUB_URL:master .
