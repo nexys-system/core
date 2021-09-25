@@ -12,9 +12,16 @@ const httpsAgent = new https.Agent({
   rejectUnauthorized: false,
 });
 
-const host = "https://query.nexys.io";
-const token =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpbnN0YW5jZSI6IjM3M2FiN2Q0LTU3YTctMTFlOS04MzFmLTQyMDEwYTg0MDA4MCIsImluc3RhbmNlTmFtZSI6Ik5leHlzIiwicHJvZHVjdCI6MywicHJvZHVjdE5hbWUiOiJEaWdpcyIsImVudiI6MSwiZW52TmFtZSI6ImRldiIsInN1YiI6IkRpZ2lzX2RldiIsImlzcyI6Imhvc3QiLCJhdWQiOiJkZXZpY2VUeXBlIiwiaWF0IjoxNTYyMDc1NTY5OTk1fQ.WmbNnpcdnZ4590foZdFIVs7n2vu6FrGMIMBiMjjffq4";
+const host = process.env.NEXYS_HOST;
+const token = process.env.NEXYS_TOKEN;
+
+if (host === undefined) {
+  throw Error("NEXYS HOST not defined");
+}
+
+if (token === undefined) {
+  throw Error("NEXYS TOKEN not defined");
+}
 
 const request = async (urlpath: string, payload: any) => {
   const url = host + urlpath;
