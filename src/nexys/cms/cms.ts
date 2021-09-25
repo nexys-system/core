@@ -1,5 +1,4 @@
 import * as NexysQueryService from "../nexys";
-import { Query } from "@nexys/lib";
 
 import { formatValues } from "./utils";
 import * as T from "./type";
