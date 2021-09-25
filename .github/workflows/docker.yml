@@ -1,9 +1,9 @@
 name: Docker
 
-on: [push]
-#  push:
-##    tags:
-#      - v*
+on:
+  push:
+    tags:
+      - v*
 
 env:
   DOCKERHUB_URL: ghcr.io/nexys-system/core/master
