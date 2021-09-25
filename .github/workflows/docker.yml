@@ -1,0 +1,28 @@
+name: Docker
+
+on: [push]
+#  push:
+##    tags:
+#      - v*
+
+env:
+  DOCKERHUB_URL: docker.pkg.github.com/nexys-io/nexys-system-server/nexys
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Login to DockerHub Registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 14
+      - run: yarn build
+      - name: create docker container
+        run: docker build --build-arg GIT_SHA=$GITHUB_SHA --build-arg GIT_VERSION=${GITHUB_REF##*/}  --tag $DOCKERHUB_URL:latest --tag $DOCKERHUB_URL:master .
+      - name: Push
+        run: |
+          docker push $DOCKERHUB_URL:latest
+          docker push $DOCKERHUB_URL:master
+          docker push $DOCKERHUB_URL:${GITHUB_REF##*/}

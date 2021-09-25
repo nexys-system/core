@@ -8,12 +8,13 @@ import Router from "koa-router";
 // @see https://nodejs.org/en/knowledge/command-line/how-to-parse-command-line-arguments/
 const argvs: string[] = process.argv.slice(2);
 const sha: string = argvs[0] || "git_undefined_app_arg";
+const version: string = argvs[1] || "git_version_undefined_app_arg";
 
 export default () => {
   const router: Router = new Router();
 
   router.get("/version", async (ctx: Koa.Context) => {
-    ctx.body = { sha };
+    ctx.body = { sha, version };
   });
 
   return router.routes();
