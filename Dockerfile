@@ -1,4 +1,4 @@
-FROM node:13.7.0-alpine
+FROM node:14-alpine
 
 # GIT SHA is passed as ARG and then copied into ENV VAR (Args are not perssted beyond build)
 ARG GIT_SHA 
