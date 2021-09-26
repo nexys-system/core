@@ -45,7 +45,7 @@ if (secretKey.length !== 32) {
 }
 
 if (process.env.APP_TOKEN === undefined) {
-  throw Error(errorPrefix + "app token is undefined");
+  throw Error(errorPrefix + "APP TOKEN is undefined");
 }
 
 export const appToken = process.env.APP_TOKEN;
