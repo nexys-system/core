@@ -3,9 +3,6 @@ name: Publish
 on: [push]
 
 
-env:
-  DOCKERHUB_URL: docker.pkg.github.com/nexys-system/core/master
-
 jobs:
   test:
     if: contains(github.ref, 'refs/tags/v')
@@ -22,17 +19,3 @@ jobs:
         run: |
           echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_AUTH_TOKEN }}" > ~/.npmrc
           yarn publish --access public
-      - name: prep SSH
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_KEY_PRIVATE }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          echo "$HOST" > ~/.ssh/known_hosts
-      - name: Publish package
-        run: |
-          ssh -o 'StrictHostKeyChecking no' root@$HOST << EOF
-            echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
-            docker pull $DOCKERHUB_URL:master
-            /usr/local/bin/docker-compose -f compose.yml up -d
-            docker exec nginx nginx -s reload
-          EOF
