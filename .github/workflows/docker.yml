@@ -35,7 +35,7 @@ jobs:
           echo "$HOST" > ~/.ssh/known_hosts
       - name: deploy
         run: |
-          ssh -o 'StrictHostKeyChecking no' root@$HOST << EOF
+          ssh -o 'StrictHostKeyChecking no' root@${{ secrets.HOST }} << EOF
             echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
             docker pull $DOCKERHUB_URL:master
           EOF
