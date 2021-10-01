@@ -1,6 +1,6 @@
 {
   "name": "@nexys/core",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "license": "MIT",
   "scripts": {
     "test": "rm -rf dist;SECRET=mysecretmysecretmysecretmysecret APP_TOKEN=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpbnN0YW5jZSI6IjJjNWQwNTM1LTI2YWItMTFlOS05Mjg0LWZhMTYzZTQxZjMzZCIsImluc3RhbmNlTmFtZSI6InRzc2FwcGxpY2F0aW9ucyIsInByb2R1Y3QiOjE4MiwicHJvZHVjdE5hbWUiOiJNRE0iLCJlbnYiOjEsImVudk5hbWUiOiJkZXYiLCJpYXQiOjE2Mjg2NzM2ODV9.be5gHPExZY_VpdlYNmBDWB_Eamz2pNfSg7 NEXYS_HOST=http://myhost NEXYS_TOKEN=nexys_token jest",
