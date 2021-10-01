@@ -1,6 +1,6 @@
 {
   "name": "@nexys/core",
-  "version": "0.0.4",
+  "version": "0.0.10",
   "license": "MIT",
   "scripts": {
     "test": "rm -rf dist;jest",
