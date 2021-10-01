@@ -27,3 +27,15 @@ jobs:
           docker push $DOCKERHUB_URL:latest
           docker push $DOCKERHUB_URL:master
           docker push $DOCKERHUB_URL:${GITHUB_REF##*/}
+      - name: prep SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_KEY_PRIVATE }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          echo "$HOST" > ~/.ssh/known_hosts
+      - name: deploy
+        run: |
+          ssh -o 'StrictHostKeyChecking no' root@${{ secrets.HOST }} << EOF
+            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+            docker pull $DOCKERHUB_URL:master
+          EOF
