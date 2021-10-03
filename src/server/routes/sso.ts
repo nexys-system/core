@@ -3,33 +3,52 @@ import Router from "koa-router";
 import * as Config from "../config";
 
 import * as OAuth from "@nexys/oauth";
+import * as IBMAuth from "@tssbpchannel/sso";
 import { AuthenticationType } from "../../lib/user-management/crud-type";
 
 import Product from "../product";
 import { getIPandUserAgent } from "../../lib/routes/user-management/login/utils";
 
-const gh = new OAuth.Github(
-  Config.ssoGithub.client_id,
-  Config.ssoGithub.client_secret,
-  "http://localhost:3000" + "/sso/github/redirect"
-);
+import { IBMID, Type } from "@tssbpchannel/sso";
+
+const publicKey =
+  "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtbLV6yge386z4xvlRAuX\n76/Uj1Ef/98JQSIFN0CqqzwF4KT/4o1jsdaPNp+kJdkPaOkBHe7n9faIXuT+gN4S\niWQodh2y0xsj31luJF0WnLjmdkDcDRSm/d1TcnAst8DA/0MkhRKBYcXA9YEpAvea\naPOq9O+0wyPsccuIsxMez9ix4NjkIEds8q6VvWYOnUfF+vxbi/aVXRN7JRV8k8XV\n0ipcaLO5oNnENMzQKAkyhuUw3HkRChbtW5uD7StyIn58J6o6ux2aNJwjtga1ZnQ7\n03YLci20ahRex2T33IgmrxJNORGFy/MJd+Nxm3IoXCLwEBoOou0HjQ0dX8V45kLb\nPwIDAQAB\n-----END PUBLIC KEY-----";
+const issuer = "login.ibm.com";
+const id = "OWExNWVkYjYtZjE0Zi00";
+const secret = "ODc0ODI4YjktZDE5NS00";
+
+const redirectHost: string =
+  process.env.SSO_REDIRECT || "local.tssmadeeasy.com";
+
+const config: Type.Config = {
+  issuer: { host: issuer, path: "/v1.0/endpoint/default" },
+  client: {
+    id,
+    secret,
+  },
+  publicKey,
+  redirect: { host: redirectHost, path: "/sso/redirect" },
+};
+
+const sso = new IBMID(config);
 
 const router = new Router();
 
 router.get("/url", async (ctx) => {
-  ctx.redirect(gh.oAuthUrl());
+  ctx.redirect(sso.getRedirectUrl());
 });
 
-router.get("/github/redirect", async (ctx) => {
+router.get("/ibm/redirect", async (ctx) => {
   const { code } = ctx.query;
-  const token = await gh.callback(code as string);
-  const profile = await gh.getProfile(token);
+  const token = await sso.request(code as string);
+
+  console.log(token);
 
   try {
     const l = await Product.loginService.authenticate(
-      profile.login,
+      token.email,
       Config.instance,
-      { type: AuthenticationType.github },
+      { type: AuthenticationType.ibm },
       getIPandUserAgent(ctx)
     );
 
