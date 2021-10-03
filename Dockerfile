@@ -13,6 +13,9 @@ COPY package.json package.json
 RUN yarn install
 
 COPY dist dist
+
+# to remove for package
+COPY assets assets
 RUN mkdir locales
 
 RUN echo "git sha $GIT_SHA_ENV"
