@@ -76,9 +76,14 @@ export const extractBearerToken = (s: string): string =>
 export const extractOptBearerToken = (s?: string): string | undefined =>
   s ? extractBearerToken(s) : undefined;
 
+/**
+ *
+ * @param iat issued at (from JWT)
+ * @param accessTokenExpires amount of seconds
+ * @returns boolean
+ */
 export const isExpired = (iat: number, accessTokenExpires: number): boolean => {
-  const t = new Date().getTime() / 1000;
-  //console.log({ iat, t });
+  const timestamp = new Date().getTime() / 1000;
 
-  return iat + accessTokenExpires < t;
+  return iat + accessTokenExpires < timestamp;
 };
