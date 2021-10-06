@@ -4,8 +4,8 @@ import * as TT from "../../lib/services/api/types";
 import { QueryParams } from "@nexys/fetchr/dist/type";
 import { Uuid } from "@nexys/utils/dist/types";
 
-import * as NexysQueryService from "../nexys";
-import { Context } from "../context";
+import * as NexysQueryService from "../nexys-qs";
+import { Context } from "../../lib/context/type";
 
 const getParams = (uuid: Uuid): QueryParams => ({
   filters: {

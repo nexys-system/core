@@ -15,8 +15,7 @@ import {
 
 import HTTP from "@nexys/http";
 import { WorkflowInstance } from "../../workflow/type";
-
-import { Context } from "../../../../nexys/context";
+import { Context } from "../../../context/type";
 
 /**
  * list outgoing transitions from node

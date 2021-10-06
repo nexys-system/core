@@ -1,5 +1,5 @@
 import { Uuid } from "@nexys/utils/dist/types";
-import * as NexysQueryService from "../nexys";
+import * as NexysQueryService from "../nexys-qs";
 
 interface Transition {}
 

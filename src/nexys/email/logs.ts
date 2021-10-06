@@ -1,5 +1,5 @@
-import { Context } from "../context";
-import * as NexysQueryService from "../nexys";
+import { Context } from "../../lib/context/type";
+import * as NexysQueryService from "../nexys-qs";
 
 import * as T from "./type";
 

@@ -1,8 +1,4 @@
-export enum Env {
-  prod = 3,
-  test = 2,
-  dev = 1,
-}
+import { Env } from "../../lib/context/type";
 
 export interface AppTokenDecodedCore {
   instance: string;

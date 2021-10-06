@@ -1,4 +1,4 @@
-import { AppTokenDecoded, Env } from "./type";
+import { AppTokenDecoded, Env } from "../../lib/context/type";
 
 export const printAppToken = (decodedAppToken: AppTokenDecoded) => {
   return {

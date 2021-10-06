@@ -1,11 +1,11 @@
 import Utils from "@nexys/utils";
 
-import * as NexysQueryService from "../../../../nexys/nexys";
+import * as NexysQueryService from "../../../../nexys/nexys-qs";
 import { WorkflowState, OptionSet, TransitionStateCrudOut } from "../types";
 
 import { Uuid } from "@nexys/utils/dist/types";
 import { QueryParams } from "@nexys/fetchr/dist/type";
-import { Context } from "../../../../nexys/context";
+import { Context } from "../../../context/type";
 
 // TODO: solve with cache
 

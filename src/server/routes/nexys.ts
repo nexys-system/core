@@ -2,7 +2,7 @@ import Router from "koa-router";
 
 import * as WF from "../../nexys/workflow";
 import * as Req from "../../nexys/request";
-import { saveContent } from "../../nexys/context";
+import { saveContent } from "../../lib/context";
 
 const instance = { uuid: "2c5d0535-26ab-11e9-9284-fa163e41f33d" };
 

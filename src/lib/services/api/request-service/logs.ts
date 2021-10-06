@@ -1,6 +1,6 @@
 import { MutateResponseInsert } from "@nexys/fetchr/dist/type";
-import { Uuid, Id } from "@nexys/utils/dist/types";
-import * as NexysQueryService from "../../../../nexys/nexys";
+import { Uuid } from "@nexys/utils/dist/types";
+import * as NexysQueryService from "../../../../nexys/nexys-qs";
 import { Param } from "../types";
 
 const entityRequestLog = "RequestLog";

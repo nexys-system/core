@@ -2,7 +2,6 @@ type Uuid = string;
 import * as U from "./utils";
 import {
   EmailPayload,
-  CMSPayload,
   Attachment,
   MandrillResponseUnit,
   Recipient,
@@ -11,15 +10,21 @@ import ProductService from "../product";
 
 import * as EmailService from "../../../nexys/email";
 import * as EmailLogService from "../../../nexys/email/logs";
-
-import { context } from "../../../nexys/context";
+import { Context } from "../../context/type";
 
 class EmailService2 extends ProductService {
   active: boolean;
-  constructor(host: string, authToken: string, active: boolean = true) {
+  context: Context;
+  constructor(
+    host: string,
+    authToken: string,
+    context: Context,
+    active: boolean = true
+  ) {
     super(host, authToken);
 
     this.active = active;
+    this.context = context;
   }
 
   send = async (
@@ -41,7 +46,7 @@ class EmailService2 extends ProductService {
       throw Error("The Email Service is not configured to send emails");
     }
 
-    return EmailService.send(payload, context) as any;
+    return EmailService.send(payload, this.context) as any;
   };
 
   async findAndSend(
@@ -62,11 +67,17 @@ class EmailService2 extends ProductService {
 
     const email = { recipients }; //, sendAt };
 
-    return EmailService.findAndSend(uuidOrKey, lang, email, params, context);
+    return EmailService.findAndSend(
+      uuidOrKey,
+      lang,
+      email,
+      params,
+      this.context
+    );
   }
 
   logs = async (): Promise<{ uuid: Uuid; logDateAdded: Date }[]> =>
-    EmailLogService.list(context);
+    EmailLogService.list(this.context);
 }
 
 export default EmailService2;

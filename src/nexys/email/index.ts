@@ -1,5 +1,5 @@
+import { Context } from "../../lib/context/type";
 import * as CMSService from "../cms";
-import { Context } from "../context";
 
 import * as Logs from "./logs";
 import * as MandrillService from "./mandrill";

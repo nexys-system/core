@@ -1,7 +1,7 @@
 import { Request, RequestMapping, Env } from "../types";
 
 import Utils from "@nexys/utils";
-import { Context } from "../../../../nexys/context";
+import { Context } from "../../../context/type";
 
 /**
  * replaces en var in request - takes env var from the context (prod, test, dev etc) and replaces in the request object
@@ -10,7 +10,7 @@ import { Context } from "../../../../nexys/context";
  * @param context
  * @return new request object
  */
-const replaceEnvVar = (request: Request, context: Context) => {
+const replaceEnvVar = (request: Request, _context: Context) => {
   // todo
   /*const { product: p, env: e, envvar } = context;
 

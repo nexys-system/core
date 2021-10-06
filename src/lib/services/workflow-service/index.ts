@@ -2,8 +2,8 @@
 // NOTE: keep tabs on apache airflow
 
 import { Uuid } from "@nexys/utils/dist/types";
+import { Context } from "../../context/type";
 
-import { Context } from "../../../nexys/context";
 import * as InstanceService from "./instance";
 
 /**

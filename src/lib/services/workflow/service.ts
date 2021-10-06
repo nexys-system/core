@@ -9,10 +9,17 @@ import * as WorkflowService from "../workflow-service/index";
 import * as WorkflowTransitionService from "../workflow-service/transition";
 import * as WorkflowInstanceService from "../workflow-service/instance";
 
-import { context } from "../../../nexys/context";
 import { TransitionState } from "../workflow-service/types";
+import { Context } from "../../context/type";
 
 export default class WorkflowService2 extends ProductService {
+  context: Context;
+  constructor(host: string, authToken: string, context: Context) {
+    super(host, authToken);
+
+    this.context = context;
+  }
+
   /**
    * init workflow
    * @param workflow
@@ -25,7 +32,7 @@ export default class WorkflowService2 extends ProductService {
   ): Promise<WorkflowInstance> {
     const workflowInstance = await WorkflowService.findAndInit(
       workflowUuid,
-      context
+      this.context
     );
 
     if (transition) {
@@ -33,7 +40,7 @@ export default class WorkflowService2 extends ProductService {
       await WorkflowTransitionService.findAndExec(
         workflowInstance,
         transitionInput,
-        context
+        this.context
       );
     }
 
@@ -63,7 +70,7 @@ export default class WorkflowService2 extends ProductService {
     return WorkflowTransitionService.findAndExec<A>(
       workflowInstance,
       transitionInput,
-      context
+      this.context
     );
   }
 
@@ -78,7 +85,7 @@ export default class WorkflowService2 extends ProductService {
   ): Promise<WorkflowState<A>> {
     return await WorkflowInstanceService.getState<A>(
       workflowInstanceUuid,
-      context
+      this.context
     );
   }
 

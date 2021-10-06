@@ -4,11 +4,19 @@ import * as Type from "./type";
 import * as Utils from "./utils";
 
 import * as NotificationService from "../../../nexys/notification";
+import { Context } from "../../context/type";
 
 export { Type };
-import { context } from "../../../nexys/context";
 
 class NotificationServiceWrapper extends ProductService {
+  context: Context;
+
+  constructor(host: string, authToken: string, context: Context) {
+    super(host, authToken);
+
+    this.context = context;
+  }
+
   async listAdmin(
     types: Type.NotificationType[],
     userUuid?: Uuid,
@@ -28,7 +36,7 @@ class NotificationServiceWrapper extends ProductService {
     return await NotificationService.list(
       types,
       lang,
-      context,
+      this.context,
       userUuid,
       overrideProductId
     );
@@ -58,7 +66,7 @@ class NotificationServiceWrapper extends ProductService {
     return NotificationService.accept(
       uuid,
       userUuid,
-      context.instance.uuid
+      this.context.instance.uuid
     ) as any as Type.OutAccept[];
   }
 
@@ -67,7 +75,7 @@ class NotificationServiceWrapper extends ProductService {
    * @param uuid: user uuid
    */
   async byUser(uuid: Uuid): Promise<Type.OutAccept[]> {
-    return await NotificationService.listByUser(uuid, context.instance);
+    return await NotificationService.listByUser(uuid, this.context.instance);
   }
 }
 

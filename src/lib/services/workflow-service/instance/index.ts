@@ -1,13 +1,14 @@
 import * as TransitionService from "../transition";
 import * as StateService from "../state";
 
-import * as NexysQueryService from "../../../../nexys/nexys";
+import * as NexysQueryService from "../../../../nexys/nexys-qs";
 
 import { OptionSet, WorkflowState } from "../types";
-import { Context } from "../../../../nexys/context";
+
 import { WorkflowInstance } from "../../workflow/type";
 
 import { Uuid } from "@nexys/utils/dist/types";
+import { Context } from "../../../context/type";
 
 const entity = "WorkflowInstance";
 

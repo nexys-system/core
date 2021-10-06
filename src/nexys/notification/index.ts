@@ -1,8 +1,8 @@
 import { QueryParams } from "@nexys/fetchr/dist/type";
 import { Uuid } from "@nexys/utils/dist/types";
-import { Context } from "../context";
+import { Context } from "../../lib/context/type";
 
-import * as NexysQueryService from "../nexys";
+import * as NexysQueryService from "../nexys-qs";
 
 import * as T from "./type";
 import * as Utils from "./utils";

@@ -4,8 +4,10 @@ import dotenv from "dotenv";
 import model from "../model";
 
 import JWT from "jsonwebtoken";
-import { AppTokenDecoded } from "./type";
+
 import * as U from "./utils";
+import { get } from "../../lib/context";
+import { AppTokenDecoded } from "../../lib/context/type";
 
 dotenv.config();
 
@@ -56,6 +58,13 @@ export const decodedAppToken: AppTokenDecoded = JWT.decode(
 ) as AppTokenDecoded;
 
 console.log(U.printAppToken(decodedAppToken));
+
+// get context
+export const context = get(
+  { uuid: decodedAppToken.instance },
+  { id: decodedAppToken.product },
+  decodedAppToken.env
+);
 
 //} catch (err) {
 //  console.log(err);
