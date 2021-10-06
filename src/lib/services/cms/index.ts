@@ -1,9 +1,7 @@
 import ProductService from "../product/service";
 
-import * as CmsService from "../../../nexys/cms";
 import { request } from "../nexys-service";
-
-type Uuid = string;
+import { Uuid } from "@nexys/utils/dist/types";
 
 export interface Out {
   title?: string;

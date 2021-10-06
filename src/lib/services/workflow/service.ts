@@ -63,7 +63,8 @@ export default class WorkflowService2 extends ProductService {
     transition: TransitionInput
   ): Promise<TransitionState<A>> {
     const workflowInstance = await WorkflowInstanceService.detail(
-      workflowInstanceUuid
+      workflowInstanceUuid,
+      this.context
     );
     const transitionInput = { ...transition };
 

@@ -3,7 +3,6 @@ import ProductService from "../product/service";
 import * as Type from "./type";
 import * as Utils from "./utils";
 
-//import * as NotificationService from "../../../nexys/notification";
 import { Context } from "../../context/type";
 import { request } from "../nexys-service";
 

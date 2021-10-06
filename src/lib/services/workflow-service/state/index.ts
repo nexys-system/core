@@ -1,27 +1,7 @@
-import Utils from "@nexys/utils";
-
-import * as NexysQueryService from "../../../../nexys/nexys-qs";
-import { WorkflowState, OptionSet, TransitionStateCrudOut } from "../types";
-
 import { Uuid } from "@nexys/utils/dist/types";
-import { QueryParams } from "@nexys/fetchr/dist/type";
+import { WorkflowState, OptionSet } from "../types";
 import { Context } from "../../../context/type";
-
-// TODO: solve with cache
-
-const format = <A>(result: any): WorkflowState<A> => {
-  const { uuid, workflowInstance, node, data } = result;
-
-  // NOTE: return state with deserialized data
-  const state: WorkflowState<A> = {
-    uuid,
-    workflowInstance,
-    node,
-    data: JSON.parse(data),
-  };
-
-  return state;
-};
+import { request } from "../../nexys-service";
 
 /**
  * inserts workflow instance state
@@ -29,82 +9,44 @@ const format = <A>(result: any): WorkflowState<A> => {
 export const insert = async (
   node: string,
   workflowInstance: string,
+  { appToken }: Pick<Context, "appToken">,
   data: any = {},
   comment?: string
-): Promise<OptionSet> => {
-  // NOTE: query engine accepts non-nested uuids as foreign keys
-  const payload: any = {
-    node,
-    workflowInstance,
-    data: JSON.stringify(data),
-    comment,
-    secretKey: Utils.random.generateString(50),
-    logDateAdded: new Date(),
-  };
-
-  // TODO: insert state into persistent cache, periodically write into db
-  return await NexysQueryService.insert("WorkflowState", payload);
-};
-
-/**
- * get latest state of the workflow (instance) => get from cache
- */
-
-const getParams = (
-  workflowInstanceUuid: Uuid,
-  instanceUuid: Uuid
-): QueryParams => ({
-  filters: {
-    workflowInstance: {
-      uuid: workflowInstanceUuid,
-      instance: { uuid: instanceUuid },
-    },
-  },
-  projection: {
-    workflowInstance: {
-      instance: false,
-      logUser: false,
-    },
-    node: {
-      instance: false,
-    },
-    secretKey: false,
-    logDateAdded: false,
-  },
-  order: {
-    by: "logDateAdded",
-    desc: true,
-  },
-});
+): Promise<OptionSet> =>
+  request<
+    { node: string; workflowInstance: string; data: any; comment?: string },
+    OptionSet
+  >(
+    "/workflow/state/insert",
+    { node, workflowInstance, data, comment },
+    appToken
+  );
 
 /**
  * get latest state of the workflow (instance) => get from cache
  */
 export const getLatest = async <A>(
   workflowInstanceUuid: Uuid,
-  instanceUuid: Uuid
-): Promise<WorkflowState<A>> => {
-  const params = getParams(workflowInstanceUuid, instanceUuid);
-
-  const result = await NexysQueryService.find("WorkflowState", params, true);
-
-  if (!result) {
-    throw Error("could not find transition state");
-  }
-
-  return format(result);
-};
+  { appToken, instance }: Pick<Context, "appToken" | "instance">
+): Promise<WorkflowState<A>> =>
+  request<
+    { workflowInstanceUuid: string; instanceUuid: string },
+    WorkflowState<A>
+  >(
+    "/workflow/state/getLatest",
+    { workflowInstanceUuid, instanceUuid: instance.uuid },
+    appToken
+  );
 
 export const list = async (
   workflowInstanceUuid: Uuid,
-  { instance }: Context
-): Promise<WorkflowState<any>[]> => {
-  const params = getParams(workflowInstanceUuid, instance.uuid);
-
-  const result: TransitionStateCrudOut[] = await NexysQueryService.list(
-    "WorkflowState",
-    params
+  { instance, appToken }: Pick<Context, "instance" | "appToken">
+): Promise<WorkflowState<any>[]> =>
+  request<
+    { workflowInstanceUuid: string; instanceUuid: string },
+    WorkflowState<any>[]
+  >(
+    "/workflow/state/list",
+    { workflowInstanceUuid, instanceUuid: instance.uuid },
+    appToken
   );
-
-  return result.map((x) => format(x));
-};

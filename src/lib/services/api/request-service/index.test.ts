@@ -2,7 +2,7 @@ import nock from "nock";
 
 import * as RequestService from "./index";
 import { ActionInput, Request, ParamType, DataType } from "../types";
-import * as LogService from "../../../../nexys/request/logs";
+import * as LogService from "./logs";
 
 jest.mock("./logs");
 

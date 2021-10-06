@@ -89,10 +89,7 @@ export const listForInstance = async (
   instance: WorkflowInstance,
   context: Context
 ): Promise<Transition[]> => {
-  const state = await StateService.getLatest(
-    instance.uuid,
-    context.instance.uuid
-  );
+  const state = await StateService.getLatest(instance.uuid, context);
   return listForState(instance, state, context);
 };
 
@@ -101,10 +98,7 @@ const getPrevState = async <A>(
   context: Context
 ): Promise<WorkflowState<A> | undefined> => {
   try {
-    const state = await StateService.getLatest<A>(
-      instance.uuid,
-      context.instance.uuid
-    );
+    const state = await StateService.getLatest<A>(instance.uuid, context);
     return state;
   } catch (err) {
     return undefined;
@@ -209,10 +203,7 @@ export const exec = async <A>(
 
   // NOTE: insert new state with modified data, TODO: use cache
   await StateService.insert(nodeEnd.uuid, instance.uuid, data);
-  const state = await StateService.getLatest<A>(
-    instance.uuid,
-    context.instance.uuid
-  );
+  const state = await StateService.getLatest<A>(instance.uuid, context);
 
   if (!state) {
     throw Error("state non existent");

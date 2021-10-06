@@ -32,7 +32,7 @@ export const init = async (uuid: Uuid, context: Context) => {
     throw Error("uuid could not be found");
   }
 
-  return InstanceService.detail(instance.uuid);
+  return InstanceService.detail(instance.uuid, context);
 };
 
 /**
