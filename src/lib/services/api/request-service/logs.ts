@@ -1,66 +1,34 @@
 import { MutateResponseInsert } from "@nexys/fetchr/dist/type";
 import { Uuid } from "@nexys/utils/dist/types";
-import * as NexysQueryService from "../../../../nexys/nexys-qs";
-import { Param } from "../types";
-
-const entityRequestLog = "RequestLog";
-
-interface RequestLog {
-  request: { uuid: Uuid };
-  responseBody: string;
-  instance: { uuid: Uuid };
-  inputs: string;
-  logDateAdded: Date;
-}
-
-const getPayload = (
-  apiRequestUuid: Uuid,
-  apiParamsIn: Param[],
-  instance: { uuid: Uuid },
-  responseBody: string
-): RequestLog => {
-  const apiParams: { key: string; value: string }[] = apiParamsIn
-    .filter((x) => x.paramType?.id === 1 || true)
-    .map((x) => ({ key: x.key, value: x.value }));
-
-  const request = {
-    uuid: apiRequestUuid,
-  };
-  const inputs: string = JSON.stringify(apiParams);
-  const logDateAdded = new Date();
-
-  return {
-    request,
-    responseBody,
-    instance,
-    inputs,
-    logDateAdded,
-  };
-};
+import { Context } from "../../../context/type";
+import { request } from "../../nexys-service";
 
 export const insert = (
   apiRequestUuid: Uuid,
   apiParamsIn: any[],
   instance: { uuid: Uuid },
-  responseBody: any
-): Promise<MutateResponseInsert> => {
-  // map to required structure
-  const payload = getPayload(
-    apiRequestUuid,
-    apiParamsIn,
-    instance,
-    responseBody ? JSON.stringify(responseBody) : "could not find response body"
+  responseBody: any,
+  context: Context
+): Promise<MutateResponseInsert> =>
+  request<{
+    apiRequestUuid: Uuid;
+    apiParamsIn: any[];
+    instance: { uuid: Uuid };
+    responseBody: any;
+  }>(
+    "/request/log/list",
+    {
+      apiRequestUuid,
+      apiParamsIn,
+      instance,
+      responseBody,
+    },
+    context.appToken
   );
 
-  return NexysQueryService.insert(entityRequestLog, payload);
-};
-
-export const list = (request: { uuid: Uuid }) => {
-  const params = {
-    projection: { responseBody: true, inputs: true, logDateAdded: true },
-    filters: { request },
-    order: { by: "logDateAdded", desc: true },
-  };
-  console.log(params);
-  return NexysQueryService.list(entityRequestLog, params);
-};
+export const list = (mrequest: { uuid: Uuid }, context: Context) =>
+  request<{ request: { uuid: Uuid } }>(
+    "/request/log/list",
+    { request: mrequest },
+    context.appToken
+  );

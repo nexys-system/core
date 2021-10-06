@@ -8,9 +8,8 @@ import {
 } from "./types";
 import ProductService from "../product";
 
-import * as EmailService from "../../../nexys/email";
-import * as EmailLogService from "../../../nexys/email/logs";
-import { Context } from "../../context/type";
+import { Context, ContextEmail } from "../../context/type";
+import { request } from "../nexys-service";
 
 class EmailService2 extends ProductService {
   active: boolean;
@@ -46,7 +45,15 @@ class EmailService2 extends ProductService {
       throw Error("The Email Service is not configured to send emails");
     }
 
-    return EmailService.send(payload, this.context) as any;
+    if (!this.context.email) {
+      throw Error("can't send email: email context undefined");
+    }
+
+    return request<{ payload: EmailPayload; emailContext: ContextEmail }>(
+      "/email/send",
+      { payload, emailContext: this.context.email },
+      this.token
+    );
   };
 
   async findAndSend(
@@ -63,21 +70,33 @@ class EmailService2 extends ProductService {
       return false;
     }
 
+    if (!this.context.email) {
+      throw Error("can't send email: email context undefined");
+    }
+
     const lang = "en";
 
     const email = { recipients }; //, sendAt };
 
-    return EmailService.findAndSend(
-      uuidOrKey,
-      lang,
-      email,
-      params,
-      this.context
+    return request<{
+      uuidOrKey: string;
+      lang: string;
+      email: { recipients: Recipient[] };
+      params?: { [key: string]: string };
+      emailContext: ContextEmail;
+    }>(
+      "/email/findAndSend",
+      { uuidOrKey, lang, email, params, emailContext: this.context.email },
+      this.token
     );
   }
 
   logs = async (): Promise<{ uuid: Uuid; logDateAdded: Date }[]> =>
-    EmailLogService.list(this.context);
+    request<Pick<Context, "instance" | "product">>(
+      "/email/logs",
+      { instance: this.context.instance, product: this.context.product },
+      this.token
+    );
 }
 
 export default EmailService2;

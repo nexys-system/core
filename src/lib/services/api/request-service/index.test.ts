@@ -2,11 +2,11 @@ import nock from "nock";
 
 import * as RequestService from "./index";
 import { ActionInput, Request, ParamType, DataType } from "../types";
-import * as LoginService from "./logs";
+import * as LogService from "../../../../nexys/request/logs";
 
 jest.mock("./logs");
 
-const mockLogsInsert = LoginService.insert as jest.Mock;
+const mockLogsInsert = LogService.insert as jest.Mock;
 mockLogsInsert.mockImplementation((uuid, body) => {
   console.debug("[mock] insert log here: " + JSON.stringify({ uuid, body }));
   return true;
@@ -88,7 +88,7 @@ test("standard request - success", async () => {
       data,
       headers,
     },
-    instance
+    { instance } as any
   );
   expect(result.body).toEqual({ test: 2 });
 });
@@ -103,11 +103,9 @@ test("standard request - error", async () => {
   const headers = { authorization: "Bearer TOKEN" };
 
   try {
-    await RequestService.execWithMapping(
-      standardRequest,
-      { data, headers },
-      instance
-    );
+    await RequestService.execWithMapping(standardRequest, { data, headers }, {
+      instance,
+    } as any);
   } catch (err) {
     const r = JSON.parse((err as any).message);
     expect(r.body).toEqual("My Internal Server Error");
@@ -127,11 +125,9 @@ test("array in request", async () => {
   // todo this is not a real test
   const data: ActionInput = { data: [{ this: "works2" }] };
 
-  const result = await RequestService.execWithMapping(
-    arrayRequest,
-    data,
-    instance
-  );
+  const result = await RequestService.execWithMapping(arrayRequest, data, {
+    instance,
+  } as any);
   expect(result.body).toEqual({ success: true });
 });
 
@@ -141,11 +137,9 @@ test("array out request", async () => {
     .reply(200, [{ success: true }], undefined);
 
   const data: ActionInput = { data: {} };
-  const result = await RequestService.execWithMapping(
-    arrayRequest,
-    data,
-    instance
-  );
+  const result = await RequestService.execWithMapping(arrayRequest, data, {
+    instance,
+  } as any);
   expect(result.body).toEqual([{ success: true }]);
 });
 

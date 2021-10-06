@@ -63,7 +63,8 @@ console.log(U.printAppToken(decodedAppToken));
 export const context = get(
   { uuid: decodedAppToken.instance },
   { id: decodedAppToken.product },
-  decodedAppToken.env
+  decodedAppToken.env,
+  appToken
 );
 
 //} catch (err) {

@@ -3,6 +3,8 @@ import { Uuid } from "@nexys/utils/dist/types";
 import * as NexysQueryService from "../nexys-qs";
 import { Param } from "../types";
 
+const entityRequestLog = "RequestLog";
+
 interface RequestLog {
   request: { uuid: Uuid };
   responseBody: string;
@@ -50,7 +52,7 @@ export const insert = (
     responseBody ? JSON.stringify(responseBody) : "could not find response body"
   );
 
-  return NexysQueryService.insert(entity, payload);
+  return NexysQueryService.insert(entityRequestLog, payload);
 };
 
 export const list = (request: { uuid: Uuid }) => {
@@ -60,7 +62,5 @@ export const list = (request: { uuid: Uuid }) => {
     order: { by: "logDateAdded", desc: true },
   };
   console.log(params);
-  return NexysQueryService.list(entity, params);
+  return NexysQueryService.list(entityRequestLog, params);
 };
-
-const entity = "RequestLog";

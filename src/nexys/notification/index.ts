@@ -10,7 +10,7 @@ import * as Utils from "./utils";
 export const list = async (
   types: string[],
   language: string,
-  context: Context,
+  context: Pick<Context, "product" | "instance">,
   userUuid?: Uuid,
   overrideProductId?: number
 ): Promise<T.Response[]> => {

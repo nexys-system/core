@@ -3,8 +3,9 @@ import ProductService from "../product/service";
 import * as Type from "./type";
 import * as Utils from "./utils";
 
-import * as NotificationService from "../../../nexys/notification";
+//import * as NotificationService from "../../../nexys/notification";
 import { Context } from "../../context/type";
+import { request } from "../nexys-service";
 
 export { Type };
 
@@ -23,22 +24,29 @@ class NotificationServiceWrapper extends ProductService {
     lang: string = "en",
     overrideProductId?: number
   ): Promise<Type.Out[]> {
-    const payload = {
-      types,
-      lang,
-      userUuid,
-    };
-
     if (!types || !Array.isArray(types) || types.length === 0) {
       throw new Error("types array undefined");
     }
 
-    return await NotificationService.list(
-      types,
-      lang,
-      this.context,
-      userUuid,
-      overrideProductId
+    return request<{
+      types: string[];
+      lang: string;
+      context: Pick<Context, "product" | "instance">;
+      userUuid?: Uuid;
+      overrideProductId?: number;
+    }>(
+      "/notification/listAdmin",
+      {
+        types,
+        lang,
+        context: {
+          product: this.context.product,
+          instance: this.context.instance,
+        },
+        userUuid,
+        overrideProductId,
+      },
+      this.context.appToken
     );
   }
 
@@ -62,21 +70,23 @@ class NotificationServiceWrapper extends ProductService {
    * @param user user identifier (external, no dependencies/references)
    * @param uuids list of notification uuids
    */
-  async accept(userUuid: Uuid, uuid: Uuid): Promise<Type.OutAccept[]> {
-    return NotificationService.accept(
-      uuid,
-      userUuid,
-      this.context.instance.uuid
-    ) as any as Type.OutAccept[];
-  }
+  accept = (userUuid: Uuid, uuid: Uuid): Promise<Type.OutAccept[]> =>
+    request<{ uuid: Uuid; user: Uuid; instanceUuid: Uuid }>(
+      "/request/accept",
+      { uuid, user: userUuid, instanceUuid: uuid },
+      this.context.appToken
+    );
 
   /*
    * list of notifications that were accepted by the user
    * @param uuid: user uuid
    */
-  async byUser(uuid: Uuid): Promise<Type.OutAccept[]> {
-    return await NotificationService.listByUser(uuid, this.context.instance);
-  }
+  byUser = (uuid: Uuid): Promise<Type.OutAccept[]> =>
+    request<{ user: Uuid; instance: { uuid: Uuid } }, Type.OutAccept[]>(
+      "/notification/byUser",
+      { user: uuid, instance: this.context.instance },
+      this.context.appToken
+    );
 }
 
 export default NotificationServiceWrapper;

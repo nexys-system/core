@@ -46,12 +46,10 @@ export const findAndExec = async (
 ): Promise<Response> => {
   const request: Request = find(uuid, context);
 
-  const instance: { uuid: Uuid } = { uuid: context.instance.uuid };
-
   // NOTE: replace url params & envvar
   const requestWEnvVar: Request = U.prepare(request, input.params, context);
 
-  return execWithMapping(requestWEnvVar, input, instance);
+  return execWithMapping(requestWEnvVar, input, context);
 };
 
 /**
@@ -65,7 +63,7 @@ export const findAndExec = async (
 export const execWithMapping = async (
   request: Request,
   input: ActionInput,
-  instance: { uuid: Uuid }
+  context: Context
 ): Promise<Response> => {
   const paramsIn: Param[] = ParamService.Input.listMerge(
     input,
@@ -78,6 +76,8 @@ export const execWithMapping = async (
     true
   );
 
+  const instance: { uuid: Uuid } = { uuid: context.instance.uuid };
+
   // NOTE: execute API request
   const response: ResponseMapped = await execWithParams(request, mappedInput);
 
@@ -87,7 +87,7 @@ export const execWithMapping = async (
   );
 
   try {
-    LogService.insert(request.uuid, mappedInput, instance, body);
+    LogService.insert(request.uuid, mappedInput, instance, body, context);
   } catch (err) {
     console.log(err);
   }

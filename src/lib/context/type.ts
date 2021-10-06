@@ -19,6 +19,7 @@ export interface Context {
   request: Request[];
   email?: ContextEmail;
   product: { id: number };
+  appToken: string;
 }
 
 export interface AppTokenDecodedCore {

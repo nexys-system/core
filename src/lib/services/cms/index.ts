@@ -1,6 +1,7 @@
 import ProductService from "../product/service";
 
 import * as CmsService from "../../../nexys/cms";
+import { request } from "../nexys-service";
 
 type Uuid = string;
 
@@ -22,7 +23,11 @@ class CMSService extends ProductService {
 
     // NOTE: lang == locale || iso2
 
-    return CmsService.getByLanguage(uuid, lang, params);
+    return request<{
+      uuid: Uuid;
+      lang: string;
+      params?: { [key: string]: string };
+    }>("/cms/get", { uuid, lang, params }, this.token);
   }
 }
 

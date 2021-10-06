@@ -34,10 +34,11 @@ const email: T.ContextEmail = {
 export const get = (
   instance: { uuid: Uuid },
   product: { id: Id },
-  env: T.Env
+  env: T.Env,
+  appToken: string
 ): T.Context => {
   const workflow = getFileContentAsArray<T.Workflow>("workflow");
   const request = getFileContentAsArray<Request>("request");
 
-  return { workflow, request, instance, env, product, email };
+  return { workflow, request, instance, env, product, email, appToken };
 };
