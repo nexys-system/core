@@ -71,7 +71,7 @@ class NotificationServiceWrapper extends ProductService {
    */
   accept = (userUuid: Uuid, uuid: Uuid): Promise<Type.OutAccept[]> =>
     request<{ uuid: Uuid; user: Uuid; instanceUuid: Uuid }>(
-      "/request/accept",
+      "/notification/accept",
       { uuid, user: userUuid, instanceUuid: uuid },
       this.context.appToken
     );

@@ -16,7 +16,7 @@ export const insert = (
     instance: { uuid: Uuid };
     responseBody: any;
   }>(
-    "/request/log/list",
+    "/request/log/insert",
     {
       apiRequestUuid,
       apiParamsIn,

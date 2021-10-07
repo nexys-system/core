@@ -49,11 +49,15 @@ class EmailService2 extends ProductService {
       throw Error("can't send email: email context undefined");
     }
 
-    return request<{ payload: EmailPayload; emailContext: ContextEmail }>(
-      "/email/send",
-      { payload, emailContext: this.context.email },
-      this.token
-    );
+    const context: Pick<Context, "email" | "env"> = {
+      email: this.context.email,
+      env: this.context.env,
+    };
+
+    return request<{
+      payload: EmailPayload;
+      context: Pick<Context, "email" | "env">;
+    }>("/email/send", { payload, context }, this.token);
   };
 
   async findAndSend(
@@ -78,15 +82,20 @@ class EmailService2 extends ProductService {
 
     const email = { recipients }; //, sendAt };
 
+    const context: Pick<Context, "email" | "env"> = {
+      email: this.context.email,
+      env: this.context.env,
+    };
+
     return request<{
       uuidOrKey: string;
       lang: string;
       email: { recipients: Recipient[] };
       params?: { [key: string]: string };
-      emailContext: ContextEmail;
+      context: Pick<Context, "email" | "env">;
     }>(
       "/email/findAndSend",
-      { uuidOrKey, lang, email, params, emailContext: this.context.email },
+      { uuidOrKey, lang, email, params, context },
       this.token
     );
   }
