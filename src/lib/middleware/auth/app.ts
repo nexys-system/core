@@ -12,8 +12,7 @@ export default class Auth {
 
   /**
    *
-   * @param cache needed for extra login information
-   * @param secret for the JWT verification
+   * @param appToken: APP_TOKEN: no client authentication
    */
   constructor(appToken: string) {
     this.appToken = appToken;

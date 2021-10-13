@@ -3,10 +3,12 @@ export interface Field {
   type: string;
   optional: boolean;
   options?: any[];
+  column?: string;
 }
 
 export interface Entity {
   name: string;
+  table?: string;
   uuid: boolean;
   fields: Field[];
 }

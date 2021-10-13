@@ -109,13 +109,15 @@ export default class User {
     value: string
   ): Promise<CT.UserAuthentication> => {
     try {
-      console.log({ filters: { type, value } });
+      const params = { filters: { type, value } };
+
       return await this.qs.find<CT.UserAuthentication>(
         U.Entity.UserAuthentication,
-        { filters: { type, value } },
+        params,
         false
       );
     } catch (err) {
+      console.error(err);
       return Promise.reject("could not find row");
     }
   };

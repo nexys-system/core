@@ -20,7 +20,7 @@ class ProductServiceExtra extends ProductService {
     try {
       return await this.getSubscribe();
     } catch (err) {
-      if (err.body && err.body.message === "Not configured") {
+      if ((err as any).body && (err as any).body.message === "Not configured") {
         try {
           return await this.subscribe(instance);
         } catch (err) {

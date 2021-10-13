@@ -1,15 +1,25 @@
 type Uuid = string;
 
 import ProductService from "../product/service";
-import {
-  TransitionInput,
-  WorkflowInstance,
-  WorkflowState,
-  WorkflowStep,
-  Crud as CT,
-} from "./type";
+import { TransitionInput, WorkflowInstance, Crud as CT } from "./type";
 
-export default class WorkflowService extends ProductService {
+import { WorkflowState } from "../workflow-service/types";
+
+import * as WorkflowService from "../workflow-service/index";
+import * as WorkflowTransitionService from "../workflow-service/transition";
+import * as WorkflowInstanceService from "../workflow-service/instance";
+
+import { TransitionState } from "../workflow-service/types";
+import { Context } from "../../context/type";
+
+export default class WorkflowService2 extends ProductService {
+  context: Context;
+  constructor(host: string, authToken: string, context: Context) {
+    super(host, authToken);
+
+    this.context = context;
+  }
+
   /**
    * init workflow
    * @param workflow
@@ -20,9 +30,26 @@ export default class WorkflowService extends ProductService {
     workflowUuid: string,
     transition?: TransitionInput
   ): Promise<WorkflowInstance> {
-    // TODO: headers, query
-    const payload = { uuid: workflowUuid, transition };
-    return await this.request("/workflow/init", payload, "POST");
+    const workflowInstance = await WorkflowService.findAndInit(
+      workflowUuid,
+      this.context
+    );
+
+    if (transition) {
+      const transitionInput = { ...transition };
+      await WorkflowTransitionService.findAndExec(
+        workflowInstance,
+        transitionInput,
+        this.context
+      );
+    }
+
+    try {
+      return workflowInstance;
+    } catch (err) {
+      console.error(err);
+      throw Error("could not init workflow");
+    }
   }
 
   /**
@@ -34,14 +61,18 @@ export default class WorkflowService extends ProductService {
   async step<A = any>(
     workflowInstanceUuid: string,
     transition: TransitionInput
-  ): Promise<WorkflowStep<A>> {
-    // TODO: headers, query
-    const payload = {
-      uuid: workflowInstanceUuid,
-      transition,
-    };
+  ): Promise<TransitionState<A>> {
+    const workflowInstance = await WorkflowInstanceService.detail(
+      workflowInstanceUuid,
+      this.context
+    );
+    const transitionInput = { ...transition };
 
-    return await this.request("/workflow/step", payload, "POST");
+    return WorkflowTransitionService.findAndExec<A>(
+      workflowInstance,
+      transitionInput,
+      this.context
+    );
   }
 
   /**
@@ -53,8 +84,10 @@ export default class WorkflowService extends ProductService {
   async state<A = any>(
     workflowInstanceUuid: string
   ): Promise<WorkflowState<A>> {
-    const payload = { uuid: workflowInstanceUuid };
-    return this.request("/workflow/state", payload, "POST");
+    return await WorkflowInstanceService.getState<A>(
+      workflowInstanceUuid,
+      this.context
+    );
   }
 
   /**

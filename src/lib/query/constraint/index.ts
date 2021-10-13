@@ -21,7 +21,7 @@ class ConstraintGenerator extends DefaultConstraints {
     }
 
     if (r === Permission.superadmin) {
-      return this.getSuperadmin();
+      return this.getSuperadmin(profile);
     }
 
     if (r === Permission.app) {

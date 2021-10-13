@@ -1,6 +1,6 @@
 import Router from "koa-router";
 import bodyParser from "koa-body";
-import Validation, { Utils as VU } from "@nexys/validation";
+import { Main as Validation, Utils as VU } from "@nexys/validation";
 
 import m from "../../../middleware/auth";
 import { Permissions } from "../../../middleware/auth/type";

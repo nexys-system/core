@@ -1,5 +1,6 @@
 import * as T from "./type";
 import * as GL from "graphql";
+import { QueryProjection } from "@nexys/fetchr/dist/type";
 
 export const ddl = (
   ddlComplete: (Omit<T.Ddl, "uuid"> & { uuid?: boolean })[]
@@ -131,3 +132,47 @@ export const foreignId = new GL.GraphQLInputObjectType({
   name: "ForeignId",
   fields: { id: { type: new GL.GraphQLNonNull(GL.GraphQLInt) } },
 });
+
+export const formatGFields = (a: T.GField): QueryProjection => {
+  Object.keys(a).forEach((k) => {
+    if (Object.keys(a[k]).length === 0) {
+      a[k] = true;
+    } else {
+      formatGFields(a[k]);
+    }
+  });
+
+  return a;
+};
+
+export const getType = (
+  entity: string,
+  QLtypes: T.GLTypes
+): GL.GraphQLObjectType => {
+  const r = QLtypes.get(entity);
+  //console.log(r);
+  //console.log(entity);
+
+  if (!r || !r.objectType) {
+    throw Error("could not find entity " + entity);
+  }
+
+  return r.objectType;
+};
+
+export const getArgs = (
+  entity: string,
+  QLtypes: T.GLTypes
+): GL.GraphQLFieldConfigArgumentMap => {
+  const r = QLtypes.get(entity);
+
+  if (!r || !r.args) {
+    throw Error("could not find entity " + entity);
+  }
+
+  return {
+    ...r.args,
+    _take: { type: GL.GraphQLInt },
+    _skip: { type: GL.GraphQLInt },
+  };
+};

@@ -4,7 +4,7 @@ jest.setTimeout(10000);
 
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
-const errorGen = Error("key could not be found in cache");
+const errorGen = Error("key could not be found in cache: ");
 
 describe("local cache", () => {
   const cache = new LocalCache({ ttl: 2 });
@@ -22,7 +22,7 @@ describe("local cache", () => {
     try {
       result = cache.get("test");
     } catch (err) {
-      expect(err).toEqual(errorGen);
+      expect((err as any).toString()).toEqual(errorGen + "test");
     }
   });
 
@@ -37,7 +37,7 @@ describe("local cache", () => {
     try {
       result = cache.get("test");
     } catch (err) {
-      expect(err).toEqual(errorGen);
+      expect((err as any).toString()).toEqual(errorGen + "test");
     }
   });
 
@@ -65,7 +65,7 @@ describe("local cache", () => {
     try {
       result = cache.get("test");
     } catch (err) {
-      expect(err).toEqual(errorGen);
+      expect((err as any).toString()).toEqual(errorGen + "test");
     }
   });
 });

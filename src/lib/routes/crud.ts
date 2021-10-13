@@ -67,7 +67,13 @@ class CrudRoutes<
           };
         };
 
-        ctx.body = await qs.mutateWithConstraint(query, constraints.mutate); //;
+        const { body, status } = await qs.mutateWithConstraint(
+          query,
+          constraints.mutate
+        );
+
+        ctx.status = status;
+        ctx.body = body;
       }
     );
 

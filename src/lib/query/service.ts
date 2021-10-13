@@ -227,6 +227,7 @@ class QueryService extends T.QueryService {
       constraints.projectionConstraintsMap,
       model
     );
+    console.log(JSON.stringify(query));
     return this.data(query);
   };
 
@@ -234,6 +235,7 @@ class QueryService extends T.QueryService {
     query: Mutate,
     constraints: TT.MutateConstraint
   ): Promise<{ status: number; body: MutateResponse | string }> => {
+    console.log(JSON.stringify(query));
     query = QueryBuilder.Mutate.constructMutatePermission(
       query,
       constraints.filterConstraintsMap,
@@ -241,11 +243,14 @@ class QueryService extends T.QueryService {
       constraints.append
     );
 
+    console.log(JSON.stringify(query));
+
     try {
       const r = await this.mutate(query);
 
       return mutatePostProcessing(r);
     } catch (err) {
+      console.error(err);
       return {
         status: 500,
         body: "internal server error when querying mutate",

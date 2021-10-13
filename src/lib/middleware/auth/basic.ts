@@ -8,7 +8,7 @@ import * as U from "./utils";
 export const isBasicAuthenticated =
   (username: string, password: string) =>
   async (ctx: Koa.Context, next: Koa.Next) => {
-    const Authorization = ctx.headers["Authorization"];
+    const Authorization = ctx.headers["authorization"];
     const token = U.extractBasicAuthToken(Authorization as string);
 
     if (token === U.createBasicAuthToken(username, password)) {

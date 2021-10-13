@@ -1,6 +1,7 @@
 import ProductService from "../product/service";
 
-type Uuid = string;
+import { request } from "../nexys-service";
+import { Uuid } from "@nexys/utils/dist/types";
 
 export interface Out {
   title?: string;
@@ -18,7 +19,13 @@ class CMSService extends ProductService {
       throw Error("lang must be an iso1 code (2 characters)");
     }
 
-    return this.request("/cms", { uuid, lang, params }, "POST");
+    // NOTE: lang == locale || iso2
+
+    return request<{
+      uuid: Uuid;
+      lang: string;
+      params?: { [key: string]: string };
+    }>("/cms/get", { uuid, lang, params }, this.token);
   }
 }
 

@@ -18,7 +18,7 @@ class ProductService {
     const body: string | undefined = data ? JSON.stringify(data) : undefined;
     const headers = {
       "content-type": "application/json",
-      authorization: "bearer " + this.token,
+      Authorization: "bearer " + this.token,
     };
 
     const options: FT.RequestInit = {
@@ -27,10 +27,12 @@ class ProductService {
       body,
     };
 
+    console.log(url, options);
+
     const r = await fetch(url, options);
 
     if (r.status !== 200) {
-      return Promise.reject({ status: r.status, body: r.text() });
+      return Promise.reject({ status: r.status, body: await r.text() });
     }
 
     return r.json();

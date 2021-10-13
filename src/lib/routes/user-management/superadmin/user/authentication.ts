@@ -1,6 +1,6 @@
 import Router from "koa-router";
 import bodyParser from "koa-body";
-import Validation, { Utils as VU } from "@nexys/validation";
+import { Main as Validation, Utils as VU } from "@nexys/validation";
 
 import m from "../../../../middleware/auth";
 import { Permissions } from "../../../../middleware/auth/type";
@@ -51,7 +51,7 @@ const UserAuthenticationService = <
     MiddlewareAuth.isAuthorized(T.Permission.superadmin),
     Validation.isShapeMiddleware(
       {
-        type: { id: { type: "number" } },
+        type: { type: "number" },
         value: {},
         isEnabled: { type: "boolean" },
         user: { uuid: { extraCheck: VU.checkUuid } },

@@ -16,7 +16,7 @@ export type Profile = Pick<
 > & { instance: UOptionSet };
 
 export interface UserCache {
-  permissions: string[];
+  permissions: Permission[];
 }
 
 export interface LoginResponse {
