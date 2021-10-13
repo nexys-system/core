@@ -10,7 +10,7 @@
     "start": "node ./dist/server/index.js"
   },
   "repository": {
-    "url": "https://github.com/nexys-system/koa-lib-ts",
+    "url": "https://github.com/nexys-system/core",
     "type": "git"
   },
   "dependencies": {
