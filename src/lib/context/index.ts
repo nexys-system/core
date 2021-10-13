@@ -26,16 +26,16 @@ export const getFileContentAsArray = <A>(file: T.ContextFile): A[] => {
   }
 };
 
-const email: T.ContextEmail = {
-  apiKey: "",
-  sender: { email: "fds", name: "fd" },
+const emailDefault: T.ContextEmail = {
+  sender: { email: "info@nexys.io", name: "Info" },
 };
 
 export const get = (
   instance: { uuid: Uuid },
   product: { id: Id },
   env: T.Env,
-  appToken: string
+  appToken: string,
+  email: T.ContextEmail = emailDefault
 ): T.Context => {
   const workflow = getFileContentAsArray<T.Workflow>("workflow");
   const request = getFileContentAsArray<Request>("request");

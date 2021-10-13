@@ -2,7 +2,7 @@ export type Workflow = any;
 export type Request = any;
 
 export interface ContextEmail {
-  apiKey: string;
+  apiKey?: string;
   sender: { email: string; name: string };
 }
 

@@ -22,7 +22,7 @@ import { Context } from "../../../context/type";
  */
 export const find = (uuid: string, context: Context): Request => {
   const requests: Request[] = context.request;
-  console.log(requests.length, uuid, requests);
+  // console.log(requests.length, uuid, requests);
   const request = requests.find((request) => request.uuid === uuid);
 
   if (!request) {

@@ -8,7 +8,7 @@ import {
 } from "./types";
 import ProductService from "../product";
 
-import { Context, ContextEmail } from "../../context/type";
+import { Context } from "../../context/type";
 import { request } from "../nexys-service";
 
 class EmailService2 extends ProductService {

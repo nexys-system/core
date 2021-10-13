@@ -67,6 +67,8 @@ export const context = get(
   appToken
 );
 
+export const hostMdm = "https://mdm.tssapplications.com";
+
 //} catch (err) {
 //  console.log(err);
 //  throw Error(errorPrefix + "app token could not be read");

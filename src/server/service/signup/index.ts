@@ -1,3 +1,4 @@
+// manages the first step of the signup
 import * as Utils from "@nexys/utils";
 import { Uuid } from "@nexys/utils/dist/types";
 
@@ -8,15 +9,19 @@ import * as CompanyService from "../company";
 import * as T from "./type";
 import * as DomainService from "../domain";
 import { transitions, ms } from "./utils";
+import { hostMdm } from "../../config";
+import { domainFromEmail } from "../domain/utils";
 
 const { delay } = Utils.promise;
 
-const hostMdm = "https://bpms.tssapplications.com/app/mdm";
 const urlMdmCompany = (uuid: Utils.types.Uuid) =>
-  hostMdm + "/sign-up-flow/" + uuid + "/company";
+  hostMdm + "/app/onboarding/" + uuid + "/company";
 const urlMdmDomain = (uuid: Utils.types.Uuid) =>
-  hostMdm + "/sign-up-flow/" + uuid + "/domain";
+  hostMdm + "/app/onboarding/" + uuid + "/domain";
 
+/**
+ * get list of companies for typeahead
+ *  */
 export const company = async (
   searchName: string,
   countryCode: string
@@ -56,13 +61,13 @@ export const domainStep = async (
     return { uuid, message: s.message + "\n" + s2.message };
   } else {
     const transitionUuid = `472e8a8a-88b7-11ea-90f0-42010aac0009`;
-    const domain = s.profile.email.split("@")[1];
+    const domain = domainFromEmail(s.profile.email);
 
     const message =
       "Signup: a new request for a new domain: " +
       domain +
       ` Manage: ${urlMdmDomain(uuid)}`;
-    const t = await PS.workflow.step(uuid, {
+    const _t = await PS.workflow.step(uuid, {
       uuid: transitionUuid,
       data: { ...s, text: message },
     });

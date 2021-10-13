@@ -1,7 +1,6 @@
 import fetch from "node-fetch";
-import { Context } from "../../context/type";
 
-const host = "http://localhost:3000";
+const host = process.env.NEXYS_SERVICE_HOST;
 
 export const request = async <Input, Output = any>(
   path: string,
@@ -17,7 +16,10 @@ export const request = async <Input, Output = any>(
   const url = host + path;
 
   try {
-    const r = await fetch(url, { headers, body });
+    console.log("about to call NEXYS HOST: " + host);
+    const method = "POST";
+    console.log({ url, body, headers });
+    const r = await fetch(url, { headers, method, body });
 
     return r.json();
   } catch (err) {

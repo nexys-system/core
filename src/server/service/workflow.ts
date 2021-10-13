@@ -49,7 +49,7 @@ export const updateDomain = async (
   const { ceid } = data;
 
   if (typeof ceid !== "string") {
-    throw Error("the ceid could dnot be extracted from state");
+    throw Error("the ceid could not be extracted from state");
   }
 
   // add domain to the list of associated domain with ceid

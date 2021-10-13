@@ -193,7 +193,7 @@ export const exec = async <A>(
     const actionInput: ActionInput = { data, params, headers, query };
 
     // TODO: handle response headers?
-    console.log("[todo] fire request");
+    // console.log("[todo] fire request");
     result = await RequestService.findAndExec(
       transition.request.uuid,
       actionInput,
@@ -202,7 +202,12 @@ export const exec = async <A>(
   }
 
   // NOTE: insert new state with modified data, TODO: use cache
-  await StateService.insert(nodeEnd.uuid, instance.uuid, data);
+  await StateService.insert(
+    nodeEnd.uuid,
+    instance.uuid,
+    { appToken: context.appToken },
+    data
+  );
   const state = await StateService.getLatest<A>(instance.uuid, context);
 
   if (!state) {
