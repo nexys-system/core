@@ -11,16 +11,10 @@ import { Context } from "../../context/type";
 import { request } from "../nexys-service";
 
 class EmailService {
-  authToken: string;
   active: boolean;
   context: Context;
-  constructor(
-    host: string,
-    authToken: string,
-    context: Context,
-    active: boolean = true
-  ) {
-    this.authToken = authToken;
+
+  constructor(context: Context, active: boolean = true) {
     this.active = active;
     this.context = context;
   }
@@ -56,7 +50,7 @@ class EmailService {
     return request<{
       payload: EmailPayload;
       context: Pick<Context, "email" | "env">;
-    }>("/email/send", { payload, context }, this.authToken);
+    }>("/email/send", { payload, context }, this.context.appToken);
   };
 
   async findAndSend(
@@ -95,7 +89,7 @@ class EmailService {
     }>(
       "/email/findAndSend",
       { uuidOrKey, lang, email, params, context },
-      this.authToken
+      this.context.appToken
     );
   }
 
@@ -103,7 +97,7 @@ class EmailService {
     request<Pick<Context, "instance" | "product">>(
       "/email/logs",
       { instance: this.context.instance, product: this.context.product },
-      this.authToken
+      this.context.appToken
     );
 }
 

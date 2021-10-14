@@ -10,16 +10,8 @@ import WorkflowService from "../lib/services/workflow";
 import EmailService from "../lib/services/email";
 import NotificationService from "../lib/services/notification";
 
-export const email = new EmailService(
-  Config.host,
-  Config.appToken,
-  Config.context
-);
-export const workflow = new WorkflowService(
-  Config.host,
-  Config.appToken,
-  Config.context
-);
+export const email = new EmailService(Config.context);
+export const workflow = new WorkflowService(Config.context);
 export const notifications = new NotificationService(Config.context);
 
 const fetchR = new FetchR.default(Config.database, Config.model);
