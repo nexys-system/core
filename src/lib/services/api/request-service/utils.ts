@@ -10,7 +10,7 @@ import { Context } from "../../../context/type";
  * @param context
  * @return new request object
  */
-const replaceEnvVar = (request: Request, _context: Context) => {
+const replaceEnvVar = (request: Request, _context: Pick<Context, "env">) => {
   // todo
   /*const { product: p, env: e, envvar } = context;
 
@@ -116,7 +116,7 @@ const replaceUriParams = (request: Request, params = {}): Request => {
 export const prepare = (
   request: Request,
   params: any = {},
-  context: Context
+  context: Pick<Context, "env">
 ): Request => {
   // NOTE: replace $ENV{} vars in HOST, URI & Authorization
   request = replaceEnvVar(request, context);

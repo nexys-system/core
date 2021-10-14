@@ -20,7 +20,10 @@ import { Context } from "../../../context/type";
  * find request
  * @params uuid
  */
-export const find = (uuid: string, context: Context): Request => {
+export const find = (
+  uuid: string,
+  context: Pick<Context, "request">
+): Request => {
   const requests: Request[] = context.request;
   // console.log(requests.length, uuid, requests);
   const request = requests.find((request) => request.uuid === uuid);
@@ -42,7 +45,7 @@ export const find = (uuid: string, context: Context): Request => {
 export const findAndExec = async (
   uuid: string,
   input: ActionInput,
-  context: Context
+  context: Pick<Context, "instance" | "appToken" | "env" | "request">
 ): Promise<Response> => {
   const request: Request = find(uuid, context);
 
@@ -63,7 +66,7 @@ export const findAndExec = async (
 export const execWithMapping = async (
   request: Request,
   input: ActionInput,
-  context: Context
+  context: Pick<Context, "instance" | "appToken">
 ): Promise<Response> => {
   const paramsIn: Param[] = ParamService.Input.listMerge(
     input,

@@ -1,8 +1,18 @@
-import ProductService from "../../product/service";
+import { Context } from "../../../context/type";
 
-type Uuid = String;
+import * as RequestService from "../request-service";
+import * as RequestLogService from "../request-service/logs";
 
-export default class RequestService extends ProductService {
+type Uuid = string;
+
+export default class RequestService2 {
+  context: Pick<Context, "instance" | "env" | "request" | "appToken">;
+  constructor(
+    context: Pick<Context, "instance" | "env" | "request" | "appToken">
+  ) {
+    this.context = context;
+  }
+
   exec = (
     uuid: Uuid,
     {
@@ -14,20 +24,19 @@ export default class RequestService extends ProductService {
       params?: { [key: string]: string };
       // headers?: { [key: string]: string };
     } = {}
-  ) =>
-    this.request(
-      "/api/request",
-      {
-        uuid,
-        data,
-        params,
-      },
-      "POST"
-    );
+  ) => {
+    const actionInput = {
+      data,
+      params,
+      headers: undefined, // todo
+      query: undefined, // todo
+    };
+    RequestService.findAndExec(uuid, actionInput, this.context);
+  };
 
   logs = (
     uuid: Uuid
   ): Promise<
     { uuid: Uuid; responseBody: string; inputs: string; logDateAdded: Date }[]
-  > => this.request("/api/request/logs", { uuid });
+  > => RequestLogService.list({ uuid }, this.context);
 }

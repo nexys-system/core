@@ -8,7 +8,7 @@ export const insert = (
   apiParamsIn: any[],
   instance: { uuid: Uuid },
   responseBody: any,
-  context: Context
+  context: Pick<Context, "appToken">
 ): Promise<MutateResponseInsert> =>
   request<{
     apiRequestUuid: Uuid;
@@ -26,7 +26,10 @@ export const insert = (
     context.appToken
   );
 
-export const list = (mrequest: { uuid: Uuid }, context: Context) =>
+export const list = (
+  mrequest: { uuid: Uuid },
+  context: Pick<Context, "appToken">
+) =>
   request<{ request: { uuid: Uuid } }>(
     "/request/log/list",
     { request: mrequest },
