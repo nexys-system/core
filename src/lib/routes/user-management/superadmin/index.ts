@@ -16,7 +16,6 @@ import {
   UserAuthentication,
   UserToken,
 } from "../../../user-management";
-import ProductContext from "../../../services/product/context";
 
 const SuperadminRoutes = <
   Profile extends ObjectWithId<Id>,
@@ -24,7 +23,6 @@ const SuperadminRoutes = <
   Id
 >(
   {
-    productContext,
     userService,
     instanceService,
     permissionService,
@@ -33,7 +31,6 @@ const SuperadminRoutes = <
   }: {
     userService: UserService;
     instanceService: InstanceService;
-    productContext: ProductContext;
     permissionService: PermissionService;
     userAuthenticationService: UserAuthentication;
     userTokenService: UserToken;
@@ -57,15 +54,9 @@ const SuperadminRoutes = <
     MiddlewareAuth
   );
 
-  const contextRoutes = Main<Profile, UserCache, Id>(
-    { productContext },
-    MiddlewareAuth
-  );
-
   router.use("/user", userRoutes);
   router.use("/instance", instanceRoutes);
   router.use("/permission", permissionRoutes);
-  router.use("/context", contextRoutes);
 
   router.all("/", (ctx) => {
     ctx.body = { message: "superadmin" };

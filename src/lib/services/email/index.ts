@@ -6,12 +6,12 @@ import {
   MandrillResponseUnit,
   Recipient,
 } from "./types";
-import ProductService from "../product";
 
 import { Context } from "../../context/type";
 import { request } from "../nexys-service";
 
-class EmailService2 extends ProductService {
+class EmailService {
+  authToken: string;
   active: boolean;
   context: Context;
   constructor(
@@ -20,8 +20,7 @@ class EmailService2 extends ProductService {
     context: Context,
     active: boolean = true
   ) {
-    super(host, authToken);
-
+    this.authToken = authToken;
     this.active = active;
     this.context = context;
   }
@@ -57,7 +56,7 @@ class EmailService2 extends ProductService {
     return request<{
       payload: EmailPayload;
       context: Pick<Context, "email" | "env">;
-    }>("/email/send", { payload, context }, this.token);
+    }>("/email/send", { payload, context }, this.authToken);
   };
 
   async findAndSend(
@@ -96,7 +95,7 @@ class EmailService2 extends ProductService {
     }>(
       "/email/findAndSend",
       { uuidOrKey, lang, email, params, context },
-      this.token
+      this.authToken
     );
   }
 
@@ -104,8 +103,8 @@ class EmailService2 extends ProductService {
     request<Pick<Context, "instance" | "product">>(
       "/email/logs",
       { instance: this.context.instance, product: this.context.product },
-      this.token
+      this.authToken
     );
 }
 
-export default EmailService2;
+export default EmailService;

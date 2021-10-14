@@ -1,12 +1,9 @@
 import Router from "koa-router";
-import bodyParser from "koa-body";
-import * as V from "@nexys/validation";
 
 import m from "../../../middleware/auth";
 import { Permissions } from "../../../middleware/auth/type";
 
 import { ObjectWithId } from "../../../type";
-import ProductContext from "../../../services/product/context";
 import { Permission } from "../../../user-management/crud-type";
 
 const ProductService = <
@@ -14,7 +11,6 @@ const ProductService = <
   UserCache extends Permissions,
   Id
 >(
-  { productContext }: { productContext: ProductContext },
   MiddlewareAuth: m<Profile, UserCache, Id>
 ) => {
   const router = new Router();
@@ -23,7 +19,7 @@ const ProductService = <
     ctx.body = { app: Permission[Permission.superadmin] };
   });
 
-  router.all("/request/list", async (ctx) => {
+  /* router.all("/request/list", async (ctx) => {
     ctx.body = await productContext.getRequests();
   });
 
@@ -32,7 +28,7 @@ const ProductService = <
     ctx.body = await productContext.getRequestDetail(uuid);
   });
 
-  /*router.all(
+  router.all(
     "/request/log/list",
     bodyParser(),
     V.Main.isShapeMiddleware({
@@ -44,7 +40,7 @@ const ProductService = <
       } = ctx.request.body;
       ctx.body = await productContext.getRequestsLog(uuid);
     }
-  );*/
+  );
 
   router.all("/workflow/list", async (ctx) => {
     ctx.body = await productContext.getWorkflows();
@@ -69,7 +65,7 @@ const ProductService = <
     }
   );
 
-  /*router.all("/email/log/list", async (ctx) => {
+  router.all("/email/log/list", async (ctx) => {
     ctx.body = await productContext.getEmailLogs();
   });
 

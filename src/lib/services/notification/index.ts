@@ -1,5 +1,5 @@
 type Uuid = string;
-import ProductService from "../product/service";
+
 import * as Type from "./type";
 import * as Utils from "./utils";
 
@@ -8,12 +8,10 @@ import { request } from "../nexys-service";
 
 export { Type };
 
-class NotificationServiceWrapper extends ProductService {
+class NotificationServiceWrapper {
   context: Context;
 
-  constructor(host: string, authToken: string, context: Context) {
-    super(host, authToken);
-
+  constructor(context: Context) {
     this.context = context;
   }
 

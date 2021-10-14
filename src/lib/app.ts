@@ -1,7 +1,6 @@
 import Koa from "koa";
 import Helmet from "koa-helmet";
 import Logger from "koa-logger";
-import { Subscription } from "./services/product";
 
 export const init = (): Koa<Koa.DefaultState, Koa.DefaultContext> => {
   const app: Koa = new Koa();

@@ -1,22 +1,21 @@
 import fs, { promises as fsp } from "fs";
-import ProductService from "../product";
+import * as NexysService from "../nexys-service";
 
 interface I18nValues {
   [k: string]: string;
 }
 
-class I18nService extends ProductService {
+class I18nService {
+  appToken: string;
   local: boolean;
   path: string;
   languages: string[];
   constructor(
-    host: string,
-    auth: string,
+    appToken: string,
     local: boolean = false,
     path: string = "./locales"
   ) {
-    super(host, auth);
-
+    this.appToken = appToken;
     this.local = local;
     this.path = path; // process.cwd()
 
@@ -24,7 +23,7 @@ class I18nService extends ProductService {
   }
 
   getExport = async (lang: string): Promise<I18nValues> =>
-    this.request(`/i18n/export/${lang}`);
+    NexysService.request("/i18n/get", {}, this.appToken);
 
   get = async (lang: string) => {
     if (this.languages.includes(lang)) {

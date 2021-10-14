@@ -7,8 +7,6 @@ import * as UserManagementService from "./user-management";
 import MiddlewareAuth from "./middleware/auth";
 import Cache from "./cache/cache";
 
-import ProductContext from "./services/product/context";
-
 export interface Configuration {
   secretKey: string;
   host: string;
@@ -31,7 +29,6 @@ class ProductService<
   permissionService: UserManagementService.PermissionService;
   userAuthenticationService: UserManagementService.UserAuthentication;
   userTokenService: UserManagementService.UserToken;
-  productContext: ProductContext;
   public middlewareAuth: MiddlewareAuth<Profile, UserCache, Id, Permission>;
 
   constructor(configuration: Configuration, qs: QueryService, cache: Cache) {
@@ -59,10 +56,6 @@ class ProductService<
       new UserManagementService.UserAuthentication(qs);
 
     this.userTokenService = new UserManagementService.UserToken(qs);
-    this.productContext = new ProductContext(
-      configuration.host,
-      configuration.appToken
-    );
 
     this.middlewareAuth = new MiddlewareAuth(
       this.loginService,

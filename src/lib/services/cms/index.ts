@@ -1,5 +1,3 @@
-import ProductService from "../product/service";
-
 import { request } from "../nexys-service";
 import { Uuid } from "@nexys/utils/dist/types";
 
@@ -9,7 +7,13 @@ export interface Out {
   isHtml: boolean;
 }
 
-class CMSService extends ProductService {
+class CMSService {
+  token: string;
+
+  constructor(token: string) {
+    this.token = token;
+  }
+
   async get(
     uuid: Uuid,
     lang: string = "en",

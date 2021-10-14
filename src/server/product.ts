@@ -20,11 +20,7 @@ export const workflow = new WorkflowService(
   Config.appToken,
   Config.context
 );
-export const notifications = new NotificationService(
-  Config.host,
-  Config.appToken,
-  Config.context
-);
+export const notifications = new NotificationService(Config.context);
 
 const fetchR = new FetchR.default(Config.database, Config.model);
 export const qs = new QueryService(fetchR);
