@@ -19,7 +19,7 @@ export const qs = new QueryService(fetchR);
 export const cache = new Cache();
 
 const p = new ProductService(
-  { host: Config.host, appToken: Config.appToken, secretKey: Config.secretKey },
+  { appToken: Config.appToken, secretKey: Config.secretKey },
   qs,
   cache
 );

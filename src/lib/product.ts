@@ -9,7 +9,6 @@ import Cache from "./cache/cache";
 
 export interface Configuration {
   secretKey: string;
-  host: string;
   appToken: string;
 }
 

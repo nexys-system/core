@@ -32,8 +32,6 @@ export const ssoGithub = {
   client_secret: "7d34944b9f420a950eb52a9447627702bc1685fe",
 };
 
-export const host = "https://flow-test.nexys.io";
-
 const errorPrefix = "[CONFIGURATION] ";
 
 if (process.env.SECRET === undefined) {
