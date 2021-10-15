@@ -1,6 +1,6 @@
 import fetch from "node-fetch";
 
-const host: string =
+export const host: string =
   process.env.NEXYS_SERVICE_HOST || "https://service.nexys.io";
 
 export const request = async <Input, Output = any>(

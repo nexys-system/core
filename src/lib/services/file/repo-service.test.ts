@@ -1,16 +1,21 @@
 import Repo from "./repo-service";
 
-import nock from "nock";
-const token = "token";
-const host = "https://productservicehost";
+import * as NexysService from "../nexys-service";
 
-const repoService = new Repo(host, token);
+import nock from "nock";
+import { Context } from "../../context/type";
+const appToken = "mytoken";
+const host = NexysService.host;
+
+const context: Pick<Context, "appToken"> = { appToken };
+
+const repoService = new Repo(context);
 
 test("write", async () => {
   nock(host)
-    .post("/file/repository/write")
+    .post("/file/write")
     .matchHeader("content-type", "application/json")
-    .matchHeader("authorization", "bearer " + token)
+    .matchHeader("app-token", appToken)
     .once()
     .reply(200, { status: true });
 
@@ -22,9 +27,9 @@ test("serve", async () => {
   const t = "hello world";
   const b = Buffer.from(t);
   nock(host)
-    .get("/file/repository/serve/myfilename.txt")
+    .post("/file/serve")
     .matchHeader("content-type", "application/json")
-    .matchHeader("authorization", "bearer " + token)
+    .matchHeader("app-token", appToken)
     .once()
     .reply(200, b);
 
@@ -34,8 +39,8 @@ test("serve", async () => {
 
 test("upload", async () => {
   nock(host)
-    .post("/file/repository/upload")
-    .matchHeader("authorization", "bearer " + token)
+    .post("/file/upload")
+    .matchHeader("app-token", appToken)
     .once()
     .reply(200, { status: true });
 
