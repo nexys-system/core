@@ -31,7 +31,7 @@ export default class RequestService2 {
       headers: undefined, // todo
       query: undefined, // todo
     };
-    RequestService.findAndExec(uuid, actionInput, this.context);
+    return RequestService.findAndExec(uuid, actionInput, this.context);
   };
 
   logs = (

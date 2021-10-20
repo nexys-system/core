@@ -24,7 +24,4 @@ const p = new ProductService(
   cache
 );
 
-//const s = new Subscription(Config.host, Config.appToken);
-//s.subscribe().then((x) => console.log(x));
-
 export default p;
