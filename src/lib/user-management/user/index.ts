@@ -1,4 +1,5 @@
 import { Uuid, UOptionSet } from "@nexys/utils/dist/types";
+import { QueryParams } from "@nexys/fetchr/dist/type";
 import { Locale } from "../../middleware/auth/type";
 import * as T from "../type";
 import * as U from "../utils";
@@ -43,7 +44,7 @@ export default class User {
     locale: Locale;
     UserAuthentication?: CT.UserAuthentication[];
   }> => {
-    const params: any = {
+    const params: QueryParams = {
       projection: {
         uuid: true,
         firstName: true,
@@ -59,15 +60,15 @@ export default class User {
       },
       references: {
         [U.Entity.UserAuthentication]: {
-          uuid: true,
-          type: true,
-          value: true,
-          isEnabled: true,
+          projection: { uuid: true, type: true, value: true, isEnabled: true },
         },
       },
     };
 
-    if (instanceIn) {
+    if (
+      instanceIn &&
+      params.filters // this is to avoid type error, but filters is always defined
+    ) {
       params.filters.instance = { uuid: instanceIn.uuid };
     }
 
