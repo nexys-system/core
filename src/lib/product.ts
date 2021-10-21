@@ -1,4 +1,4 @@
-import QueryService from "./query/service";
+import QueryService from "./query/abstract-service-wdata";
 
 import * as T from "./type";
 import * as LT from "./middleware/auth/type";
