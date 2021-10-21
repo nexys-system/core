@@ -9,6 +9,8 @@ const hostDefault = "https://crud.nexys.io";
 
 type QueryResponse = any;
 
+const method = "POST";
+
 class QueryServiceExternal extends AbstractServiceWData {
   host: string;
   appToken: string;
@@ -30,7 +32,7 @@ class QueryServiceExternal extends AbstractServiceWData {
 
     const body = JSON.stringify(query);
 
-    const r = await fetch(url, { body, headers: this.headers });
+    const r = await fetch(url, { body, method, headers: this.headers });
 
     return r.json();
   }
@@ -40,7 +42,7 @@ class QueryServiceExternal extends AbstractServiceWData {
 
     const body = JSON.stringify(query);
 
-    const r = await fetch(url, { body, headers: this.headers });
+    const r = await fetch(url, { body, method, headers: this.headers });
 
     return r.json();
   }
