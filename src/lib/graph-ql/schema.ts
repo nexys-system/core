@@ -1,7 +1,7 @@
 import { GraphQLSchema } from "graphql";
 
 import { Permission } from "../user-management/crud-type";
-import QueryService from "../query/service";
+import QueryService from "../query/abstract-service-wdata";
 
 import * as SchemaFactory from "./schema-factory";
 import * as GraphQLSubmodelService from "./submodel";

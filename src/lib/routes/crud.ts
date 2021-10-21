@@ -6,7 +6,7 @@ import MiddlewareConstraints from "../query/constraint/middleware";
 
 import { Entity } from "../query/model/type";
 import * as T from "../query/constraint/type";
-import QueryService from "../query/service";
+import QueryService from "../query/abstract-service-wdata";
 import * as FT from "@nexys/fetchr/dist/type";
 import m from "../middleware/auth";
 import { ObjectWithId } from "../type";

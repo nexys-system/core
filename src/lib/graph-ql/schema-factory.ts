@@ -2,7 +2,7 @@ import * as GL from "graphql";
 import * as T from "./type";
 import * as U from "./utils";
 
-import QueryService from "../query/service";
+import QueryService from "../query/abstract-service-wdata";
 
 import { getQueryFromModel } from "./query-factory";
 
