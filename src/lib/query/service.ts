@@ -13,9 +13,9 @@ import {
   MutateResponseDelete,
 } from "@nexys/fetchr/dist/type";
 
-import * as Fetchr from "@nexys/fetchr";
+import Fetchr from "@nexys/fetchr";
 
-import * as T from "../user-management/type";
+import AbstractService from "./abstract-service";
 import { QueryConstraint } from "./constraint/type";
 
 import * as QueryBuilder from "./constraint/query-builder";
@@ -28,29 +28,26 @@ type QueryResponse = any;
 type Uuid = string;
 type Id = number;
 
-class QueryService extends T.QueryService {
-  fetchr: Fetchr.default;
-  constructor(f: Fetchr.default) {
+class QueryService extends AbstractService {
+  fetchr: Fetchr;
+  constructor(f: Fetchr) {
     super();
 
     this.fetchr = f;
   }
 
   async data(query: Query): Promise<QueryResponse> {
-    // TODO: implement references inside projection
-    //return await this.request("/data", query);
     return this.fetchr.query(query);
   }
 
   async mutate(query: Mutate): Promise<MutateResponse> {
-    /* const arr = Fetchr.QueryBuilder.Mutate.createMutateQuery(
-      query,
-      this.fetchr.model
-    );*/
-    //console.log(arr[0].sql);
-    const r = await this.fetchr.mutate(query);
+    return this.fetchr.mutate(query);
+  }
 
-    return r;
+  async list<A = any>(entity: string, params: Params = {}): Promise<A[]> {
+    // TODO entity: only first letter uppercase?
+    const data = await this.data({ [entity]: params });
+    return QueryUtil.getList(data, entity);
   }
 
   insert = async <A = any>(
@@ -161,12 +158,6 @@ class QueryService extends T.QueryService {
       async ({ filters, data }) => await this.update(entity, filters, data)
     );
     return Promise.all(r);
-  }
-
-  async list<A = any>(entity: string, params: Params = {}): Promise<A[]> {
-    // TODO entity: only first letter uppercase?
-    const data = await this.data({ [entity]: params });
-    return QueryUtil.getList(data, entity);
   }
 
   async find<A = any>(

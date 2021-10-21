@@ -3,7 +3,7 @@ import { Uuid } from "@nexys/utils/dist/types";
 import { Locale } from "../middleware/auth/type";
 
 import * as T from "./type";
-import { QueryService } from "./type";
+import QueryService from "../query/abstract-service";
 import UserService from "./user";
 import UserTokenService from "./user/token";
 import * as U from "./password/utils";

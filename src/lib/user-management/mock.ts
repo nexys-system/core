@@ -1,5 +1,6 @@
 import { AuthenticationType, Permission } from "./crud-type";
 import * as T from "./type";
+import AbstractQueryService from "../query/abstract-service";
 import { Entity } from "./utils";
 
 export const userUuid = "myUuid";
@@ -18,7 +19,7 @@ export const status = T.Status.pending;
 
 export const hashedPassword = "myhashedpassword";
 
-class QueryService extends T.QueryService {
+class QueryService extends AbstractQueryService {
   constructor(host: string, token: string) {
     super();
   }

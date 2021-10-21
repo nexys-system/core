@@ -1,7 +1,7 @@
 import { Uuid, UOptionSet } from "@nexys/utils/dist/types";
 import { QueryParams } from "@nexys/fetchr/dist/type";
 
-import { QueryService } from "./type";
+import QueryService from "../query/abstract-service";
 import * as U from "./utils";
 import * as CT from "./crud-type";
 

@@ -2,15 +2,16 @@ import { Uuid, UOptionSet } from "@nexys/utils/dist/types";
 import { QueryParams } from "@nexys/fetchr/dist/type";
 import { Locale } from "../../middleware/auth/type";
 import * as T from "../type";
+import QueryService from "../../query/abstract-service";
 import * as U from "../utils";
 import * as CT from "../crud-type";
 import PermissionService from "../permission";
 import * as L from "../locale";
 
 export default class User {
-  qs: T.QueryService;
+  qs: QueryService;
   permissionService: PermissionService;
-  constructor(qs: T.QueryService) {
+  constructor(qs: QueryService) {
     this.qs = qs;
     this.permissionService = new PermissionService(qs);
   }
