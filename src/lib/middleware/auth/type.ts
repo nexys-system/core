@@ -9,7 +9,7 @@ export interface Permissions<P = Permission> {
 export interface UserState<
   Id,
   Profile extends T.ObjectWithId<Id>,
-  UserCache extends Permissions
+  UserCache extends UserCacheDefault
 > {
   profile: Profile;
   userCache: UserCache;
@@ -30,4 +30,8 @@ export interface LoginResponse<
 export interface Locale {
   country: string;
   lang: string;
+}
+
+export interface UserCacheDefault extends Permissions {
+  locale: Locale;
 }

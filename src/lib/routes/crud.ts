@@ -10,11 +10,11 @@ import QueryService from "../query/abstract-service-wdata";
 import * as FT from "@nexys/fetchr/dist/type";
 import m from "../middleware/auth";
 import { ObjectWithId } from "../type";
-import { Permissions } from "../middleware/auth/type";
+import { UserCacheDefault } from "../middleware/auth/type";
 
 class CrudRoutes<
   Profile extends ObjectWithId<Id>,
-  UserCache extends Permissions,
+  UserCache extends UserCacheDefault,
   Id
 > {
   model: Entity[];

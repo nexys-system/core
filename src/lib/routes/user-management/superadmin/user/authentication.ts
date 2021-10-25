@@ -3,7 +3,7 @@ import bodyParser from "koa-body";
 import { Main as Validation, Utils as VU } from "@nexys/validation";
 
 import m from "../../../../middleware/auth";
-import { Permissions } from "../../../../middleware/auth/type";
+import { UserCacheDefault } from "../../../../middleware/auth/type";
 
 import * as T from "../../../../user-management/crud-type";
 import { ObjectWithId } from "../../../../type";
@@ -11,7 +11,7 @@ import { UserAuthentication } from "../../../../user-management";
 
 const UserAuthenticationService = <
   Profile extends ObjectWithId<Id>,
-  UserCache extends Permissions,
+  UserCache extends UserCacheDefault,
   Id
 >(
   {

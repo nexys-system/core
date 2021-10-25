@@ -1,14 +1,14 @@
 import Router from "koa-router";
 
 import m from "../../../middleware/auth";
-import { Permissions } from "../../../middleware/auth/type";
+import { UserCacheDefault } from "../../../middleware/auth/type";
 
 import { ObjectWithId } from "../../../type";
 import { Permission } from "../../../user-management/crud-type";
 
 const ProductService = <
   Profile extends ObjectWithId<Id>,
-  UserCache extends Permissions,
+  UserCache extends UserCacheDefault,
   Id
 >(
   MiddlewareAuth: m<Profile, UserCache, Id>

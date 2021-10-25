@@ -1,6 +1,7 @@
 import { Uuid } from "@nexys/utils/dist/types";
 import A from ".";
 import Cache from "../../cache/local";
+import { Locale } from "./type";
 
 // create instance of auth
 
@@ -14,6 +15,7 @@ interface ProfileUuid {
 
 interface UserCache {
   permissions: [];
+  locale: Locale;
 }
 
 test("create instance of auth", () => {

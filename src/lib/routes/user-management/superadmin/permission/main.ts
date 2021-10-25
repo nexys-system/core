@@ -2,7 +2,7 @@ import Router from "koa-router";
 import bodyParser from "koa-body";
 
 import m from "../../../../middleware/auth";
-import { Permissions } from "../../../../middleware/auth/type";
+import { UserCacheDefault } from "../../../../middleware/auth/type";
 
 import { ObjectWithId } from "../../../../type";
 import { PermissionService } from "../../../../user-management";
@@ -10,7 +10,7 @@ import { Permission } from "../../../../user-management/crud-type";
 
 const PermissionRoutes = <
   Profile extends ObjectWithId<Id>,
-  UserCache extends Permissions,
+  UserCache extends UserCacheDefault,
   Id
 >(
   { permissionService }: { permissionService: PermissionService },

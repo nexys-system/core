@@ -6,7 +6,7 @@ import bodyParser from "koa-body";
 import m from "../../../middleware/auth";
 
 import { ObjectWithId } from "../../../type";
-import { Locale, Permissions } from "../../../middleware/auth/type";
+import { Locale, UserCacheDefault } from "../../../middleware/auth/type";
 import { Uuid } from "@nexys/utils/dist/types";
 import { LoginService } from "../../../user-management";
 import { headerAcceptLanguageToLocale } from "../../../user-management/locale";
@@ -22,7 +22,7 @@ import {
 
 const LoginRoutes = <Profile extends ObjectWithId<Id>, Id>(
   { loginService }: { loginService: LoginService },
-  MiddlewareAuth: m<Profile, Permissions, Id>,
+  MiddlewareAuth: m<Profile, UserCacheDefault, Id>,
   instance: { uuid: Uuid; name: string }
 ) => {
   const router = new Router();
@@ -51,8 +51,8 @@ const LoginRoutes = <Profile extends ObjectWithId<Id>, Id>(
         ctx,
         nProfile,
         refreshToken,
-        { permissions },
-        locale,
+        { permissions, locale },
+
         {
           secure: false,
         }

@@ -19,7 +19,7 @@ import { localeToString } from "../../user-management/locale";
 
 export default class Auth<
   Profile extends T.ObjectWithId<Id>,
-  UserCache extends LT.Permissions,
+  UserCache extends LT.UserCacheDefault,
   Id = number,
   Permission = LT.Permission
 > {
@@ -108,13 +108,12 @@ export default class Auth<
 
       const nProfile: Profile = { id: profile.uuid, ...profile } as any;
 
-      const userCache: UserCache = { permissions } as UserCache;
+      const userCache: UserCache = { permissions, locale } as UserCache;
 
       const profileWToken = await this.authFormat(
         userCache,
         nProfile,
-        refreshToken,
-        locale
+        refreshToken
       );
 
       U.login(profileWToken, ctx.cookies, cookieOpts);
@@ -134,17 +133,16 @@ export default class Auth<
 
   getCache = <Id, A>(id: Id): A => this.cache.get(U.getKey(id));
 
-  setCache = async (profile: Profile, cacheData: UserCache) =>
-    this.cache.set(U.getKey(profile.id), cacheData);
+  setCache = async (id: Id, cacheData: UserCache) =>
+    this.cache.set(U.getKey(id), cacheData);
 
   authFormat = async (
     userCache: UserCache,
     profile: Profile,
-    refreshToken: string,
-    locale: LT.Locale
+    refreshToken: string
   ): Promise<LT.LoginResponse<Profile, Id>> => {
     // set cache
-    await this.setCache(profile, userCache);
+    await this.setCache(profile.id, userCache);
     // get access token
     const accessToken = this.jwt.sign(profile);
 
@@ -153,7 +151,7 @@ export default class Auth<
       accessToken,
       refreshToken,
       profile,
-      locale: localeToString(locale),
+      locale: localeToString(userCache.locale),
     };
   };
 
@@ -162,13 +160,13 @@ export default class Auth<
     profile: Profile,
     refreshToken: string,
     userCache: UserCache,
-    locale: LT.Locale,
+
     cookieOpts: {
       secure: boolean;
       sameSite?: boolean | "strict" | "lax" | "none";
     } = { secure: true }
   ) => {
-    const r = await this.authFormat(userCache, profile, refreshToken, locale);
+    const r = await this.authFormat(userCache, profile, refreshToken);
 
     ctx.body = U.login(r, ctx.cookies, cookieOpts);
   };

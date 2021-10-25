@@ -3,7 +3,7 @@ import Router from "koa-router";
 import m from "../../../middleware/auth";
 
 import { ObjectWithId } from "../../../type";
-import { Permissions } from "../../../middleware/auth/type";
+import { UserCacheDefault } from "../../../middleware/auth/type";
 
 import Instance from "./instance";
 import User from "./user";
@@ -19,7 +19,7 @@ import {
 
 const SuperadminRoutes = <
   Profile extends ObjectWithId<Id>,
-  UserCache extends Permissions,
+  UserCache extends UserCacheDefault,
   Id
 >(
   {

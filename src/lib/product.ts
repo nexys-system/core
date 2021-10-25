@@ -14,7 +14,7 @@ export interface Configuration {
 
 class ProductService<
   Profile extends T.ObjectWithId<Id>,
-  UserCache extends LT.Permissions,
+  UserCache extends LT.UserCacheDefault,
   Id = number,
   Permission = LT.Permission
 > {

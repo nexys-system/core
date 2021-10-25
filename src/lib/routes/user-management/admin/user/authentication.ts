@@ -5,12 +5,12 @@ import m from "../../../../middleware/auth";
 import { Main as Validation, Utils as VU } from "@nexys/validation";
 import * as T from "../../../../user-management/crud-type";
 import { ObjectWithId } from "../../../../type";
-import { Permissions } from "../../../../middleware/auth/type";
 import { UserAuthentication } from "../../../../user-management";
+import { UserCacheDefault } from "../../../../middleware/auth/type";
 
 const AuthRoutes = <
   Profile extends ObjectWithId<Id>,
-  UserCache extends Permissions,
+  UserCache extends UserCacheDefault,
   Id
 >(
   {
