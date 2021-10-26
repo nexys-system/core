@@ -15,12 +15,8 @@ export interface UserState<
   userCache: UserCache;
 }
 
-export interface LoginResponse<
-  Profile extends T.ObjectWithId<Id>,
-  Id,
-  P = Permission
-> {
-  permissions: P[];
+export interface LoginResponse<Profile extends T.ObjectWithId<Id>, Id> {
+  permissions: string[];
   profile: Profile;
   locale: string;
   accessToken: string;

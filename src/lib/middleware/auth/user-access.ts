@@ -17,6 +17,8 @@ import { LoginService } from "../../user-management";
 import { localeToString } from "../../user-management/locale";
 // see https://github.com/Nexysweb/koa-lib/blob/master/src/middleware/index.ts
 
+type PermissionValues = { [k: number]: string };
+
 export default class Auth<
   Profile extends T.ObjectWithId<Id>,
   UserCache extends LT.UserCacheDefault,
@@ -28,6 +30,7 @@ export default class Auth<
   acceptHeaderToken: boolean;
   loginService: LoginService;
   accessTokenExpires: number;
+  permissionValues: PermissionValues;
 
   /**
    *
@@ -38,14 +41,22 @@ export default class Auth<
     loginService: LoginService,
     cache: Cache,
     secret: string,
-    acceptHeaderToken: boolean = true,
-    accessTokenExpires: number = 10 * 60 // after 15min, the access token expires and the refresh token is used to create a new session: - permissions, - status etc are refreshed in the process
+    options: {
+      acceptHeaderToken?: boolean;
+      accessTokenExpires?: number;
+      permissionValues?: PermissionValues;
+    } = {}
   ) {
     this.cache = cache;
     this.jwt = new JWT(secret);
-    this.acceptHeaderToken = acceptHeaderToken;
+    this.acceptHeaderToken = options.acceptHeaderToken || true;
     this.loginService = loginService;
-    this.accessTokenExpires = accessTokenExpires;
+    this.accessTokenExpires = options.accessTokenExpires || 10 * 60; // after 15min, the access token expires and the refresh token is used to create a new session: - permissions, - status etc are refreshed in the process
+    this.permissionValues = options.permissionValues || {
+      1: "app",
+      2: "admin",
+      3: "superadmin",
+    };
   }
 
   getProfile = async (
@@ -146,8 +157,12 @@ export default class Auth<
     // get access token
     const accessToken = this.jwt.sign(profile);
 
+    const permissionStrings = userCache.permissions.map(
+      (p) => this.permissionValues[p]
+    );
+
     return {
-      permissions: userCache.permissions,
+      permissions: permissionStrings,
       accessToken,
       refreshToken,
       profile,
