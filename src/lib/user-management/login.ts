@@ -8,7 +8,7 @@ import UserService from "./user";
 import UserTokenService from "./user/token";
 import * as U from "./password/utils";
 import * as A from "./action-payload";
-import { AuthenticationType } from "./crud-type";
+import { AuthenticationType, Permission } from "./crud-type";
 
 export default class LoginService {
   userService: UserService;
@@ -58,7 +58,7 @@ export default class LoginService {
   ): Promise<{
     profile: T.Profile;
     locale: Locale;
-    permissions: number[];
+    permissions: Permission[];
     refreshToken: string;
   }> => {
     const { profile, status, locale, auth } = await this.preAuthenticate(
