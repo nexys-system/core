@@ -13,13 +13,14 @@ class I18nService {
   constructor(
     appToken: string,
     local: boolean = false,
+    languages: string[] = ["en"],
     path: string = "./locales"
   ) {
     this.appToken = appToken;
     this.local = local;
     this.path = path; // process.cwd()
 
-    this.languages = ["en"];
+    this.languages = languages;
   }
 
   getExport = async (lang: string): Promise<I18nValues> =>

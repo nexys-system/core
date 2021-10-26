@@ -7,17 +7,21 @@ export default (I18n: I18nService) => {
   const router: Router = new Router();
 
   router.get("/serve", async (ctx: Koa.Context) => {
-    const { locale } = ctx.request.query;
+    const { lang } = ctx.request.query;
 
-    if (typeof locale !== "string") {
-      throw Error("locale is not of type string");
+    const inputLang = lang;
+
+    if (typeof inputLang !== "string") {
+      ctx.status = 400;
+      ctx.body = "lang must be given in query string";
+      return;
     }
 
     try {
-      ctx.body = await I18n.getFile(locale);
+      ctx.body = await I18n.getFile(inputLang);
     } catch (error) {
       await I18n.saveAll();
-      ctx.body = await I18n.getFile(locale);
+      ctx.body = await I18n.getFile(inputLang);
     }
   });
 
