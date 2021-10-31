@@ -205,7 +205,9 @@ abstract class QueryService extends AbstractService {
       constraints.projectionConstraintsMap,
       model
     );
-    console.log(JSON.stringify(query));
+
+    // console.log(JSON.stringify(query));
+
     return this.data(query);
   };
 

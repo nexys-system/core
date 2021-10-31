@@ -28,7 +28,7 @@ export default class Auth<
   acceptHeaderToken: boolean;
   loginService: LoginService;
   accessTokenExpires: number;
-  permissionValues: T.PermissionValues;
+  permissionValues: LT.PermissionValues;
 
   /**
    *
@@ -39,7 +39,7 @@ export default class Auth<
     loginService: LoginService,
     cache: Cache,
     secret: string,
-    options: T.AuthOptions = {}
+    options: LT.AuthOptions = {}
   ) {
     this.cache = cache;
     this.jwt = new JWT(secret);
@@ -52,8 +52,11 @@ export default class Auth<
       3: "superadmin",
     };
 
-
-    console.log('permissionvalues', this.permissionValues, Object.keys(this.permissionValues));
+    console.log(
+      "permissionvalues",
+      this.permissionValues,
+      Object.keys(this.permissionValues)
+    );
   }
 
   getProfile = async (
