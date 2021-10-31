@@ -31,3 +31,11 @@ export interface Locale {
 export interface UserCacheDefault extends Permissions {
   locale: Locale;
 }
+
+export type PermissionValues = { [k: number]: string };
+
+export interface AuthOptions {
+  acceptHeaderToken?: boolean;
+  accessTokenExpires?: number;
+  permissionValues?: PermissionValues;
+}

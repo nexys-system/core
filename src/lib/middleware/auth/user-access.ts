@@ -17,8 +17,6 @@ import { LoginService } from "../../user-management";
 import { localeToString } from "../../user-management/locale";
 // see https://github.com/Nexysweb/koa-lib/blob/master/src/middleware/index.ts
 
-type PermissionValues = { [k: number]: string };
-
 export default class Auth<
   Profile extends T.ObjectWithId<Id>,
   UserCache extends LT.UserCacheDefault,
@@ -30,7 +28,7 @@ export default class Auth<
   acceptHeaderToken: boolean;
   loginService: LoginService;
   accessTokenExpires: number;
-  permissionValues: PermissionValues;
+  permissionValues: T.PermissionValues;
 
   /**
    *
@@ -41,11 +39,7 @@ export default class Auth<
     loginService: LoginService,
     cache: Cache,
     secret: string,
-    options: {
-      acceptHeaderToken?: boolean;
-      accessTokenExpires?: number;
-      permissionValues?: PermissionValues;
-    } = {}
+    options: T.AuthOptions = {}
   ) {
     this.cache = cache;
     this.jwt = new JWT(secret);
@@ -57,6 +51,9 @@ export default class Auth<
       2: "admin",
       3: "superadmin",
     };
+
+
+    console.log('permissionvalues', this.permissionValues, Object.keys(this.permissionValues));
   }
 
   getProfile = async (

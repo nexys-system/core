@@ -4,6 +4,7 @@ import * as T from "./type";
 import * as LT from "./middleware/auth/type";
 
 import * as UserManagementService from "./user-management";
+import MiddlewareAuth from "./middleware/auth";
 import Cache from "./cache/cache";
 
 export interface Configuration {
@@ -27,8 +28,9 @@ class ProductService<
   permissionService: UserManagementService.PermissionService;
   userAuthenticationService: UserManagementService.UserAuthentication;
   userTokenService: UserManagementService.UserToken;
+  public middlewareAuth: MiddlewareAuth<Profile, UserCache, Id, Permission>;
 
-  constructor(configuration: Configuration, qs: QueryService, cache: Cache) {
+  constructor(configuration: Configuration, qs: QueryService, cache: Cache, authOptions: LT.AuthOptions) {
     this.configuration = configuration;
     this.qs = qs;
     this.cache = cache;
@@ -53,6 +55,12 @@ class ProductService<
       new UserManagementService.UserAuthentication(qs);
 
     this.userTokenService = new UserManagementService.UserToken(qs);
+
+    this.middlewareAuth = new MiddlewareAuth(
+      this.loginService,
+      cache,
+      configuration.secretKey,authOptions
+    );
   }
 }
 
