@@ -51,12 +51,6 @@ export default class Auth<
       2: "admin",
       3: "superadmin",
     };
-
-    console.log(
-      "permissionvalues",
-      this.permissionValues,
-      Object.keys(this.permissionValues)
-    );
   }
 
   getProfile = async (
