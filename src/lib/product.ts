@@ -30,7 +30,12 @@ class ProductService<
   userTokenService: UserManagementService.UserToken;
   public middlewareAuth: MiddlewareAuth<Profile, UserCache, Id, Permission>;
 
-  constructor(configuration: Configuration, qs: QueryService, cache: Cache, authOptions: LT.AuthOptions) {
+  constructor(
+    configuration: Configuration,
+    qs: QueryService,
+    cache: Cache,
+    authOptions?: LT.AuthOptions
+  ) {
     this.configuration = configuration;
     this.qs = qs;
     this.cache = cache;
@@ -59,7 +64,8 @@ class ProductService<
     this.middlewareAuth = new MiddlewareAuth(
       this.loginService,
       cache,
-      configuration.secretKey,authOptions
+      configuration.secretKey,
+      authOptions
     );
   }
 }
