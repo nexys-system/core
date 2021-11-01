@@ -7,8 +7,8 @@ export const constructMutatePermission = (
   entityFilterConstraintsMap: Map<string, FilterConstraint[]>,
   entityDataConstraintsMap: Map<string, DataConstraint[]>,
   insertAppend: Object = {},
-  entitiesAllowed: string[] = [],
-  entitiesNotAllowed: string[] = []
+  _entitiesAllowed: string[] = [],
+  _entitiesNotAllowed: string[] = []
 ): Mutate => {
   Object.keys(query).forEach((entity) => {
     const q = query[entity];
