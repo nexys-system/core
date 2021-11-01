@@ -183,13 +183,11 @@ export default class Permission<P = CT.Permission> {
     permissionIdxs: Permission[],
     instance: { uuid: Uuid }
   ) => {
-    // fetch existigin (?) permissions
+    // fetch existing (?) permissions
     const ls = await this.qs.list(U.Entity.PermissionInstance, {
       projection: { uuid: true },
       filters: { instance, permission: { $in: permissionIdxs } },
     });
-
-    console.log("ls", ls);
 
     if (ls.length > 0) {
       return this.revokeFromInstance(permissionIdxs, instance);
@@ -282,6 +280,20 @@ export default class Permission<P = CT.Permission> {
       permissionInstance: { uuid: permissionInstance.uuid },
       user,
     });
+  };
+
+  toggleFromUser = async (permission: Permission, user: { uuid: Uuid }) => {
+    // fetch existing (?) permissions
+    const ls = await this.qs.list(U.Entity.UserPermission, {
+      projection: { uuid: true },
+      filters: { user, permission },
+    });
+
+    if (ls.length > 0) {
+      return this.revokeFromUser(permission, user);
+    }
+
+    return this.assignToUser2(permission, user);
   };
 
   assignToUserByNames = async (

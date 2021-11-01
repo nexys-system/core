@@ -44,28 +44,20 @@ const UserRoutes = <
     Validation.isShapeMiddleware({
       user: { uuid: { extraCheck: VU.checkUuid } },
       permission: { type: "number" },
-      assigned: { type: "boolean" },
     }),
     async (ctx) => {
       const {
         user,
         permission,
-        assigned,
       }: {
         user: { uuid: Uuid };
         permission: Permission;
-        assigned: boolean;
       } = ctx.request.body;
 
-      if (assigned === false) {
-        ctx.body = await permissionService.revokeFromUser(
-          permission as any,
-          user
-        );
-        return;
-      }
-
-      ctx.body = await permissionService.assignToUser2(permission as any, user);
+      ctx.body = await permissionService.toggleFromUser(
+        permission as any,
+        user
+      );
     }
   );
 
