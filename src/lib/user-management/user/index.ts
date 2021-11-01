@@ -210,7 +210,7 @@ export default class User {
 
   insertByProfile = async (
     profile: Omit<T.Profile, "uuid">,
-    locale: Locale,
+    _locale: Locale,
     status: T.Status = T.Status.pending
   ): Promise<{ uuid: Uuid }> => {
     const row: Omit<CT.User, "uuid"> = {

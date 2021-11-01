@@ -23,14 +23,14 @@ abstract class Cache {
     } else return data;
   }
 
-  get<A = any>(key: string): A {
+  get<A = any>(_key: string): A {
     throw new Error("Cache getter not implemented");
   }
 
   async set<A = any>(
-    key: string,
-    value: A,
-    ttl: number | undefined = undefined
+    _key: string,
+    _value: A,
+    _ttl: number | undefined = undefined
   ): Promise<any> {
     throw new Error("Cache setter not implemented");
   }
@@ -43,7 +43,7 @@ abstract class Cache {
     } else return false;
   }
 
-  destroy(key: string) {
+  destroy(_key: string) {
     throw new Error("Cache destroyer not implemented");
   }
 }

@@ -20,17 +20,17 @@ export const status = T.Status.pending;
 export const hashedPassword = "myhashedpassword";
 
 class QueryService extends AbstractQueryService {
-  constructor(host: string, token: string) {
+  constructor(_host: string, _token: string) {
     super();
   }
 
-  insertUuid = <A>(entity: string, data: A) =>
+  insertUuid = <A>(entity: string, _data: A) =>
     Promise.resolve({
       uuid: entity + "_uuid",
       success: true,
     });
 
-  insertId = <A>(entity: string, data: A) =>
+  insertId = <A>(_entity: string, _data: A) =>
     Promise.resolve({
       id: 0,
       success: true,
@@ -68,11 +68,11 @@ class QueryService extends AbstractQueryService {
     throw Error("not implemented");
   };
 
-  detail = <A>(entity: string): Promise<A> => {
+  detail = <A>(_entity: string): Promise<A> => {
     throw Error("undefined");
   };
 
-  insert = <A>() => {
+  insert = <_A>() => {
     throw Error("undefined");
   };
   insertMultiple = () => {

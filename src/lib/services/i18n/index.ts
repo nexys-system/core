@@ -23,7 +23,7 @@ class I18nService {
     this.languages = languages;
   }
 
-  getExport = async (lang: string): Promise<I18nValues> =>
+  getExport = async (_lang: string): Promise<I18nValues> =>
     NexysService.request("/i18n/get", {}, this.appToken);
 
   get = async (lang: string) => {
