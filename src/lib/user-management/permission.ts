@@ -212,6 +212,15 @@ export default class Permission<P = CT.Permission> {
     return this.qs.insertMultiple(U.Entity.UserPermission, permissions);
   };
 
+  assignToUser2 = async (permission: Permission, user: { uuid: Uuid }) => {
+    const permissionInstance = await this.permissionInstanceFromUser(
+      permission,
+      user
+    );
+
+    return this.assignToUserFromPermissionInstance(permissionInstance, user);
+  };
+
   permissionInstanceFromUser = async (
     permission: Permission,
     user: { uuid: Uuid }
@@ -246,20 +255,16 @@ export default class Permission<P = CT.Permission> {
     return permissionInstance;
   };
 
-  assignToUser2 = async (
-    permission: Permission,
-    user: { uuid: Uuid } //; instance: { uuid: Uuid } } todo for admin permission
+  assignToUserFromPermissionInstance = async (
+    permissionInstance: { uuid: Uuid },
+    user: { uuid: Uuid }
   ) => {
-    const permissionInstance = await this.permissionInstanceFromUser(
-      permission,
-      user
-    );
-
-    const permissions = {
+    const permission: Omit<CT.UserPermission, "uuid"> = {
       user,
       permissionInstance: { uuid: permissionInstance.uuid },
     };
-    return this.qs.insert(U.Entity.UserPermission, permissions);
+
+    return this.qs.insert(U.Entity.UserPermission, permission);
   };
 
   /**
@@ -291,16 +296,44 @@ export default class Permission<P = CT.Permission> {
       user,
     });
 
+  listPermissionUser = async (
+    permissionInstance: { uuid: Uuid },
+    user: { uuid: Uuid }
+  ): Promise<Pick<CT.UserPermission, "uuid">[]> =>
+    this.qs.list(U.Entity.UserPermission, {
+      projection: { uuid: true },
+      filters: {
+        permissionInstance: { uuid: permissionInstance.uuid },
+        user,
+      },
+    });
+
   toggleFromUser = async (permission: Permission, user: { uuid: Uuid }) => {
     try {
+      // 1. get the permission instance record
       const permissionInstance = await this.permissionInstanceFromUser(
         permission,
         user
       );
 
-      return this.revokePermissionInstanceFromUser(permissionInstance, user);
+      // 2. get the permission user record, if exists
+      const ls = await this.listPermissionUser(permissionInstance, user);
+
+      // 3.1 if some records found, delete
+      if (ls.length > 0) {
+        return this.revokePermissionInstanceFromUser(
+          { uuid: permissionInstance.uuid },
+          user
+        );
+        // 3.2 else create new
+      } else {
+        return this.assignToUserFromPermissionInstance(
+          { uuid: permissionInstance.uuid },
+          user
+        );
+      }
     } catch (err) {
-      return this.assignToUser2(permission, user);
+      throw err;
     }
   };
 
