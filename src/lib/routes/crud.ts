@@ -57,7 +57,7 @@ class CrudRoutes<
       MiddlewareAuth.isAuthenticated(),
       middleware.roleExists,
       async (ctx: Koa.Context) => {
-        const profile: T.Profile = ctx.state.profile as T.Profile;
+        //const profile: T.Profile = ctx.state.profile as T.Profile;
         const query: FT.Mutate = ctx.request.body;
 
         const { constraints } = ctx.state as {
