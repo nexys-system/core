@@ -3,7 +3,10 @@ import { Entity } from "../model/type";
 import * as T from "./type";
 import * as Exclude from "./exclude";
 
-export const defaultAppend = ({ uuid, instance }: T.Profile) => ({
+export const defaultAppend = ({
+  uuid,
+  instance,
+}: Pick<T.Profile, "uuid" | "instance">) => ({
   instance,
   user: { uuid },
   logUser: { uuid },
@@ -17,7 +20,7 @@ class DefaultConstraints {
     this.model = model;
   }
 
-  public getSuperadmin = (profile: T.Profile) => {
+  public getSuperadmin = (profile: Pick<T.Profile, "uuid" | "instance">) => {
     const data: T.QueryConstraint = {
       filterConstraintsMap: new Map(),
       projectionConstraintsMap: new Map(
@@ -39,7 +42,7 @@ class DefaultConstraints {
   };
 
   // filter on instance and linked entities
-  getAdmin = (profile: T.Profile): T.Constraint => {
+  getAdmin = (profile: Pick<T.Profile, "uuid" | "instance">): T.Constraint => {
     const excludedEntities = [
       { name: "Instance", filterAttribute: profile.instance },
     ];
@@ -50,7 +53,7 @@ class DefaultConstraints {
 
   // todo here user
   // todo2: generate these when logging in, upon refresh token get the newest set
-  getApp = (profile: T.Profile): T.Constraint => {
+  getApp = (profile: Pick<T.Profile, "uuid" | "instance">): T.Constraint => {
     const excludedEntities = [
       { name: "Instance", filterAttribute: profile.instance },
       { name: "User", filterAttribute: { uuid: profile.uuid } },
