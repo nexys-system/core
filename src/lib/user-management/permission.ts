@@ -179,6 +179,25 @@ export default class Permission<P = CT.Permission> {
       instance,
     });
 
+  toggleFromInstance = async (
+    permissionIdxs: Permission[],
+    instance: { uuid: Uuid }
+  ) => {
+    // fetch existigin (?) permissions
+    const ls = await this.qs.list(U.Entity.PermissionInstance, {
+      projection: { uuid: true },
+      filters: { instance, permission: { $in: permissionIdxs } },
+    });
+
+    console.log("ls", ls);
+
+    if (ls.length > 0) {
+      return this.revokeFromInstance(permissionIdxs, instance);
+    }
+
+    return this.assignToInstance(permissionIdxs, instance);
+  };
+
   /**
    *
    * @param uuids : these are "instance permission" uuids

@@ -38,28 +38,17 @@ const InstanceService = <
     Validation.isShapeMiddleware({
       instance: { uuid: { extraCheck: VU.checkUuid } },
       permission: { type: "number" },
-      assigned: { type: "boolean" },
     }),
     async (ctx) => {
       const {
         instance,
         permission,
-        assigned,
       }: {
         instance: { uuid: Uuid };
         permission: number;
-        assigned: boolean;
       } = ctx.request.body;
 
-      if (assigned === false) {
-        ctx.body = await permissionService.revokeFromInstance(
-          [permission as any],
-          instance
-        );
-        return;
-      }
-
-      ctx.body = await permissionService.assignToInstance(
+      ctx.body = await permissionService.toggleFromInstance(
         [permission as any],
         instance
       );
