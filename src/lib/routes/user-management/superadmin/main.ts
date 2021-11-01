@@ -6,7 +6,7 @@ import { UserCacheDefault } from "../../../middleware/auth/type";
 import { ObjectWithId } from "../../../type";
 import { Permission } from "../../../user-management/crud-type";
 
-const ProductService = <
+const UserManagementRoutes = <
   Profile extends ObjectWithId<Id>,
   UserCache extends UserCacheDefault,
   Id
@@ -91,4 +91,4 @@ const ProductService = <
   return router.routes();
 };
 
-export default ProductService;
+export default UserManagementRoutes;
