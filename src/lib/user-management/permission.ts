@@ -276,24 +276,32 @@ export default class Permission<P = CT.Permission> {
       user
     );
 
-    return this.qs.delete(U.Entity.UserPermission, {
+    return this.revokePermissionInstanceFromUser(
+      { uuid: permissionInstance.uuid },
+      user
+    );
+  };
+
+  revokePermissionInstanceFromUser = async (
+    permissionInstance: { uuid: Uuid },
+    user: { uuid: Uuid }
+  ) =>
+    this.qs.delete(U.Entity.UserPermission, {
       permissionInstance: { uuid: permissionInstance.uuid },
       user,
     });
-  };
 
   toggleFromUser = async (permission: Permission, user: { uuid: Uuid }) => {
-    // fetch existing (?) permissions
-    const ls = await this.qs.list(U.Entity.UserPermission, {
-      projection: { uuid: true },
-      filters: { user, permission },
-    });
+    try {
+      const permissionInstance = await this.permissionInstanceFromUser(
+        permission,
+        user
+      );
 
-    if (ls.length > 0) {
-      return this.revokeFromUser(permission, user);
+      return this.revokePermissionInstanceFromUser(permissionInstance, user);
+    } catch (err) {
+      return this.assignToUser2(permission, user);
     }
-
-    return this.assignToUser2(permission, user);
   };
 
   assignToUserByNames = async (
