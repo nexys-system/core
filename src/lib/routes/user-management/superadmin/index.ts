@@ -8,7 +8,7 @@ import { UserCacheDefault } from "../../../middleware/auth/type";
 import Instance from "./instance";
 import User from "./user";
 import Permission from "./permission";
-import Main from "./main";
+
 import {
   PermissionService,
   UserService,
