@@ -1,5 +1,4 @@
 import { Uuid } from "@nexys/utils/dist/types";
-import { Permission } from "../../../middleware/auth/type";
 import * as T from "../../../user-management/crud-type";
 
 type ProfileCore = Pick<T.User, "firstName" | "lastName">;

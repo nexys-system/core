@@ -1,4 +1,4 @@
-import { Uuid, UOptionSet } from "@nexys/utils/dist/types";
+import { Uuid } from "@nexys/utils/dist/types";
 import { QueryParams } from "@nexys/fetchr/dist/type";
 
 import QueryService from "../query/abstract-service";

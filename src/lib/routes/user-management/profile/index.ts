@@ -5,7 +5,7 @@ import m from "../../../middleware/auth";
 import { Main as Validation } from "@nexys/validation";
 
 import { ObjectWithId } from "../../../type";
-import { Permissions, UserCacheDefault } from "../../../middleware/auth/type";
+import { UserCacheDefault } from "../../../middleware/auth/type";
 
 import { UserService, PasswordService } from "../../../user-management";
 

@@ -1,4 +1,4 @@
-import { Request, RequestMapping, Env } from "../types";
+import { Request } from "../types";
 
 import Utils from "@nexys/utils";
 import { Context } from "../../../context/type";
@@ -69,7 +69,8 @@ const replaceEnvVar = (request: Request, _context: Pick<Context, "env">) => {
   return request;
 };
 
-const getEnvValFinal = (
+// unused
+export const getEnvValFinal = (
   regex: RegExp,
   valueDefault: string | number,
   v: string
@@ -89,11 +90,12 @@ const getEnvValFinal = (
  * @return new url with replaced params
  */
 const replaceUriParams = (request: Request, params = {}): Request => {
-  const matches = Utils.regex.getMatches(
+  // unused
+  /*const matches = Utils.regex.getMatches(
     `\\$\\{([A-Za-z_-]+)\\}`,
     request.uri,
     { depth: 1 }
-  );
+  );*/
 
   // NOTE: do not stop at first error, return all errors
   // TODO

@@ -1,7 +1,6 @@
 import Koa from "koa";
 import * as CookiesService from "../cookies";
 import Cookies from "cookies";
-import { Locale } from "./type";
 
 export const readTokenHeaders = (headers: {
   authorization?: string;

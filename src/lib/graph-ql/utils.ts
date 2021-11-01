@@ -2,35 +2,21 @@ import * as T from "./type";
 import * as GL from "graphql";
 import { QueryProjection } from "@nexys/fetchr/dist/type";
 
-export const ddl = (
-  ddlComplete: (Omit<T.Ddl, "uuid"> & { uuid?: boolean })[]
-): T.Ddl[] =>
-  ddlComplete.map((entity) => {
-    const fields: T.Field[] = entity.fields.map((f) => {
-      return {
-        name: f.name,
-        type: f.type,
-        optional: f.optional || false,
-        options: f.options,
-      };
+// not used
+export const getSchemaFromDDL = (def: T.Ddl[]) => {
+  const schemaArray = def.map((entity) => {
+    const fields = entity.fields.map((f) => {
+      return `  ${f.name}: ${mapTypesString(f)}${
+        f.optional === true ? "" : "!"
+      }`;
     });
-
-    const isUuid: boolean = entity.uuid || false;
-
-    if (isUuid) {
-      fields.unshift({ name: "uuid", type: "String" });
-    } else {
-      fields.unshift({ name: "id", type: "Int" });
-    }
-
-    return {
-      name: entity.name,
-      uuid: isUuid,
-      fields,
-    };
+    return `type ${entity.name} {\n${fields.join("\n")}\n}`;
   });
 
-const toEnum = (
+  return schemaArray.join("\n\n");
+};
+
+export const toEnum = (
   entity: string,
   { name, options }: T.Field
 ): GL.GraphQLOutputType => {
@@ -50,21 +36,7 @@ const toEnum = (
   });
 };
 
-const availableTypes = [
-  "String",
-  "Boolean",
-  "Int",
-  "Float",
-  "LocalDateTime",
-  "LocalDate",
-  "BigDecimal",
-];
-
-export const isFieldType = (s: string): s is T.FieldType =>
-  availableTypes.includes(s);
-
-// not used
-const mapTypesString = ({ name, type }: T.Field): string => {
+export const mapTypesString = ({ name, type }: T.Field): string => {
   if (!isFieldType(type)) {
     return type;
   }
@@ -103,20 +75,48 @@ const mapTypesString = ({ name, type }: T.Field): string => {
 
   throw Error("could not map the type");
 };
+// end not used
 
-// not used
-const getSchemaFromDDL = (def: T.Ddl[]) => {
-  const schemaArray = def.map((entity) => {
-    const fields = entity.fields.map((f) => {
-      return `  ${f.name}: ${mapTypesString(f)}${
-        f.optional === true ? "" : "!"
-      }`;
+export const ddl = (
+  ddlComplete: (Omit<T.Ddl, "uuid"> & { uuid?: boolean })[]
+): T.Ddl[] =>
+  ddlComplete.map((entity) => {
+    const fields: T.Field[] = entity.fields.map((f) => {
+      return {
+        name: f.name,
+        type: f.type,
+        optional: f.optional || false,
+        options: f.options,
+      };
     });
-    return `type ${entity.name} {\n${fields.join("\n")}\n}`;
+
+    const isUuid: boolean = entity.uuid || false;
+
+    if (isUuid) {
+      fields.unshift({ name: "uuid", type: "String" });
+    } else {
+      fields.unshift({ name: "id", type: "Int" });
+    }
+
+    return {
+      name: entity.name,
+      uuid: isUuid,
+      fields,
+    };
   });
 
-  return schemaArray.join("\n\n");
-};
+const availableTypes = [
+  "String",
+  "Boolean",
+  "Int",
+  "Float",
+  "LocalDateTime",
+  "LocalDate",
+  "BigDecimal",
+];
+
+export const isFieldType = (s: string): s is T.FieldType =>
+  availableTypes.includes(s);
 
 export const foreignUuid = new GL.GraphQLInputObjectType({
   name: "ForeignUuid",
