@@ -54,7 +54,7 @@ class I18nService {
       console.log(`i18n: ${path} saved`);
       return locale;
     } catch (err) {
-      if (err) console.error(err);
+      throw Error('Could not save to file: ' + JSON.stringify({locale, err}));
     }
   }
 
@@ -64,7 +64,7 @@ class I18nService {
    */
   saveAll = async ():Promise<string[]> => {
     const folderExists: boolean = fs.existsSync(this.path);
-    if (!exists) {
+    if (!folderExists) {
       throw Error(`i18n: the path "${this.path}", does not exist, it needs to be created`);
     }
     // here map is needed so it can be wrapped in a promise.
