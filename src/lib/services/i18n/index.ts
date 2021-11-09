@@ -5,22 +5,27 @@ interface I18nValues {
   [k: string]: string;
 }
 
+interface Options {
+  local: boolean ,
+  languages: string[],
+  path: string
+}
+
 class I18nService {
   appToken: string;
-  local: boolean;
-  path: string;
+
+  local:boolean;
   languages: string[];
+  path: string;
+
   constructor(
     appToken: string,
-    local: boolean = false,
-    languages: string[] = ["en"],
-    path: string = "./locales"
+    options: Partial<Options> = {}
   ) {
     this.appToken = appToken;
-    this.local = local;
-    this.path = path; // process.cwd()
-
-    this.languages = languages;
+    this.local = options.local || false;
+    this.languages = options.languages || ["en"];
+    this.path = options.path = "./locales";
   }
 
   getExport = async (_lang: string): Promise<I18nValues> =>
@@ -33,16 +38,21 @@ class I18nService {
   };
 
   getFile = async (lang: string): Promise<I18nValues> => {
-    const t = await fsp.readFile(`${this.path}/${lang}.json`, "utf-8");
-    return JSON.parse(t);
+    try {
+      const t = await fsp.readFile(`${this.path}/${lang}.json`, "utf-8");
+      return JSON.parse(t);
+    } catch (err) {
+      throw Error(`i18n: could not read or parse the file for ${lang}`)
+    }
   };
 
-  async saveToFile(locale: string, messages: I18nValues) {
+  saveToFile = async (locale: string, messages: I18nValues):Promise<string> => {
     try {
       const json = JSON.stringify(messages);
       const path = `${this.path}/${locale}.json`;
       await fsp.writeFile(path, json, "utf8");
-      console.log(`${path} saved`);
+      console.log(`i18n: ${path} saved`);
+      return locale;
     } catch (err) {
       if (err) console.error(err);
     }
@@ -50,17 +60,20 @@ class I18nService {
 
   /**
    * saves all files locally at `this.path`
+   * @return list of saved languages
    */
-  async saveAll(cache: boolean = false) {
-    const exists: boolean = fs.existsSync(this.path);
-    if (exists) {
-      this.languages.forEach(async (lang) => {
-        if (!cache) {
-          const messages = await this.getExport(lang);
-          await this.saveToFile(lang, messages);
-        }
-      });
+  saveAll = async ():Promise<string[]> => {
+    const folderExists: boolean = fs.existsSync(this.path);
+    if (!exists) {
+      throw Error(`i18n: the path "${this.path}", does not exist, it needs to be created`);
     }
+    // here map is needed so it can be wrapped in a promise.
+    const p = this.languages.map(async (lang) => {
+      const messages = await this.getExport(lang);
+      return await this.saveToFile(lang, messages);
+    });
+
+    return Promise.all(p);
   }
 
   async init() {

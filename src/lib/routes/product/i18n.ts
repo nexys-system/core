@@ -9,19 +9,19 @@ export default (I18n: I18nService) => {
   router.get("/serve", async (ctx: Koa.Context) => {
     const { lang } = ctx.request.query;
 
-    const inputLang = lang;
-
-    if (typeof inputLang !== "string") {
+    if (typeof lang !== "string") {
       ctx.status = 400;
       ctx.body = "lang must be given in query string";
       return;
     }
 
     try {
-      ctx.body = await I18n.getFile(inputLang);
+      ctx.body = await I18n.getFile(lang);
     } catch (error) {
-      await I18n.saveAll();
-      ctx.body = await I18n.getFile(inputLang);
+      console.log('I18n: initializing, saving files locally');
+      const langs = await I18n.saveAll();
+      console.log('I18n: the following langs were saved and can now be consumed by the application: ' + JSON.stringify(langs));
+      ctx.body = await I18n.getFile(lang);
     }
   });
 
