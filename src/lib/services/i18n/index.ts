@@ -28,8 +28,8 @@ class I18nService {
     this.path = options.path = "./locales";
   }
 
-  getExport = async (_lang: string): Promise<I18nValues> =>
-    NexysService.request("/i18n/get", {}, this.appToken);
+  getExport = async (lang: string): Promise<I18nValues> =>
+    NexysService.request("/i18n/get", {lang}, this.appToken);
 
   get = async (lang: string) => {
     if (this.languages.includes(lang)) {
