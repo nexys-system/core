@@ -4,6 +4,8 @@ import Fetchr from "@nexys/fetchr";
 
 import AbstractServiceWData from "./abstract-service-wdata";
 
+//import * as AggregateService from '@nexys/fetchr/dist/query-builder/aggregate'
+
 type QueryResponse = any;
 
 class QueryService extends AbstractServiceWData {
@@ -14,13 +16,15 @@ class QueryService extends AbstractServiceWData {
     this.fetchr = f;
   }
 
-  async data(query: Query): Promise<QueryResponse> {
-    return this.fetchr.query(query);
-  }
+  data = async (query: Query): Promise<QueryResponse> =>
+    this.fetchr.query(query);
 
-  async mutate(query: Mutate): Promise<MutateResponse> {
-    return this.fetchr.mutate(query);
-  }
+  mutate = async (query: Mutate): Promise<MutateResponse> =>
+    this.fetchr.mutate(query);
+
+  aggregate = async (_query: any): Promise<any> => {
+    throw "todo";
+  };
 }
 
 export default QueryService;

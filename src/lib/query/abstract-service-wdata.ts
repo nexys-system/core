@@ -19,6 +19,7 @@ import { QueryConstraint } from "./constraint/type";
 import * as QueryBuilder from "./constraint/query-builder";
 import * as TT from "./constraint/type";
 import { Entity } from "./model/type";
+import * as TA from "./aggregate-type";
 import { mutatePostProcessing } from "./constraint/utils";
 
 type QueryResponse = any;
@@ -30,6 +31,8 @@ abstract class QueryService extends AbstractService {
   abstract data(query: Query): Promise<QueryResponse>;
 
   abstract mutate(query: Mutate): Promise<MutateResponse>;
+
+  abstract aggregate(query: any): Promise<any>;
 
   async list<A = any>(entity: string, params: Params = {}): Promise<A[]> {
     // TODO entity: only first letter uppercase?
@@ -236,6 +239,17 @@ abstract class QueryService extends AbstractService {
         body: "internal server error when querying mutate",
       };
     }
+  };
+
+  // aggregate
+  aggregateSingle = async <A>(
+    entity: string,
+    params: TA.Params
+  ): Promise<A[]> => {
+    const r = await this.aggregate({ [entity]: params });
+    console.log("any otput");
+    console.log(r);
+    return r[entity];
   };
 }
 

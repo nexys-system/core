@@ -9,43 +9,44 @@ const hostDefault = "https://crud.nexys.io";
 
 type QueryResponse = any;
 
-const method = "POST";
-
 class QueryServiceExternal extends AbstractServiceWData {
   host: string;
   appToken: string;
-  headers: { [k: string]: string };
+
   constructor(appToken: string, host: string = hostDefault) {
     super();
 
     this.host = host;
     this.appToken = appToken;
+  }
 
-    this.headers = {
+  request = async <A>(path: string, data: any): Promise<A> => {
+    const url = this.host + path;
+
+    const method = "POST";
+    const body = JSON.stringify(data);
+    const headers = {
       "Content-Type": "application/json",
       Authorization: "Bearer " + this.appToken,
     };
-  }
 
-  async data(query: Query): Promise<QueryResponse> {
-    const url = this.host + "/data";
-
-    const body = JSON.stringify(query);
-
-    const r = await fetch(url, { body, method, headers: this.headers });
+    const r = await fetch(url, {
+      method,
+      body,
+      headers,
+    });
 
     return r.json();
-  }
+  };
 
-  async mutate(query: Mutate): Promise<MutateResponse> {
-    const url = this.host + "/mutate";
+  data = async (query: Query): Promise<QueryResponse> =>
+    this.request("/data", query);
 
-    const body = JSON.stringify(query);
+  mutate = async (query: Mutate): Promise<MutateResponse> =>
+    this.request("/mutate", query);
 
-    const r = await fetch(url, { body, method, headers: this.headers });
-
-    return r.json();
-  }
+  aggregate = async (query: any): Promise<any> =>
+    this.request("/aggregate", query);
 }
 
 export default QueryServiceExternal;

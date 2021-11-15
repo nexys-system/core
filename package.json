@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@nexys/crypto": "^1.0.4",
-    "@nexys/fetchr": "^0.2.12",
+    "@nexys/fetchr": "^0.2.13",
     "@nexys/http": "^1.0.0",
     "@nexys/utils": "^3.9.14",
     "@nexys/validation": "^2.1.2",
