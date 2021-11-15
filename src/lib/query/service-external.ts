@@ -45,8 +45,10 @@ class QueryServiceExternal extends AbstractServiceWData {
   mutate = async (query: Mutate): Promise<MutateResponse> =>
     this.request("/mutate", query);
 
-  aggregate = async (query: any): Promise<any> =>
-    this.request("/aggregate", query);
+  aggregate = async (query: any): Promise<any> => {
+    console.warn("this is an experimental feature, do not push on prod");
+    return this.request("/aggregate", query);
+  };
 }
 
 export default QueryServiceExternal;
