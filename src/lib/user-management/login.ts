@@ -28,7 +28,8 @@ export default class LoginService {
     if (authMode.type !== AuthenticationType.password) {
       const authRow = await this.userService.getAuthenticationRow(
         authMode.type,
-        username
+        username,
+        instance
       );
 
       return this.userService.getUserByAttributeWithAuth(

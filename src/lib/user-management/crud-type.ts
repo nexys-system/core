@@ -43,6 +43,7 @@ export interface UserToken {
   ip?: string;
 }
 
+// note: no instance here because it can be found implicitly via user
 export interface UserAuthentication {
   uuid: Uuid;
   value: string;

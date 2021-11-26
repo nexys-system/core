@@ -108,11 +108,11 @@ export default class User {
 
   getAuthenticationRow = async (
     type: CT.AuthenticationType,
-    value: string
+    value: string,
+    instance: { uuid: string }
   ): Promise<CT.UserAuthentication> => {
+    const params = { filters: { type, value, user: { instance } } };
     try {
-      const params = { filters: { type, value } };
-
       return await this.qs.find<CT.UserAuthentication>(
         U.Entity.UserAuthentication,
         params,
@@ -120,7 +120,9 @@ export default class User {
       );
     } catch (err) {
       console.error(err);
-      return Promise.reject("could not find row");
+      return Promise.reject(
+        "could not find user authentication row: " + JSON.stringify(params)
+      );
     }
   };
 
