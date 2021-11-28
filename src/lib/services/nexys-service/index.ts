@@ -17,9 +17,9 @@ export const request = async <Input, Output = any>(
   const url = host + path;
 
   try {
-    console.log("about to call NEXYS HOST: " + host);
+    console.log("about to call NEXYS HOST: " + url);
     const method = "POST";
-    console.log({ url, body, headers });
+
     const r = await fetch(url, { headers, method, body });
 
     return r.json();
