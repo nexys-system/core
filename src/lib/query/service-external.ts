@@ -4,6 +4,7 @@
 import { Query, Mutate, MutateResponse } from "@nexys/fetchr/dist/type";
 import AbstractServiceWData from "./abstract-service-wdata";
 import fetch from "node-fetch";
+import * as TA from "@nexys/fetchr/dist/query-builder/aggregate/type";
 
 const hostDefault = "https://crud.nexys.io";
 
@@ -45,7 +46,7 @@ class QueryServiceExternal extends AbstractServiceWData {
   mutate = async (query: Mutate): Promise<MutateResponse> =>
     this.request("/mutate", query);
 
-  aggregate = async (query: any): Promise<any> => {
+  aggregate = async (query: TA.Query): Promise<TA.ResponseAggregate> => {
     console.warn("this is an experimental feature, do not push on prod");
     return this.request("/aggregate", query);
   };

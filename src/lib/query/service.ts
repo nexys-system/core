@@ -1,12 +1,14 @@
-import { Query, Mutate, MutateResponse } from "@nexys/fetchr/dist/type";
+import {
+  Query,
+  Mutate,
+  MutateResponse,
+  ReturnUnit,
+} from "@nexys/fetchr/dist/type";
 
 import Fetchr from "@nexys/fetchr";
 
 import AbstractServiceWData from "./abstract-service-wdata";
-
-//import * as AggregateService from '@nexys/fetchr/dist/query-builder/aggregate'
-
-type QueryResponse = any;
+import * as TA from "@nexys/fetchr/dist/query-builder/aggregate/type";
 
 class QueryService extends AbstractServiceWData {
   fetchr: Fetchr;
@@ -16,15 +18,13 @@ class QueryService extends AbstractServiceWData {
     this.fetchr = f;
   }
 
-  data = async (query: Query): Promise<QueryResponse> =>
-    this.fetchr.query(query);
+  data = async (query: Query): Promise<ReturnUnit> => this.fetchr.query(query);
 
   mutate = async (query: Mutate): Promise<MutateResponse> =>
     this.fetchr.mutate(query);
 
-  aggregate = async (_query: any): Promise<any> => {
-    throw "todo";
-  };
+  aggregate = async (query: TA.Query): Promise<TA.ResponseAggregate> =>
+    this.fetchr.aggregate(query);
 }
 
 export default QueryService;
