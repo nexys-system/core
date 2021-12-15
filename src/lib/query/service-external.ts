@@ -5,6 +5,7 @@ import { Query, Mutate, MutateResponse } from "@nexys/fetchr/dist/type";
 import AbstractServiceWData from "./abstract-service-wdata";
 import fetch from "node-fetch";
 import * as TA from "@nexys/fetchr/dist/query-builder/aggregate/type";
+import * as TF from "@nexys/fetchr/dist/type";
 
 const hostDefault = "https://crud.nexys.io";
 
@@ -13,12 +14,14 @@ type QueryResponse = any;
 class QueryServiceExternal extends AbstractServiceWData {
   host: string;
   appToken: string;
+  dataModel: TF.Entity[];
 
-  constructor(appToken: string, host: string = hostDefault) {
+  constructor(appToken: string, dataModel: TF.Entity[], host: string = hostDefault) {
     super();
 
     this.host = host;
     this.appToken = appToken;
+    this.dataModel = dataModel;
   }
 
   request = async <A>(path: string, data: any): Promise<A> => {
@@ -39,6 +42,10 @@ class QueryServiceExternal extends AbstractServiceWData {
 
     return r.json();
   };
+
+  modelSet = async ():Promise<{message: string}> => this.request("/model/set", this.dataModel);
+
+  modelGet = async ():Promise<TF.Entity[]> => this.request("/model/get", this.dataModel);
 
   data = async (query: Query): Promise<QueryResponse> =>
     this.request("/data", query);
