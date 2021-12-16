@@ -1,6 +1,6 @@
 {
   "name": "@nexys/core",
-  "version": "0.1.38",
+  "version": "0.2.2",
   "license": "MIT",
   "scripts": {
     "test": "rm -rf dist;SECRET=mysecretmysecretmysecretmysecret APP_TOKEN=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpbnN0YW5jZSI6IjJjNWQwNTM1LTI2YWItMTFlOS05Mjg0LWZhMTYzZTQxZjMzZCIsImluc3RhbmNlTmFtZSI6InRlc3QiLCJwcm9kdWN0IjoxLCJwcm9kdWN0TmFtZSI6InRlc3Rwcm9kdWN0IiwiZW52IjoxLCJlbnZOYW1lIjoiZGV2IiwiaWF0IjoxNjI4NjczNjg1fQ.EgWvtBUoQLCITpQpeb9j3fLTu4Hxd9DgDxA7yCu0hTA NEXYS_HOST=http://myhost NEXYS_TOKEN=nexys_token jest",
@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@nexys/crypto": "^1.0.4",
-    "@nexys/fetchr": "^0.3.1",
+    "@nexys/fetchr": "^0.4.0",
     "@nexys/http": "^1.0.0",
     "@nexys/utils": "^3.9.14",
     "@nexys/validation": "^2.1.2",
