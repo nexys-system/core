@@ -54,10 +54,7 @@ const UserRoutes = <
         permission: Permission;
       } = ctx.request.body;
 
-      ctx.body = await permissionService.toggleFromUser(
-        permission as any,
-        user
-      );
+      ctx.body = await permissionService.toggleFromUser(permission, user);
     }
   );
 

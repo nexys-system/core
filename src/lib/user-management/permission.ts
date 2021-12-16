@@ -154,15 +154,19 @@ export default class Permission<P = CT.Permission> {
    * @param user: user and uuid
    */
   assignToInstance = (
-    permissionIdxs: Permission[],
+    permissionIdxs: CT.Permission[],
     instance: { uuid: Uuid }
   ) => {
-    const permissions = permissionIdxs.map((permission) => ({
-      instance,
-      permission,
-    }));
+    const permissions: Omit<CT.PermissionInstance, "uuid">[] =
+      permissionIdxs.map((permission) => ({
+        instance,
+        permission,
+      }));
 
-    return this.qs.insertMultiple(U.Entity.PermissionInstance, permissions);
+    return this.qs.insertMultiple<CT.PermissionInstance>(
+      U.Entity.PermissionInstance,
+      permissions
+    );
   };
 
   /**
@@ -171,7 +175,7 @@ export default class Permission<P = CT.Permission> {
    * @param user
    */
   revokeFromInstance = async (
-    permissionIdxs: Permission[],
+    permissionIdxs: CT.Permission[],
     instance: { uuid: Uuid }
   ) =>
     this.qs.delete(U.Entity.PermissionInstance, {
@@ -180,7 +184,7 @@ export default class Permission<P = CT.Permission> {
     });
 
   toggleFromInstance = async (
-    permissionIdxs: Permission[],
+    permissionIdxs: CT.Permission[],
     instance: { uuid: Uuid }
   ) => {
     // fetch existing (?) permissions
@@ -205,14 +209,19 @@ export default class Permission<P = CT.Permission> {
     uuids: Uuid[],
     user: { uuid: Uuid } //; instance: { uuid: Uuid } } todo for admin permission
   ) => {
-    const permissions = uuids.map((uuid) => ({
-      user,
-      permissionInstance: { uuid },
-    }));
-    return this.qs.insertMultiple(U.Entity.UserPermission, permissions);
+    const permissions: Omit<CT.UserPermission, "uuid">[] = uuids.map(
+      (uuid) => ({
+        user,
+        permissionInstance: { uuid },
+      })
+    );
+    return this.qs.insertMultiple<CT.UserPermission>(
+      U.Entity.UserPermission,
+      permissions
+    );
   };
 
-  assignToUser2 = async (permission: Permission, user: { uuid: Uuid }) => {
+  assignToUser2 = async (permission: CT.Permission, user: { uuid: Uuid }) => {
     const permissionInstance = await this.permissionInstanceFromUser(
       permission,
       user
@@ -222,7 +231,7 @@ export default class Permission<P = CT.Permission> {
   };
 
   permissionInstanceFromUser = async (
-    permission: Permission,
+    permission: CT.Permission,
     user: { uuid: Uuid }
   ) => {
     const { instance }: { instance: { uuid: Uuid } } =
@@ -258,13 +267,16 @@ export default class Permission<P = CT.Permission> {
   assignToUserFromPermissionInstance = async (
     permissionInstance: { uuid: Uuid },
     user: { uuid: Uuid }
-  ) => {
+  ): Promise<{ uuid: string }> => {
     const permission: Omit<CT.UserPermission, "uuid"> = {
       user,
       permissionInstance: { uuid: permissionInstance.uuid },
     };
 
-    return this.qs.insert(U.Entity.UserPermission, permission);
+    return this.qs.insertUuid<CT.UserPermission>(
+      U.Entity.UserPermission,
+      permission
+    );
   };
 
   /**
@@ -273,7 +285,7 @@ export default class Permission<P = CT.Permission> {
    * @param user
    */
   revokeFromUser = async (
-    permission: Permission,
+    permission: CT.Permission,
     user: { uuid: Uuid } //; instance: { uuid: Uuid } }  todo for admin permission
   ) => {
     const permissionInstance = await this.permissionInstanceFromUser(
@@ -308,7 +320,7 @@ export default class Permission<P = CT.Permission> {
       },
     });
 
-  toggleFromUser = async (permission: Permission, user: { uuid: Uuid }) => {
+  toggleFromUser = async (permission: CT.Permission, user: { uuid: Uuid }) => {
     try {
       // 1. get the permission instance record
       const permissionInstance = await this.permissionInstanceFromUser(

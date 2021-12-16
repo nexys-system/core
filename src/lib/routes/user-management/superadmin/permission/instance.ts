@@ -45,11 +45,11 @@ const InstanceService = <
         permission,
       }: {
         instance: { uuid: Uuid };
-        permission: number;
+        permission: Permission;
       } = ctx.request.body;
 
       ctx.body = await permissionService.toggleFromInstance(
-        [permission as any],
+        [permission],
         instance
       );
     }
