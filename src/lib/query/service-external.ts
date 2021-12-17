@@ -45,7 +45,7 @@ class QueryServiceExternal extends AbstractServiceWData {
 
   modelSet = async ():Promise<{message: string}> => this.request("/model/set", this.dataModel);
 
-  modelGet = async ():Promise<TF.Entity[]> => this.request("/model/get", this.dataModel);
+  modelGet = async ():Promise<TF.Entity[]> => this.request("/model/get");
 
   data = async (query: Query): Promise<QueryResponse> =>
     this.request("/data", query);
