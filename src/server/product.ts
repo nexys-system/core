@@ -1,8 +1,8 @@
 import * as FetchR from "@nexys/fetchr";
+import Cache from "@nexys/node-cache";
 
 import ProductService from "../lib/product";
 import QueryService from "../lib/query/service";
-import Cache from "../lib/cache/local";
 
 import * as Config from "./config";
 
