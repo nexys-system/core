@@ -4,12 +4,12 @@
  */
 import Koa from "koa";
 import Compose from "koa-compose";
+import Cache from "@nexys/node-cache/dist/cache";
 
 import JWT from "../../jwt";
 import * as T from "../../type";
 
 import * as LT from "./type";
-import Cache from "../../cache/cache";
 import * as CookiesService from "../cookies";
 
 import * as U from "./utils";
