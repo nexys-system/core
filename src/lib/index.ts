@@ -1,6 +1,5 @@
 export * as JWT from "./jwt";
 export * as Type from "./type";
-export * as Cache from "./cache";
 export * as Middleware from "./middleware";
 export * as Routes from "./routes/product";
 export * as GraphQL from "./graph-ql";
