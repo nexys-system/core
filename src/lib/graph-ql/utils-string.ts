@@ -48,5 +48,5 @@ export const getSchemaArrayFromDDL = (def: T.Ddl[]): string[] =>
     return `type ${entity.name} {\n${fields.join("\n")}\n}`;
   });
 
-export const getSchemaFromDDL = (def: T.Ddl[]) =>
+export const getSchemaFromDDL = (def: T.Ddl[]):string =>
   getSchemaArrayFromDDL(def).join("\n\n");
