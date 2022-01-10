@@ -520,6 +520,13 @@
   dependencies:
     "@babel/runtime" "^7.5.5"
 
+"@nexys/node-cache@^0.0.1":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@nexys/node-cache/-/node-cache-0.0.1.tgz#fdbce9ba942ac92e12740ab3deacbe0342def800"
+  integrity sha512-2KRtluOryOOLU8JlOEwJpgYxx3YMjiefLNCy8tBZNVaUkJ6MzGPN7YaKJPYTdsR4EigXJHoNx+qiP8l4XgRKrA==
+  dependencies:
+    node-cache "^5.1.2"
+
 "@nexys/utils@^3.9.14":
   version "3.9.14"
   resolved "https://registry.yarnpkg.com/@nexys/utils/-/utils-3.9.14.tgz#db7e3581dd3f15990334842111be35d5aba443ca"
@@ -2762,7 +2769,7 @@ nock@^13.1.1:
     lodash.set "^4.3.2"
     propagate "^2.0.0"
 
-node-cache@^5.1.0:
+node-cache@^5.1.0, node-cache@^5.1.2:
   version "5.1.2"
   resolved "https://registry.yarnpkg.com/node-cache/-/node-cache-5.1.2.tgz#f264dc2ccad0a780e76253a694e9fd0ed19c398d"
   integrity sha512-t1QzWwnk4sjLWaQAS8CHgOJ+RAfmHpxFWmc36IWTiWHQfs0w5JDMBS1b1ZxQteo0vVVuWJvIUKHDkkeK7vIGCg==

@@ -1,5 +1,3 @@
-import { Uuid } from "@nexys/utils/dist/types";
-
 import { Locale } from "../middleware/auth/type";
 
 import * as T from "./type";
@@ -9,6 +7,8 @@ import UserTokenService from "./user/token";
 import * as U from "./password/utils";
 import * as A from "./action-payload";
 import { AuthenticationType, Permission } from "./crud-type";
+
+type Uuid = string;
 
 export default class LoginService {
   userService: UserService;

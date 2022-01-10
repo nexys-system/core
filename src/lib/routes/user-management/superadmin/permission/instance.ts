@@ -1,6 +1,6 @@
 import Router from "koa-router";
 import bodyParser from "koa-body";
-import { Uuid } from "@nexys/utils/dist/types";
+
 import { Main as Validation, Utils as VU } from "@nexys/validation";
 
 import m from "../../../../middleware/auth";
@@ -9,6 +9,8 @@ import { UserCacheDefault } from "../../../../middleware/auth/type";
 import { ObjectWithId } from "../../../../type";
 import { PermissionService } from "../../../../user-management";
 import { Permission } from "../../../../user-management/crud-type";
+
+type Uuid = string;
 
 const InstanceService = <
   Profile extends ObjectWithId<Id>,

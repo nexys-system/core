@@ -1,5 +1,6 @@
-import { Uuid } from "@nexys/utils/dist/types";
 import I18nService from "../../services/i18n";
+
+type Uuid = string;
 
 export interface CMSService {
   get: (uuid: Uuid, lang: string) => any;

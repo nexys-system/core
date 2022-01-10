@@ -1,8 +1,9 @@
-import { Uuid } from "@nexys/utils/dist/types";
 import QueryService from "../../query/abstract-service";
 import * as U from "../utils";
 import * as CT from "../crud-type";
 import { generateString } from "@nexys/utils/dist/random";
+
+type Uuid = string;
 
 const entity = U.Entity.UserToken;
 

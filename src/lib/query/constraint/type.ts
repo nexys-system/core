@@ -1,5 +1,5 @@
 import { FilterAttribute } from "@nexys/fetchr/dist/type";
-import { Uuid } from "@nexys/utils/dist/types";
+type Uuid = string;
 
 export interface Profile {
   uuid: Uuid;

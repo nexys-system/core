@@ -6,11 +6,12 @@ import m from "../../../../middleware/auth";
 import { UserCacheDefault } from "../../../../middleware/auth/type";
 
 import { ObjectWithId } from "../../../../type";
-import { Uuid } from "@nexys/utils/dist/types";
 import { UserService } from "../../../../user-management";
 
 import { Status } from "../../../../user-management/type";
 import { Permission } from "../../../../user-management/crud-type";
+
+type Uuid = string;
 
 const UserRoutes = <
   Profile extends ObjectWithId<Id>,

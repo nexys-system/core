@@ -1,10 +1,11 @@
-import { Uuid } from "@nexys/utils/dist/types";
 import QueryService from "../../query/abstract-service";
 import * as U from "./utils";
 import * as UU from "../utils";
 import * as CT from "../crud-type";
 import UserService from "../user";
 import * as A from "../action-payload";
+
+type Uuid = string;
 
 export default class Password {
   qs: QueryService;

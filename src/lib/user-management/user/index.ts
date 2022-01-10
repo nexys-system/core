@@ -1,4 +1,3 @@
-import { Uuid, UOptionSet } from "@nexys/utils/dist/types";
 import { QueryParams } from "@nexys/fetchr/dist/type";
 import { Locale } from "../../middleware/auth/type";
 import * as T from "../type";
@@ -7,6 +6,12 @@ import * as U from "../utils";
 import * as CT from "../crud-type";
 import PermissionService from "../permission";
 import * as L from "../locale";
+
+type Uuid = string;
+interface UOptionSet {
+  uuid: Uuid;
+  name: string;
+}
 
 export default class User {
   qs: QueryService;

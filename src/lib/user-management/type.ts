@@ -1,5 +1,11 @@
-import { UOptionSet, Uuid } from "@nexys/utils/dist/types";
 import * as TC from "./crud-type";
+
+type Uuid = string;
+
+interface UOptionSet {
+  uuid: Uuid;
+  name: string;
+}
 
 export type Permission = number;
 

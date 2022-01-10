@@ -7,13 +7,14 @@ import m from "../../../middleware/auth";
 
 import { ObjectWithId } from "../../../type";
 import { Locale, UserCacheDefault } from "../../../middleware/auth/type";
-import { Uuid } from "@nexys/utils/dist/types";
 import { LoginService } from "../../../user-management";
 import { headerAcceptLanguageToLocale } from "../../../user-management/locale";
 import {
   AuthenticationType,
   Permission,
 } from "../../../user-management/crud-type";
+
+type Uuid = string;
 
 /**  const instance = {
     uuid: process.env.InstanceUuid || "",

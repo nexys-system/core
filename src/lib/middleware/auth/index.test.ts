@@ -1,7 +1,8 @@
-import { Uuid } from "@nexys/utils/dist/types";
 import A from ".";
 import Cache from "@nexys/node-cache";
 import { Locale } from "./type";
+
+type Uuid = string;
 
 // create instance of auth
 

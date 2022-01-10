@@ -1,5 +1,5 @@
 import { request } from "../nexys-service";
-import { Uuid } from "@nexys/utils/dist/types";
+type Uuid = string;
 
 export interface Out {
   title?: string;

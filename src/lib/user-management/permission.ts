@@ -1,9 +1,10 @@
-import { Uuid } from "@nexys/utils/dist/types";
 import { QueryParams } from "@nexys/fetchr/dist/type";
 
 import QueryService from "../query/abstract-service";
 import * as U from "./utils";
 import * as CT from "./crud-type";
+
+type Uuid = string;
 
 const allDefaultPermissions: CT.Permission[] = Object.keys(CT.Permission)
   .map((x) => Number(x))

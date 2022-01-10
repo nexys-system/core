@@ -1,7 +1,8 @@
-import { Uuid } from "@nexys/utils/dist/types";
 import QueryService from "../query/abstract-service";
 import * as U from "./utils";
 import * as CT from "./crud-type";
+
+type Uuid = string;
 
 export default class Instance {
   qs: QueryService;

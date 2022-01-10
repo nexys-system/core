@@ -1,6 +1,7 @@
 import { QueryFilters, QueryProjection } from "@nexys/fetchr/dist/type";
-import { Uuid } from "@nexys/utils/dist/types";
 import * as T from "./type";
+
+type Uuid = string;
 
 export const createAdminConstraints = (def: T.Ddl[]) =>
   createConstraintsFromEntities<"Instance", string | number>(def);
@@ -10,7 +11,7 @@ export const createAppConstraint = (def: T.Ddl[]) =>
 
 /**
  * create submodel from model and filters based on chosen entities
- * @paramn ObservedEntites: list of entities 
+ * @paramn ObservedEntites: list of entities
  */
 export const createConstraintsFromEntities =
   <ObservedEntity extends string, Id extends Uuid | number>(def: T.Ddl[]) =>

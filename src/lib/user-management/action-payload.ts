@@ -1,6 +1,7 @@
-import { Uuid } from "@nexys/utils/dist/types";
 import * as CryptoService from "@nexys/crypto";
 import { ActionPayload, Action } from "./type";
+
+type Uuid = string;
 
 export const createActionPayload = (
   uuid: Uuid,

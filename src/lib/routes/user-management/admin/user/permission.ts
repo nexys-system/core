@@ -7,8 +7,9 @@ import { Main as Validation, Utils as VU } from "@nexys/validation";
 import { ObjectWithId } from "../../../../type";
 import { UserCacheDefault } from "../../../../middleware/auth/type";
 import { PermissionService } from "../../../../user-management";
-import { Uuid } from "@nexys/utils/dist/types";
 import { Permission } from "../../../../user-management/crud-type";
+
+type Uuid = string;
 
 const PermissionRoutes = <
   Profile extends ObjectWithId<Id>,

@@ -1,5 +1,5 @@
-import { Uuid } from "@nexys/utils/dist/types";
 import { Status } from "./type";
+type Uuid = string;
 
 export enum AuthenticationType {
   password = 1,

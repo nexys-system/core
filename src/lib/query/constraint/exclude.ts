@@ -1,10 +1,11 @@
-import { Uuid } from "@nexys/utils/dist/types";
 import {
   FilterConstraint,
   MutateConstraint,
   ProjectionConstraint,
   QueryConstraint,
 } from "./type";
+
+type Uuid = string;
 
 interface Entity {
   name: string;

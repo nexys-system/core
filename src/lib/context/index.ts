@@ -1,7 +1,9 @@
-import { Id, Uuid } from "@nexys/utils/dist/types";
 import fs, { promises as fsp } from "fs";
 
 import * as T from "./type";
+
+type Id = number;
+type Uuid = string;
 
 const path = "assets";
 
