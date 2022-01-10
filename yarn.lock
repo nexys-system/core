@@ -493,6 +493,11 @@
     "@types/yargs" "^16.0.0"
     chalk "^4.0.0"
 
+"@nexys/api-request@^0.0.1":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@nexys/api-request/-/api-request-0.0.1.tgz#88e121a87032f08cebe5ad07ed80802178bdfd51"
+  integrity sha512-2NEhkeKP6s1Icfh6DDBueugFwPuCuib92OyDUQ6+KR5UdN2kL2NmizltaatNs3ugeESoSRlV2SA3zzFsoLctag==
+
 "@nexys/crypto@^1.0.4":
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/@nexys/crypto/-/crypto-1.0.4.tgz#087ea960516ca3fee810fd3ea51002db22e07c3f"
