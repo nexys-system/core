@@ -36,7 +36,7 @@ export type GLTypes = Map<
 // https://graphql.org/graphql-js/basic-types/
 export type GLBasicType = "ID" | "String" | "Boolean" | "Int" | "Float";
 
-export interface Model {
+export interface ModelConstraints {
   [entity: string]: { projection?: QueryProjection; filters?: QueryFilters };
 }
 

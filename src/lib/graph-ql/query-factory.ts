@@ -11,7 +11,7 @@ import { createTypesFromModel } from "./type-factory";
 export const getQueryFromModel = (
   def: T.Ddl[],
   ProductQuery: QueryService,
-  constraints?: T.Model
+  constraints?: T.ModelConstraints
 ): GL.GraphQLObjectType => {
   const QLtypes: T.GLTypes = createTypesFromModel(def, constraints);
 

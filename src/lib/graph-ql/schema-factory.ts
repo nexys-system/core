@@ -16,7 +16,7 @@ import { getQueryFromModel } from "./query-factory";
 export const getSchemaFromModel = (
   def: T.Ddl[],
   ProductQuery: QueryService,
-  constraints?: T.Model
+  constraints?: T.ModelConstraints
 ): GL.GraphQLSchema => {
   const ddl = U.ddl(def);
   const query = getQueryFromModel(ddl, ProductQuery, constraints);
