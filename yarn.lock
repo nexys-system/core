@@ -498,12 +498,11 @@
   resolved "https://registry.yarnpkg.com/@nexys/crypto/-/crypto-1.0.4.tgz#087ea960516ca3fee810fd3ea51002db22e07c3f"
   integrity sha512-acsLzzudQyXKDQ5enym9XTpR2u1cey7qjdRjtNf58wP20SSR6h6iRuLLWy9ALIBfwURY0DUe13QY9aD2woDsGw==
 
-"@nexys/fetchr@^0.3.1":
-  version "0.3.1"
-  resolved "https://registry.yarnpkg.com/@nexys/fetchr/-/fetchr-0.3.1.tgz#e2b1f096596680eff3135adadf9983ffdbfb2db3"
-  integrity sha512-Ih4IpzF7gVYWpLS3NN1nujL5zZcabxl0eMFx4MjvkxitFrnnxZYB3U4nv6PnQYvS5wEpOOQgb/nouWYvy8t7nQ==
+"@nexys/fetchr@^0.4.0":
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/@nexys/fetchr/-/fetchr-0.4.0.tgz#01fe58a6400212a34786d036592f65930db22024"
+  integrity sha512-VT/tFrJGh3LAjN355qU45AxwL0OUM+UI+mdrTd+1B9RxZIVCpQkOK2666+SgBTBY740fNd/Q5LtZ/fZJBbquFg==
   dependencies:
-    "@nexys/sql-migrations" "^0.1.4"
     "@nexys/validation" "^2.1.0"
     "@types/sqlstring" "^2.3.0"
     mysql2 "^2.2.5"
@@ -516,13 +515,6 @@
   dependencies:
     "@babel/runtime" "^7.5.5"
 
-"@nexys/sql-migrations@^0.1.4":
-  version "0.1.4"
-  resolved "https://registry.yarnpkg.com/@nexys/sql-migrations/-/sql-migrations-0.1.4.tgz#b851991096a4e138f694e204db13d4b4c42c2851"
-  integrity sha512-LyF++bHSynSgrq8qooInmovRrPo+RCIF5IMB1lZQlR5IT6Umki/sUR57TcKpeM4TzabBmq0TA0czt3oV3UT5iA==
-  dependencies:
-    crc-32 "^1.2.0"
-
 "@nexys/utils@^3.9.14":
   version "3.9.14"
   resolved "https://registry.yarnpkg.com/@nexys/utils/-/utils-3.9.14.tgz#db7e3581dd3f15990334842111be35d5aba443ca"
@@ -534,6 +526,11 @@
   integrity sha512-p47+6HC2ZXwDNRHA43cN+HyDhfcAZ9QhoyXKp0b+EsmzEGkHDe1ZyWJzqUKwpXVU22c3l5ujD8+mCw0CHLVbTw==
   dependencies:
     "@nexys/utils" "^3.9.14"
+
+"@nexys/workflow@0.0.6":
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/@nexys/workflow/-/workflow-0.0.6.tgz#cbcc2bb1256fdb41c90cb1492be7f622409582ba"
+  integrity sha512-p0cfnkfjiGVPKBBY13Mnw7kb5Eu7jjTvi8dl+W8dPDiUAXeS6Jk2Yj78WlYR5+WceoQwAMe/ZmyIni/f7Lanlg==
 
 "@sinonjs/commons@^1.7.0":
   version "1.8.3"
@@ -1261,14 +1258,6 @@ core-util-is@~1.0.0:
   resolved "https://registry.yarnpkg.com/core-util-is/-/core-util-is-1.0.3.tgz#a6042d3634c2b27e9328f837b965fac83808db85"
   integrity sha512-ZQBvi1DcpJ4GDqanjucZ2Hj3wEO5pZDS89BWbkcrvdxksJorwUDDZamX9ldFkp9aw2lmBDLgkObEA4DWNJ9FYQ==
 
-crc-32@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/crc-32/-/crc-32-1.2.0.tgz#cb2db6e29b88508e32d9dd0ec1693e7b41a18208"
-  integrity sha512-1uBwHxF+Y/4yF5G48fwnKq6QsIXheor3ZLPT80yGBV1oEUwpPojlEhQbWKVw1VwcTQyMGHK1/XMmTjmlsmTTGA==
-  dependencies:
-    exit-on-epipe "~1.0.1"
-    printj "~1.1.0"
-
 cross-spawn@^7.0.3:
   version "7.0.3"
   resolved "https://registry.yarnpkg.com/cross-spawn/-/cross-spawn-7.0.3.tgz#f73a85b9d5d41d045551c177e2882d4ac85728a6"
@@ -1506,11 +1495,6 @@ execa@^5.0.0:
     onetime "^5.1.2"
     signal-exit "^3.0.3"
     strip-final-newline "^2.0.0"
-
-exit-on-epipe@~1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/exit-on-epipe/-/exit-on-epipe-1.0.1.tgz#0bdd92e87d5285d267daa8171d0eb06159689692"
-  integrity sha512-h2z5mrROTxce56S+pnvAV890uu7ls7f1kEvVGJbw1OlFH3/mlJ5bkXu0KRyW94v37zzHPiUd55iLn3DA7TjWpw==
 
 exit@^0.1.2:
   version "0.1.2"
@@ -2973,11 +2957,6 @@ pretty-format@^27.0.0, pretty-format@^27.2.4:
     ansi-regex "^5.0.1"
     ansi-styles "^5.0.0"
     react-is "^17.0.1"
-
-printj@~1.1.0:
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/printj/-/printj-1.1.2.tgz#d90deb2975a8b9f600fb3a1c94e3f4c53c78a222"
-  integrity sha512-zA2SmoLaxZyArQTOPj5LXecR+RagfPSU5Kw1qP+jkWeNlrq+eJZyY2oS68SU1Z/7/myXM4lo9716laOFAVStCQ==
 
 process-nextick-args@~2.0.0:
   version "2.0.1"
