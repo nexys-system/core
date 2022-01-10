@@ -45,8 +45,8 @@ export interface Param {
 
 export type Headers = { [k: string]: string };
 
-export interface Response {
-  body: any;
+export interface Response<A> {
+  body: A;
   headers: Headers;
   status: number;
 }
