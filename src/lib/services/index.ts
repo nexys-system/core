@@ -1,6 +1,6 @@
 export * as Workflow from "./workflow";
 export * as I18n from "./i18n";
-export * as API from "./api";
+export * as API from "@nexys/api-request";
 
 import CMS from "./cms";
 import Email from "./email";
