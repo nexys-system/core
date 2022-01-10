@@ -71,3 +71,5 @@ export default new Middleware.Auth<Login.Profile, Login.UserCache>(cache);
 - [Workflow](https://github.com/nexys-system/workflow)
 - [Cache](https://github.com/nexys-system/node-cache-persistent)
 - [API-request](https://github.com/nexys-system/api-request)
+- [Validation](https://github.com/nexys-system/validation)
+- [Crypto](https://github.com/nexys-system/crypto)
