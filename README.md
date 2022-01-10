@@ -65,7 +65,9 @@ import cache from '../service/cache';
 export default new Middleware.Auth<Login.Profile, Login.UserCache>(cache);
 ```
 
-### Associated projects 
+### Associated projects
 
-* [Fetch-r](https://github.com/nexys-system/fetch-r)
-* [Workflow](https://github.com/nexys-system/workflow)
+- [Fetch-r](https://github.com/nexys-system/fetch-r)
+- [Workflow](https://github.com/nexys-system/workflow)
+- [Cache](https://github.com/nexys-system/cache)
+- [API-request](https://github.com/nexys-system/api-request)
