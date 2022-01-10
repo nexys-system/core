@@ -527,10 +527,10 @@
   dependencies:
     "@nexys/utils" "^3.9.14"
 
-"@nexys/workflow@0.0.6":
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/@nexys/workflow/-/workflow-0.0.6.tgz#cbcc2bb1256fdb41c90cb1492be7f622409582ba"
-  integrity sha512-p0cfnkfjiGVPKBBY13Mnw7kb5Eu7jjTvi8dl+W8dPDiUAXeS6Jk2Yj78WlYR5+WceoQwAMe/ZmyIni/f7Lanlg==
+"@nexys/workflow@0.0.7":
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/@nexys/workflow/-/workflow-0.0.7.tgz#d4ce3edefb7cdfcffe694cb2f4d4c5bbb725bf50"
+  integrity sha512-vk0Njd9lO4+giDm1rH+t+Sk+YDz0Rf1BEr6Z/rp3TNaJjFqT9LmUjg92qMeja1SWe6WgAnXOy8e2ctvg0lWE0w==
 
 "@sinonjs/commons@^1.7.0":
   version "1.8.3"

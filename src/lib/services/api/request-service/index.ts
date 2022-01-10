@@ -42,11 +42,11 @@ export const find = (
  * @param input ActionInput
  * @param context
  */
-export const findAndExec = async (
+export const findAndExec = async <A>(
   uuid: string,
   input: ActionInput,
   context: Pick<Context, "instance" | "appToken" | "env" | "request">
-): Promise<Response> => {
+): Promise<Response<A>> => {
   const request: Request = find(uuid, context);
 
   // NOTE: replace url params & envvar
@@ -63,11 +63,11 @@ export const findAndExec = async (
  * @param request
  * @param apiParamsIn (list)
  **/
-export const execWithMapping = async (
+export const execWithMapping = async <A>(
   request: Request,
   input: ActionInput,
   context: Pick<Context, "instance" | "appToken">
-): Promise<Response> => {
+): Promise<Response<A>> => {
   const paramsIn: Param[] = ParamService.Input.listMerge(
     input,
     request.mappingIn
@@ -109,7 +109,7 @@ export const execWithMapping = async (
  * @param params: Here params (not to be confuised with url params) are the exhaustive list of inputs (outputs) sent to the API
  * @return output of API mapped onto output params
  */
-export const execWithParams = async (
+export const execWithParams = async <A>(
   request: Request,
   params: Param[]
 ): Promise<ResponseMapped> => {
@@ -119,7 +119,7 @@ export const execWithParams = async (
     query,
   } = ParamService.Input.explodeList(params, request.rawbody);
 
-  const response: Response = await exec(request, data, headersIn, query);
+  const response: Response<A> = await exec<A>(request, data, headersIn, query);
 
   const { status, body, headers } = response;
   if (status !== 200 && status !== 201) {
@@ -145,12 +145,12 @@ export const execWithParams = async (
  * @param request
  * @param apiParams: these have been mapped and so are ready for the request
  */
-export const exec = async (
+export const exec = async <A>(
   request: Request,
   payload: any,
   headers: any,
   query: { [k: string]: string }
-): Promise<Response> => {
+): Promise<Response<A>> => {
   const url = U.getFinalUrl(request.host, request.uri, query);
   const method = request.method.name;
 
