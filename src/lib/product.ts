@@ -1,3 +1,4 @@
+import Cache from "@nexys/node-cache/dist/cache";
 import QueryService from "./query/abstract-service-wdata";
 
 import * as T from "./type";
@@ -5,7 +6,6 @@ import * as LT from "./middleware/auth/type";
 
 import * as UserManagementService from "./user-management";
 import MiddlewareAuth from "./middleware/auth";
-import Cache from "./cache/cache";
 
 export interface Configuration {
   secretKey: string;

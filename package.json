@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@nexys/api-request": "^0.0.1",
+    "@nexys/node-cache": "^0.0.1",
     "@nexys/crypto": "^1.0.4",
     "@nexys/fetchr": "^0.4.0",
     "@nexys/http": "^1.0.0",

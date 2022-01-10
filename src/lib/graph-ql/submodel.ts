@@ -8,11 +8,16 @@ export const createAdminConstraints = (def: T.Ddl[]) =>
 export const createAppConstraint = (def: T.Ddl[]) =>
   createConstraintsFromEntities<"Instance" | "User", string | number>(def);
 
+/**
+ * create submodel from model and filters based on chosen entities
+ * @paramn ObservedEntites: list of entities 
+ */
 export const createConstraintsFromEntities =
   <ObservedEntity extends string, Id extends Uuid | number>(def: T.Ddl[]) =>
   (ids: { [key in ObservedEntity]: Id }): T.Model => {
     const r: T.Model = {};
 
+    // turn entity types into strings
     const entitiesOfInterest: string[] = Object.keys(ids);
 
     def.map((entity) => {
