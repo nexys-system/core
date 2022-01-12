@@ -4,13 +4,56 @@ import * as GL from "graphql";
 import * as T from "./type";
 import * as U from "./utils";
 
-import QueryService from "../query/abstract-service-wdata";
 import { QueryFilters } from "@nexys/fetchr/dist/type";
 import { createTypesFromModel } from "./type-factory";
 
+import FetchR from "@nexys/fetchr";
+
+const fieldResolve =
+  (
+    fetchR: FetchR,
+    entity: { name: string },
+    constraints?: T.ModelConstraints
+  ) =>
+  async (
+    _data: any,
+    { _take, _skip, ...queryFilters }: any,
+    _context: any,
+    resolveInfo: any
+  ) => {
+    if (!constraints || (constraints && !constraints[entity.name])) {
+      // return null;
+    }
+
+    const projection = U.formatGFields(graphqlFields(resolveInfo));
+
+    const filters: QueryFilters = U.prepareFilters(entity, queryFilters, {
+      User: { filters: {} },
+      School: { filters: {} },
+      Instance: { filters: {} },
+    });
+
+    const take: number | undefined = Number(_take) || 10; // never return more than 10 entries unless explicitly specified
+    const skip: number | undefined = _skip ? Number(_skip) : undefined;
+
+    const params = {
+      projection,
+      filters,
+      take,
+      skip,
+    };
+
+    console.log({ params });
+
+    const q = await fetchR.query({ [entity.name]: params });
+    console.log(q);
+
+    return q[entity.name];
+  };
+
 export const getQueryFromModel = (
   def: T.Ddl[],
-  ProductQuery: QueryService,
+  fetchR: FetchR,
   constraints?: T.ModelConstraints
 ): GL.GraphQLObjectType => {
   const QLtypes: T.GLTypes = createTypesFromModel(def, constraints);
@@ -21,44 +64,12 @@ export const getQueryFromModel = (
     fields[entity.name] = {
       type: new GL.GraphQLList(U.getType(entity.name, QLtypes)),
       args: U.getArgs(entity.name, QLtypes),
-
-      resolve: (
-        _data: any,
-        { _take, _skip, ...queryFilters }: any,
-        _context,
-        resolveInfo
-      ) => {
-        const projection = U.formatGFields(graphqlFields(resolveInfo));
-
-        // prepare filters
-        if (constraints && !constraints[entity.name]) {
-          return null;
-        }
-
-        const constraintsFilter: QueryFilters = constraints
-          ? constraints[entity.name].filters || {}
-          : {};
-
-        const filters: QueryFilters = { ...constraintsFilter, ...queryFilters };
-        // end prepare filters
-
-        const take: number | undefined = Number(_take) || 10; // never return more than 10 entries unless explicitly specified
-        const skip: number | undefined = _skip ? Number(_skip) : undefined;
-
-        return ProductQuery.list(entity.name, {
-          projection,
-          filters,
-          take,
-          skip,
-        });
-      },
+      resolve: fieldResolve(fetchR, entity, constraints),
     };
   });
 
-  const query: GL.GraphQLObjectType = new GL.GraphQLObjectType({
+  return new GL.GraphQLObjectType({
     name: "Query",
     fields,
   });
-
-  return query;
 };

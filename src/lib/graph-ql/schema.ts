@@ -1,7 +1,7 @@
 import { GraphQLSchema } from "graphql";
 
 import { Permission } from "../user-management/crud-type";
-import QueryService from "../query/abstract-service-wdata";
+import FetchR from "@nexys/fetchr";
 
 import * as SchemaFactory from "./schema-factory";
 import * as GraphQLSubmodelService from "./submodel";
@@ -19,28 +19,27 @@ class GQLSchema {
     Permission,
     (ids: { Instance: string; User: string }) => GraphQLSchema
   >;
+
+  // superadmin gql schema
   gQLSchema: GraphQLSchema;
 
-  constructor(model: Ddl[], ProductQuery: QueryService) {
-    this.gQLSchema = SchemaFactory.getSchemaFromModel(model, ProductQuery);
-
+  constructor(model: Ddl[], fetchR: FetchR) {
+    console.log("init");
+    // app schema
     const appConstraints = GraphQLSubmodelService.createAppConstraint(model);
+
+    const gQLAppSchema = (ids: { Instance: string; User: string }) =>
+      SchemaFactory.getSchemaFromModel(model, fetchR, appConstraints(ids));
+
+    // admin
     const adminConstraints =
       GraphQLSubmodelService.createAdminConstraints(model);
 
-    const gQLAppSchema = (ids: { Instance: string; User: string }) =>
-      SchemaFactory.getSchemaFromModel(
-        model,
-        ProductQuery,
-        appConstraints(ids)
-      );
-
     const gQLAdminSchema = (ids: { Instance: string; User: string }) =>
-      SchemaFactory.getSchemaFromModel(
-        model,
-        ProductQuery,
-        adminConstraints(ids)
-      );
+      SchemaFactory.getSchemaFromModel(model, fetchR, adminConstraints(ids));
+
+    // superadmin schema
+    this.gQLSchema = SchemaFactory.getSchemaFromModel(model, fetchR);
 
     this.roleQLSchemaMap = new Map([
       [Permission.app, gQLAppSchema],

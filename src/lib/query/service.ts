@@ -12,6 +12,7 @@ import * as TA from "@nexys/fetchr/dist/query-builder/aggregate/type";
 
 class QueryService extends AbstractServiceWData {
   fetchr: Fetchr;
+
   constructor(f: Fetchr) {
     super();
 

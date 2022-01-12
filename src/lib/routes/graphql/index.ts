@@ -19,27 +19,23 @@ const getRouter = (
 
   // access for app (using app token)
 
-  router.all(
-    "/schema",
-    bodyParser(),
-    auth.isAuthenticated,
+  // this is the defutschema, superadmin
+  router.all("/schema", bodyParser(), async (ctx) => {
+    ctx.body = printSchema(schemas.gQLSchema);
+  });
 
-    async (ctx) => {
-      ctx.body = printSchema(schemas.gQLSchema);
-    }
-  );
+  router.post("/", bodyParser(), async (ctx) => {
+    const { body } = ctx.request;
+    const { query } = body;
+    ctx.body = await graphql(schemas.gQLSchema, query);
+  });
 
-  router.post(
-    "/",
-    bodyParser(),
-    auth.isAuthenticated,
-
-    async (ctx) => {
-      const { body } = ctx.request;
-      const { query } = body;
-      ctx.body = await graphql(schemas.gQLSchema, query);
-    }
-  );
+  router.post("/2", bodyParser(), auth.isAuthenticated, async (ctx) => {
+    const { body } = ctx.request;
+    const { query } = body;
+    ctx.body = await graphql(schemas.gQLSchema, query);
+  });
+  // end default
 
   // end: access for app (using app token)
 
