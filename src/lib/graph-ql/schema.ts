@@ -38,7 +38,7 @@ class GQLSchema {
     const gQLAdminSchema = (ids: { Instance: string; User: string }) =>
       SchemaFactory.getSchemaFromModel(model, fetchR, adminConstraints(ids));
 
-    // superadmin schema
+    // superadmin schema, which is also the one that is used with the "app authentication"
     this.gQLSchema = SchemaFactory.getSchemaFromModel(model, fetchR);
 
     this.roleQLSchemaMap = new Map([
