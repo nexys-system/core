@@ -12,12 +12,16 @@ export const createEntities = (model: { name: string }[]): string => {
   return "export " + createEnum("Entities", entities);
 };
 
-type Model = any;
+type Model = any[];
 
 export const createModelTs = (model: Model) =>
-  [`const model = ${JSON.stringify(model)};`, "", "export default model"].join(
-    "\n"
-  );
+  [
+    `const model = ${JSON.stringify(
+      model.map((x) => ({ table: x.table || undefined, ...x }))
+    )};`,
+    "",
+    "export default model",
+  ].join("\n");
 
 export const getUtils = () => {
   return `import { Permissions } from './type';

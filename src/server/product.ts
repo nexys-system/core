@@ -10,11 +10,13 @@ import WorkflowService from "../lib/services/workflow";
 import EmailService from "../lib/services/email";
 import NotificationService from "../lib/services/notification";
 
+import model from "../common/generated";
+
 export const email = new EmailService(Config.context);
 export const workflow = new WorkflowService(Config.context);
 export const notifications = new NotificationService(Config.context);
 
-export const fetchR = new FetchR.default(Config.database, Config.model);
+export const fetchR = new FetchR.default(Config.database, model);
 export const qs = new QueryService(fetchR);
 export const cache = new Cache();
 

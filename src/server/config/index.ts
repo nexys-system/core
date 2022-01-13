@@ -1,8 +1,6 @@
 import * as FetchR from "@nexys/fetchr";
 import dotenv from "dotenv";
 
-import model from "../model";
-
 import JWT from "jsonwebtoken";
 
 import * as U from "./utils";
@@ -10,8 +8,6 @@ import { get } from "../../lib/context";
 import { AppTokenDecoded } from "../../lib/context/type";
 
 dotenv.config();
-
-export { model };
 
 // init fetchr
 export const database: FetchR.Database.Type.Database = {
