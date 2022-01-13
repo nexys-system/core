@@ -53,6 +53,7 @@ const init = async () => {
         ["/index.ts", U.createModelTs(model)],
         ["/type.ts", types],
         ["/entities.ts", U.createEntities(model)],
+        ["/utils.ts", U.getUtils()],
       ];
 
       if (submodels && submodels !== "") {

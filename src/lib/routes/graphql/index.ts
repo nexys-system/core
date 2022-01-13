@@ -8,10 +8,11 @@ import Schema from "../../graph-ql/schema";
 
 import * as ErrorHandler from "./error-handler";
 
-const getRouter = (
-  schemas: Schema,
+const getRouter = <Permission>(
+  schemas: Schema<Permission>,
   appToken: string,
-  middlewareAuth: MiddlewareAuth<any, any, any>
+  middlewareAuth: MiddlewareAuth<any, any, any>,
+  roleMap: Map<string, Permission>
 ) => {
   const router = new Router();
 
@@ -46,7 +47,7 @@ const getRouter = (
     middlewareAuth.isAuthenticated(),
     async (ctx) => {
       try {
-        const schema = schemas.getSchemaFromCtx(ctx);
+        const schema = schemas.getSchemaFromCtx(ctx, roleMap);
         ctx.body = printSchema(schema);
       } catch (err) {
         ErrorHandler.handleError(ctx, err as ErrorHandler.ErrorWCode);
@@ -62,7 +63,7 @@ const getRouter = (
     middlewareAuth.isAuthenticated(),
     async (ctx) => {
       try {
-        const schema = schemas.getSchemaFromCtx(ctx);
+        const schema = schemas.getSchemaFromCtx(ctx, roleMap);
         const { body } = ctx.request;
         const { query } = body;
 
