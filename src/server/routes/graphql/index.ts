@@ -4,7 +4,17 @@ import getRouter from "../../../lib/routes/graphql/index";
 import Product, { fetchR } from "../../product";
 import * as Config from "../../config";
 
-const schemas = new Schema(Config.model, fetchR);
+import model from "../../../common/generated";
+import submodels from "../../../common/generated/submodels";
+import { Permissions } from "../../../common/generated/type";
+import { roleMap } from "../../../common/generated/utils";
 
-const router = getRouter(schemas, Config.appToken, Product.middlewareAuth);
+const schemas = new Schema<Permissions>(model, fetchR, submodels);
+
+const router = getRouter(
+  schemas,
+  Config.appToken,
+  Product.middlewareAuth,
+  roleMap
+);
 export default router.routes();

@@ -21,7 +21,10 @@ class GQLSchema<Permission> {
     fetchR: FetchR,
     submodels: [
       Permission,
-      (v: { [entityKey: string]: number | string }) => ModelConstraints
+      (v: {
+        Instance: string | number;
+        User: string | number;
+      }) => ModelConstraints
     ][]
   ) {
     // superadmin schema, which is also the one that is used with the "app authentication"
