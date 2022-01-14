@@ -8,7 +8,7 @@ const LoginService = new I(M.qs as any, secret);
 
 describe("login service", () => {
   test("signup", async () => {
-    const { token, ...r } = await LoginService.signup(
+    const { token, ...r } = await LoginService.signupWPassword(
       {
         ...M.profile,
       },

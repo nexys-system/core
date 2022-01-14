@@ -89,7 +89,7 @@ const LoginRoutes = <Profile extends ObjectWithId<Id>, Id>(
     };
 
     try {
-      const { uuid, token } = await loginService.signup(
+      const { uuid, token } = await loginService.signupWPassword(
         profile,
         password,
         locale,
