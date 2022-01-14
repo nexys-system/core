@@ -96,6 +96,43 @@ export default class LoginService {
 
   signup = async (
     profile: Omit<T.Profile, "uuid">,
+    locale: Locale,
+    {
+      type: authType,
+      value: authValue,
+    }: { type: AuthenticationType; value: string },
+    permissions: T.Permission[] = [],
+    status: T.Status = T.Status.pending
+  ): Promise<{ uuid: Uuid; authentication: { uuid: Uuid } }> => {
+    const exists = await this.userService.exists(profile.email);
+
+    if (exists) {
+      return Promise.reject({ message: "User already exists" });
+    }
+
+    const { uuid } = await this.userService.insertByProfile(
+      profile,
+      locale,
+      status
+    );
+
+    const authentication = await this.userService.insertAuth(
+      uuid,
+      authValue,
+      authType
+    );
+
+    // add permisions
+    this.userService.permissionService.assignToUserByNames(permissions, {
+      uuid,
+      instance: { uuid: profile.instance.uuid },
+    });
+
+    return { uuid, authentication };
+  };
+
+  signupWPassword = async (
+    profile: Omit<T.Profile, "uuid">,
     password: string,
     locale: Locale,
     permissions: T.Permission[] = []
@@ -106,20 +143,20 @@ export default class LoginService {
       return Promise.reject({ message: "User already exists" });
     }
 
-    const { uuid } = await this.userService.insertByProfile(profile, locale);
-
     const hashedPassword = await U.hashPassword(password);
 
-    const authentication = await this.userService.insertAuth(
-      uuid,
-      hashedPassword
-    );
+    const authenticationInputs: { type: AuthenticationType; value: string } = {
+      value: hashedPassword,
+      type: AuthenticationType.password,
+    };
 
-    // add permisions
-    this.userService.permissionService.assignToUserByNames(permissions, {
-      uuid,
-      instance: { uuid: profile.instance.uuid },
-    });
+    const { uuid, authentication } = await this.signup(
+      profile,
+      locale,
+      authenticationInputs,
+      permissions,
+      T.Status.pending
+    );
 
     // create token to be able to send email and then change status
     const token = A.createActionPayload(
