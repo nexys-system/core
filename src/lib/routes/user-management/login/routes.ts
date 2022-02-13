@@ -27,11 +27,11 @@ const LoginRoutes = <Profile extends ObjectWithId<Id>, Id>(
   instance: { uuid: Uuid; name: string }
 ) => {
   const router = new Router();
+  const instanceDefault = { uuid: instance.uuid };
 
   router.post("/login", bodyParser(), checkLogin, async (ctx) => {
     // get email, password and instance from request body
     // note the instance is optional, if not given the default instance is taken
-    const instanceDefault = { uuid: instance.uuid };
     const { email, password, instance = instanceDefault } = ctx.request.body;
 
     const userAgent: string | undefined = ctx.request.headers["user-agent"];
