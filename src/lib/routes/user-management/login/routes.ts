@@ -21,7 +21,7 @@ type Uuid = string;
  */
 const formatIp = (headers: { [k: string]: string | string[] | undefined }):string => {
   const headerKey = "x-real-ip";
-  const realIP = string | string[] | undefined = headers[headerKey];
+  const realIP: string | string[] | undefined = headers[headerKey];
   
   if (typeof realIP === 'string') {
     return realIP;
