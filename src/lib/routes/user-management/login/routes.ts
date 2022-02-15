@@ -19,7 +19,7 @@ type Uuid = string;
  * can't take the "normal" because it will return the internal docker ip, need to take the real-ip, added in proxy pass
  *  see https://github.com/nexys-system/display-ip/blob/master/src/app.ts#L9
  */
-const formatIp = (headers: { [k: string]: string | string[] | undefined }):string => {
+const formatIP = (headers: { [k: string]: string | string[] | undefined }):string => {
   const headerKey = "x-real-ip";
   const realIP: string | string[] | undefined = headers[headerKey];
   
