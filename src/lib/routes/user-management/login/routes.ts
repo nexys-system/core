@@ -1,11 +1,8 @@
-import { checkLogin, isSignupShape } from "./validation";
-
 import Router from "koa-router";
 import bodyParser from "koa-body";
 
-import m from "../../../middleware/auth";
-
 import { ObjectWithId } from "../../../type";
+import m from "../../../middleware/auth";
 import { Locale, UserCacheDefault } from "../../../middleware/auth/type";
 import { LoginService } from "../../../user-management";
 import { headerAcceptLanguageToLocale } from "../../../user-management/locale";
@@ -14,12 +11,24 @@ import {
   Permission,
 } from "../../../user-management/crud-type";
 
+import { checkLogin, isSignupShape } from "./validation";
+
 type Uuid = string;
 
-/**  const instance = {
-    uuid: process.env.InstanceUuid || "",
-    name: process.env.InstanceName || "",
-  }; */
+/**
+ * can't take the "normal" because it will return the internal docker ip, need to take the real-ip, added in proxy pass
+ *  see https://github.com/nexys-system/display-ip/blob/master/src/app.ts#L9
+ */
+const formatIp = (headers: Headers):string => {
+  const headerKey = "x-real-ip";
+  const realIP = string | string[] | undefined = headers[headerKey];
+  
+  if (typeof realIP === 'string') {
+    return realIP;
+  }
+  
+  return 'undefined';
+}
 
 const LoginRoutes = <Profile extends ObjectWithId<Id>, Id>(
   { loginService }: { loginService: LoginService },
@@ -37,9 +46,7 @@ const LoginRoutes = <Profile extends ObjectWithId<Id>, Id>(
     const { headers } = ctx;
 
     const userAgent: string | undefined = headers["user-agent"];
-    // can't take the "normal" because it will return the internal docker ip, need to take the real-ip, added in proxy pass
-    // see https://github.com/nexys-system/display-ip/blob/master/src/app.ts#L9
-    const ip:string | undefined = headers["x-real-ip"];
+    const ip:string  = formatIP(headers);
 
     try {
       const { profile, locale, permissions, refreshToken } =
