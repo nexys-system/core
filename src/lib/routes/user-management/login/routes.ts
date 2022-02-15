@@ -33,9 +33,13 @@ const LoginRoutes = <Profile extends ObjectWithId<Id>, Id>(
     // get email, password and instance from request body
     // note the instance is optional, if not given the default instance is taken
     const { email, password, instance = instanceDefault } = ctx.request.body;
+    
+    const { headers } = ctx;
 
-    const userAgent: string | undefined = ctx.request.headers["user-agent"];
-    const ip: string = ctx.request.ip;
+    const userAgent: string | undefined = headers["user-agent"];
+    // can't take the "normal" because it will return the internal docker ip, need to take the real-ip, added in proxy pass
+    // see https://github.com/nexys-system/display-ip/blob/master/src/app.ts#L9
+    const ip:string | undefined = headers["x-real-ip"];
 
     try {
       const { profile, locale, permissions, refreshToken } =
