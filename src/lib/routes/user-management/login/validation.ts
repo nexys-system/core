@@ -10,7 +10,7 @@ const signupShape: VT.Shape = {
   firstName: {},
   lastName: {},
   email: { extraCheck: VU.emailCheck },
-  password: { extraCheck: VU.passwordCheck },
+  auth: {type: {}, value: {optional:true}, password:{optional:true, extraCheck: VU.passwordCheck }},
 };
 
 export const checkLogin = Validation.isShapeMiddleware(loginShape);
