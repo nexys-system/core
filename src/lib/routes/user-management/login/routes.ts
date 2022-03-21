@@ -13,6 +13,7 @@ import {
   AuthenticationType,
   Permission,
 } from "../../../user-management/crud-type";
+import { Signup } from "./type";
 
 type Uuid = string;
 
@@ -76,7 +77,7 @@ const LoginRoutes = <Profile extends ObjectWithId<Id>, Id>(
   });
 
   router.post("/signup", bodyParser(), isSignupShape, async (ctx) => {
-    const { password, ...signupProfile } = ctx.request.body;
+    const { auth, ...signupProfile }: Signup = ctx.request.body;
 
     const locale: Locale = headerAcceptLanguageToLocale(
       ctx.headers["accept-language"]
@@ -88,11 +89,16 @@ const LoginRoutes = <Profile extends ObjectWithId<Id>, Id>(
       logDateAdded: new Date(),
     };
 
+    const authPostProcessed = {
+      type: auth.type || AuthenticationType.password,
+      value: auth.password || auth.value || profile.email,
+    };
+
     try {
-      const { uuid, token } = await loginService.signupWPassword(
+      const { uuid, token } = await loginService.signup(
         profile,
-        password,
         locale,
+        authPostProcessed,
         [Permission.app]
       );
 

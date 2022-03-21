@@ -8,23 +8,27 @@ const LoginService = new I(M.qs as any, secret);
 
 describe("login service", () => {
   test("signup", async () => {
-    const { token, ...r } = await LoginService.signupWPassword(
-      {
-        ...M.profile,
-      },
-      "mypassword",
-      localeDefault
-    );
+    try {
+      const { token, ...r } = await LoginService.signupWPassword(
+        {
+          ...M.profile,
+        },
+        "mypassword",
+        localeDefault
+      );
 
-    expect(r).toEqual({
-      uuid: "User_uuid",
-      authentication: { uuid: "UserAuthentication_uuid" },
-    });
+      expect(r).toEqual({
+        uuid: "User_uuid",
+        authentication: { uuid: "UserAuthentication_uuid" },
+      });
 
-    expect(typeof token).toEqual("string");
+      expect(typeof token).toEqual("string");
 
-    const p = decryptPayload(token, secret);
+      const p = decryptPayload(token, secret);
 
-    expect(p.uuid).toEqual("User_uuid");
+      expect(p.uuid).toEqual("User_uuid");
+    } catch (err) {
+      console.log(err);
+    }
   });
 });

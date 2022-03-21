@@ -1,4 +1,5 @@
 import * as T from "../../../user-management/crud-type";
+import { AuthenticationType } from "../../../user-management/crud-type";
 
 type Uuid = string;
 
@@ -8,7 +9,13 @@ export type Profile = ProfileCore & {
   uuid: Uuid;
 };
 
+export interface Auth {
+  type?: AuthenticationType;
+  value?: string;
+  password?: string;
+}
+
 export type Signup = ProfileCore & {
   email: string;
-  password: string;
+  auth: Auth;
 };

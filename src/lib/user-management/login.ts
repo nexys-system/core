@@ -103,7 +103,7 @@ export default class LoginService {
     }: { type: AuthenticationType; value: string },
     permissions: T.Permission[] = [],
     status: T.Status = T.Status.pending
-  ): Promise<{ uuid: Uuid; authentication: { uuid: Uuid } }> => {
+  ): Promise<{ uuid: Uuid; authentication: { uuid: Uuid }; token: string }> => {
     const exists = await this.userService.exists(profile.email);
 
     if (exists) {
@@ -128,7 +128,15 @@ export default class LoginService {
       instance: { uuid: profile.instance.uuid },
     });
 
-    return { uuid, authentication };
+    // create token to be able to send email and then change status
+    const token = A.createActionPayload(
+      uuid,
+      { uuid: profile.instance.uuid },
+      "SET_ACTIVE",
+      this.secretKey
+    );
+
+    return { uuid, authentication, token };
   };
 
   signupWPassword = async (
@@ -150,20 +158,12 @@ export default class LoginService {
       type: AuthenticationType.password,
     };
 
-    const { uuid, authentication } = await this.signup(
+    const { uuid, authentication, token } = await this.signup(
       profile,
       locale,
       authenticationInputs,
       permissions,
       T.Status.pending
-    );
-
-    // create token to be able to send email and then change status
-    const token = A.createActionPayload(
-      uuid,
-      { uuid: profile.instance.uuid },
-      "SET_ACTIVE",
-      this.secretKey
     );
 
     return { uuid, authentication, token };
