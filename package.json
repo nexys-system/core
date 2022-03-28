@@ -17,7 +17,7 @@
     "@nexys/api-request": "^0.0.1",
     "@nexys/node-cache": "^0.0.1",
     "@nexys/crypto": "^1.0.4",
-    "@nexys/fetchr": "^0.4.0",
+    "@nexys/fetchr": "^0.4.1",
     "@nexys/http": "^1.0.0",
     "@nexys/utils": "^3.9.14",
     "@nexys/validation": "^2.1.3",
