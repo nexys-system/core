@@ -1,4 +1,4 @@
-import { QueryParams } from "@nexys/fetchr/dist/type";
+import { QueryFilters, QueryParams } from "@nexys/fetchr/dist/type";
 import { Locale } from "../../middleware/auth/type";
 import * as T from "../type";
 import QueryService from "../../query/abstract-service";
@@ -285,8 +285,19 @@ export default class User {
     return r.success;
   };
 
-  exists = async (email: string): Promise<boolean> => {
-    const d = await this.qs.find(U.Entity.User, { filters: { email } }, true);
+  exists = async (
+    email: string,
+    instance?: { uuid: string }
+  ): Promise<boolean> => {
+    const filters: QueryFilters = { email };
+
+    if (instance) {
+      filters.instance = instance;
+    }
+
+    const params: QueryParams = { filters };
+
+    const d = await this.qs.find(U.Entity.User, params, true);
 
     return !!d;
   };
