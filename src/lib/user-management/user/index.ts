@@ -212,11 +212,14 @@ export default class User {
       { uuid, instance },
       { email }
     );
+
     return r.success;
   };
 
   insertByProfile = async (
-    profile: Omit<T.Profile, "uuid">,
+    profile: Omit<T.Profile, "uuid" | "instance"> & {
+      instance: { uuid: string };
+    },
     _locale: Locale,
     status: T.Status = T.Status.pending
   ): Promise<{ uuid: Uuid }> => {
@@ -226,8 +229,9 @@ export default class User {
       logDateAdded: new Date(),
     };
 
-    const r = await this.qs.insertUuid(U.Entity.User, row);
-    return { uuid: r.uuid };
+    const { uuid } = await this.qs.insertUuid(U.Entity.User, row);
+
+    return { uuid };
   };
 
   insertAuth = async (
