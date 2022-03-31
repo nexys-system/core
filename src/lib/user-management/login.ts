@@ -96,11 +96,13 @@ export default class LoginService {
 
   signup = async (
     profile: Omit<T.Profile, "uuid">,
-    password: string,
+    authentication: { type: AuthenticationType; value: string },
     locale: Locale,
     permissions: T.Permission[] = []
   ): Promise<{ uuid: Uuid; authentication: { uuid: Uuid }; token: string }> => {
-    const exists = await this.userService.exists(profile.email);
+    const exists = await this.userService.exists(profile.email, {
+      uuid: profile.instance.uuid,
+    });
 
     if (exists) {
       return Promise.reject({ message: "User already exists" });
@@ -108,11 +110,15 @@ export default class LoginService {
 
     const { uuid } = await this.userService.insertByProfile(profile, locale);
 
-    const hashedPassword = await U.hashPassword(password);
+    const authenticationValue: string =
+      AuthenticationType.password === authentication.type
+        ? await U.hashPassword(authentication.value)
+        : authentication.value;
 
-    const authentication = await this.userService.insertAuth(
+    const authenticationOut = await this.userService.insertAuth(
       uuid,
-      hashedPassword
+      authenticationValue,
+      authentication.type
     );
 
     // add permisions
@@ -129,7 +135,7 @@ export default class LoginService {
       this.secretKey
     );
 
-    return { uuid, authentication, token };
+    return { uuid, authentication: authenticationOut, token };
   };
 
   /**
