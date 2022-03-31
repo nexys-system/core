@@ -95,7 +95,9 @@ export default class LoginService {
   };
 
   signup = async (
-    profile: Omit<T.Profile, "uuid">,
+    profile: Omit<T.Profile, "uuid" | "instance"> & {
+      instance: { uuid: string };
+    },
     authentication: { type: AuthenticationType; value: string },
     locale: Locale,
     permissions: T.Permission[] = []
