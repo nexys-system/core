@@ -16,7 +16,7 @@ const getRouter = <Permission>(
 ) => {
   const router = new Router();
 
-  const auth = new Auth.App.default(appToken);
+  const appAuth = new Auth.App.default(appToken);
 
   // access for app (using app token)
 
@@ -25,17 +25,12 @@ const getRouter = <Permission>(
     ctx.body = printSchema(schemas.gQLSchema);
   });
 
-  router.post("/", bodyParser(), async (ctx) => {
+  router.post("/query", bodyParser(), appAuth.isAuthenticated, async (ctx) => {
     const { body } = ctx.request;
     const { query } = body;
     ctx.body = await graphql(schemas.gQLSchema, query);
   });
 
-  router.post("/2", bodyParser(), auth.isAuthenticated, async (ctx) => {
-    const { body } = ctx.request;
-    const { query } = body;
-    ctx.body = await graphql(schemas.gQLSchema, query);
-  });
   // end default
 
   // end: access for app (using app token)

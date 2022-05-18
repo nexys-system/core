@@ -63,6 +63,8 @@ export const context = get(
 
 export const hostMdm = "https://mdm.tssapplications.com";
 
+export const port = process.env.PORT ? Number(process.env.PORT) : 3000;
+
 //} catch (err) {
 //  console.log(err);
 //  throw Error(errorPrefix + "app token could not be read");

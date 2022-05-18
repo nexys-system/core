@@ -23,6 +23,4 @@ jobs:
       - name: create docker container
         run: docker build --build-arg GIT_SHA=$GITHUB_SHA --build-arg GIT_VERSION=${GITHUB_REF##*/} --tag $DOCKERHUB_URL:latest --tag $DOCKERHUB_URL:master --tag $DOCKERHUB_URL:${GITHUB_REF##*/} .
       - name: Push
-        run: |
-          docker push --all-tags $DOCKERHUB_URL
-
+        run: docker push --all-tags $DOCKERHUB_URL
