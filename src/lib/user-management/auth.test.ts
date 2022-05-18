@@ -1,4 +1,4 @@
-import I from "./login";
+import I from "./auth";
 import * as M from "./mock";
 import { decryptPayload } from "./action-payload";
 import { localeDefault } from "./locale";

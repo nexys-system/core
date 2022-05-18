@@ -1,4 +1,4 @@
-import LoginService from "./login";
+import LoginService from "./auth";
 import PasswordService from "./password";
 import PermissionService from "./permission";
 import UserService from "./user";
