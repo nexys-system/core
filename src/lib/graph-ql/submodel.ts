@@ -15,8 +15,8 @@ export const createAppConstraint = (def: T.Ddl[]) =>
  */
 export const createConstraintsFromEntities =
   <ObservedEntity extends string, Id extends Uuid | number>(def: T.Ddl[]) =>
-  (ids: { [key in ObservedEntity]: Id }): T.Model => {
-    const r: T.Model = {};
+  (ids: { [key in ObservedEntity]: Id }): T.ModelConstraints => {
+    const r: T.ModelConstraints = {};
 
     // turn entity types into strings
     const entitiesOfInterest: string[] = Object.keys(ids);

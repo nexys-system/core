@@ -19,7 +19,7 @@ export const mapInputType = (
       }
     }
 
-    throw Error("map inputtype: entity could not be found");
+    throw Error("map input type: entity could not be found");
   }
 
   return mapScalarType(type, name);

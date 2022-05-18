@@ -1,55 +1,48 @@
 import { GraphQLSchema } from "graphql";
 
-import { Permission } from "../user-management/crud-type";
-import QueryService from "../query/abstract-service-wdata";
+//import { Permission } from "../user-management/crud-type";
+import FetchR from "@nexys/fetchr";
 
 import * as SchemaFactory from "./schema-factory";
-import * as GraphQLSubmodelService from "./submodel";
 
-import { Ddl } from "./type";
+import { Ddl, ModelConstraints } from "./type";
 
-const roleMap: Map<string, Permission> = new Map(
-  Object.entries(Permission)
-    .filter(([_k, v]) => typeof v !== "number")
-    .map(([k, v]) => [v as string, Number(k) as Permission])
-);
-
-class GQLSchema {
+class GQLSchema<Permission> {
   roleQLSchemaMap: Map<
     Permission,
     (ids: { Instance: string; User: string }) => GraphQLSchema
   >;
+
+  // superadmin gql schema
   gQLSchema: GraphQLSchema;
 
-  constructor(model: Ddl[], ProductQuery: QueryService) {
-    this.gQLSchema = SchemaFactory.getSchemaFromModel(model, ProductQuery);
+  constructor(
+    model: Ddl[],
+    fetchR: FetchR,
+    submodels: [
+      Permission,
+      (v: {
+        Instance: string | number;
+        User: string | number;
+      }) => ModelConstraints
+    ][]
+  ) {
+    // superadmin schema, which is also the one that is used with the "app authentication"
+    this.gQLSchema = SchemaFactory.getSchemaFromModel(model, fetchR);
 
-    const appConstraints = GraphQLSubmodelService.createAppConstraint(model);
-    const adminConstraints =
-      GraphQLSubmodelService.createAdminConstraints(model);
-
-    const gQLAppSchema = (ids: { Instance: string; User: string }) =>
-      SchemaFactory.getSchemaFromModel(
-        model,
-        ProductQuery,
-        appConstraints(ids)
-      );
-
-    const gQLAdminSchema = (ids: { Instance: string; User: string }) =>
-      SchemaFactory.getSchemaFromModel(
-        model,
-        ProductQuery,
-        adminConstraints(ids)
-      );
-
-    this.roleQLSchemaMap = new Map([
-      [Permission.app, gQLAppSchema],
-      [Permission.admin, gQLAdminSchema],
-      [Permission.superadmin, () => this.gQLSchema],
-    ]);
+    this.roleQLSchemaMap = new Map(
+      submodels.map(([k, v]) => [
+        k,
+        (ids: { Instance: string; User: string }) =>
+          SchemaFactory.getSchemaFromModel(model, fetchR, v(ids)),
+      ])
+    );
   }
 
-  getSchemaFromCtx = (ctx: any): GraphQLSchema => {
+  getSchemaFromCtx = (
+    ctx: any,
+    roleMap: Map<string, Permission>
+  ): GraphQLSchema => {
     const { role } = ctx.params;
 
     const permission = roleMap.get(role);

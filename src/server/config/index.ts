@@ -1,8 +1,6 @@
 import * as FetchR from "@nexys/fetchr";
 import dotenv from "dotenv";
 
-import model from "../model";
-
 import JWT from "jsonwebtoken";
 
 import * as U from "./utils";
@@ -10,8 +8,6 @@ import { get } from "../../lib/context";
 import { AppTokenDecoded } from "../../lib/context/type";
 
 dotenv.config();
-
-export { model };
 
 // init fetchr
 export const database: FetchR.Database.Connection.ConnectionOptions = {
@@ -66,6 +62,8 @@ export const context = get(
 );
 
 export const hostMdm = "https://mdm.tssapplications.com";
+
+export const port = process.env.PORT ? Number(process.env.PORT) : 3000;
 
 //} catch (err) {
 //  console.log(err);

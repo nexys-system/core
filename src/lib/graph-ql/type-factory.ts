@@ -12,7 +12,7 @@ import * as UM from "./utils-mapping";
  */
 export const createTypesFromModel = (
   def: T.Ddl[],
-  constraints?: T.Model
+  constraints?: T.ModelConstraints
 ): T.GLTypes => {
   const QLtypes: T.GLTypes = new Map();
 

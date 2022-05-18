@@ -8,38 +8,30 @@ import Schema from "../../graph-ql/schema";
 
 import * as ErrorHandler from "./error-handler";
 
-const getRouter = (
-  schemas: Schema,
+const getRouter = <Permission>(
+  schemas: Schema<Permission>,
   appToken: string,
-  middlewareAuth: MiddlewareAuth<any, any, any>
+  middlewareAuth: MiddlewareAuth<any, any, any>,
+  roleMap: Map<string, Permission>
 ) => {
   const router = new Router();
 
-  const auth = new Auth.App.default(appToken);
+  const appAuth = new Auth.App.default(appToken);
 
   // access for app (using app token)
 
-  router.all(
-    "/schema",
-    bodyParser(),
-    auth.isAuthenticated,
+  // this is the defutschema, superadmin
+  router.all("/schema", bodyParser(), async (ctx) => {
+    ctx.body = printSchema(schemas.gQLSchema);
+  });
 
-    async (ctx) => {
-      ctx.body = printSchema(schemas.gQLSchema);
-    }
-  );
+  router.post("/query", bodyParser(), appAuth.isAuthenticated, async (ctx) => {
+    const { body } = ctx.request;
+    const { query } = body;
+    ctx.body = await graphql(schemas.gQLSchema, query);
+  });
 
-  router.post(
-    "/",
-    bodyParser(),
-    auth.isAuthenticated,
-
-    async (ctx) => {
-      const { body } = ctx.request;
-      const { query } = body;
-      ctx.body = await graphql(schemas.gQLSchema, query);
-    }
-  );
+  // end default
 
   // end: access for app (using app token)
 
@@ -50,7 +42,7 @@ const getRouter = (
     middlewareAuth.isAuthenticated(),
     async (ctx) => {
       try {
-        const schema = schemas.getSchemaFromCtx(ctx);
+        const schema = schemas.getSchemaFromCtx(ctx, roleMap);
         ctx.body = printSchema(schema);
       } catch (err) {
         ErrorHandler.handleError(ctx, err as ErrorHandler.ErrorWCode);
@@ -66,7 +58,7 @@ const getRouter = (
     middlewareAuth.isAuthenticated(),
     async (ctx) => {
       try {
-        const schema = schemas.getSchemaFromCtx(ctx);
+        const schema = schemas.getSchemaFromCtx(ctx, roleMap);
         const { body } = ctx.request;
         const { query } = body;
 

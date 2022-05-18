@@ -2,7 +2,7 @@ import * as GL from "graphql";
 import * as T from "./type";
 import * as U from "./utils";
 
-import QueryService from "../query/abstract-service-wdata";
+import FetchR from "@nexys/fetchr";
 
 import { getQueryFromModel } from "./query-factory";
 
@@ -15,10 +15,10 @@ import { getQueryFromModel } from "./query-factory";
  */
 export const getSchemaFromModel = (
   def: T.Ddl[],
-  ProductQuery: QueryService,
-  constraints?: T.Model
+  fetchR: FetchR,
+  constraints?: T.ModelConstraints
 ): GL.GraphQLSchema => {
   const ddl = U.ddl(def);
-  const query = getQueryFromModel(ddl, ProductQuery, constraints);
+  const query = getQueryFromModel(ddl, fetchR, constraints);
   return new GL.GraphQLSchema({ query });
 };

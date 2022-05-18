@@ -1,6 +1,6 @@
 import * as T from "./type";
 import * as GL from "graphql";
-import { QueryProjection } from "@nexys/fetchr/dist/type";
+import { QueryProjection, QueryFilters } from "@nexys/fetchr/dist/type";
 
 // not used
 export const getSchemaFromDDL = (def: T.Ddl[]) => {
@@ -175,4 +175,16 @@ export const getArgs = (
     _take: { type: GL.GraphQLInt },
     _skip: { type: GL.GraphQLInt },
   };
+};
+
+export const prepareFilters = (
+  entity: { name: string },
+  queryFilters: QueryFilters,
+  constraints: T.ModelConstraints
+): QueryFilters => {
+  const constraintsFilter: QueryFilters = constraints
+    ? constraints[entity.name].filters || {}
+    : {};
+
+  return { ...constraintsFilter, ...queryFilters };
 };

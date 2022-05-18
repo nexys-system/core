@@ -10,6 +10,7 @@ import {
   AuthenticationType,
   Permission,
 } from "../../../user-management/crud-type";
+import { Signup } from "./type";
 
 import { checkLogin, isSignupShape } from "./validation";
 
@@ -19,16 +20,18 @@ type Uuid = string;
  * can't take the "normal" because it will return the internal docker ip, need to take the real-ip, added in proxy pass
  *  see https://github.com/nexys-system/display-ip/blob/master/src/app.ts#L9
  */
-const formatIP = (headers: { [k: string]: string | string[] | undefined }):string => {
+const formatIP = (headers: {
+  [k: string]: string | string[] | undefined;
+}): string => {
   const headerKey = "x-real-ip";
   const realIP: string | string[] | undefined = headers[headerKey];
-  
-  if (typeof realIP === 'string') {
+
+  if (typeof realIP === "string") {
     return realIP;
   }
-  
-  return 'undefined';
-}
+
+  return "undefined";
+};
 
 const LoginRoutes = <Profile extends ObjectWithId<Id>, Id>(
   { loginService }: { loginService: LoginService },
@@ -42,11 +45,11 @@ const LoginRoutes = <Profile extends ObjectWithId<Id>, Id>(
     // get email, password and instance from request body
     // note the instance is optional, if not given the default instance is taken
     const { email, password, instance = instanceDefault } = ctx.request.body;
-    
+
     const { headers } = ctx;
 
     const userAgent: string | undefined = headers["user-agent"];
-    const ip:string  = formatIP(headers);
+    const ip: string = formatIP(headers);
 
     try {
       const { profile, locale, permissions, refreshToken } =
@@ -87,7 +90,7 @@ const LoginRoutes = <Profile extends ObjectWithId<Id>, Id>(
   });
 
   router.post("/signup", bodyParser(), isSignupShape, async (ctx) => {
-    const { password, ...signupProfile } = ctx.request.body;
+    const { auth, ...signupProfile }: Signup = ctx.request.body;
 
     const locale: Locale = headerAcceptLanguageToLocale(
       ctx.headers["accept-language"]
@@ -99,10 +102,15 @@ const LoginRoutes = <Profile extends ObjectWithId<Id>, Id>(
       logDateAdded: new Date(),
     };
 
+    const authPostProcessed = {
+      type: auth.type || AuthenticationType.password,
+      value: auth.password || auth.value || profile.email,
+    };
+
     try {
       const { uuid, token } = await loginService.signup(
         profile,
-        password,
+        authPostProcessed,
         locale,
         [Permission.app]
       );

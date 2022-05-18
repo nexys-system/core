@@ -8,6 +8,9 @@ export enum AuthenticationType {
   linkedin = 4,
   microsoft = 5,
   ibm = 6,
+  metamask = 7,
+  twitter = 8,
+  swissId = 9,
 }
 
 export enum Permission {

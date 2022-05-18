@@ -140,6 +140,43 @@ export default class LoginService {
     return { uuid, authentication: authenticationOut, token };
   };
 
+  signupWPassword = async (
+    profile: Omit<T.Profile, "uuid">,
+    password: string,
+    locale: Locale,
+    permissions: T.Permission[] = []
+  ): Promise<{ uuid: Uuid; authentication: { uuid: Uuid }; token: string }> => {
+    const exists = await this.userService.exists(profile.email);
+
+    if (exists) {
+      return Promise.reject({ message: "User already exists" });
+    }
+
+    const hashedPassword = await U.hashPassword(password);
+
+    const authenticationInputs: { type: AuthenticationType; value: string } = {
+      value: hashedPassword,
+      type: AuthenticationType.password,
+    };
+
+    const { uuid, authentication } = await this.signup(
+      profile,
+      authenticationInputs,
+      locale,
+      permissions
+    );
+
+    // create token to be able to send email and then change status
+    const token = A.createActionPayload(
+      uuid,
+      { uuid: profile.instance.uuid },
+      "SET_ACTIVE",
+      this.secretKey
+    );
+
+    return { uuid, authentication: authentication, token };
+  };
+
   /**
    * after the user clicks on the link to activate his account
    */

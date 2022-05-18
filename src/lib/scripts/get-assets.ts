@@ -23,9 +23,13 @@ const url = C.host + C.pathAssets + appToken;
 
 const init = async () => {
   // get last version of the type definition
-  const r = await fetch(url, { method: "GET" });
 
-  const { version, model, types } = (await r.json()) as any;
+  const r = await fetch(url, { method: "GET" });
+  if (r.status !== 200) {
+    throw Error(await r.text());
+  }
+
+  const { version, model, types, submodels } = (await r.json()) as any;
 
   if (!model) {
     throw Error("model is undefined");
@@ -46,10 +50,15 @@ const init = async () => {
       await fsp.mkdir(C.outFolder, { recursive: true });
 
       const pathAndContents = [
+        ["/index.ts", U.createModelTs(model)],
         ["/type.ts", types],
         ["/entities.ts", U.createEntities(model)],
-        ["/index.ts", U.createModelTs(model)],
+        ["/utils.ts", U.getUtils()],
       ];
+
+      if (submodels && submodels !== "") {
+        pathAndContents.push(["/submodels.ts", submodels]);
+      }
 
       pathAndContents.forEach(([filepath, content]) => {
         const outFilepath = C.outFolder + filepath;

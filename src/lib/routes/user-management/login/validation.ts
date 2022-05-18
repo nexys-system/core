@@ -3,14 +3,23 @@ import { Main as Validation, Type as VT, Utils as VU } from "@nexys/validation";
 const loginShape: VT.Shape = {
   email: { extraCheck: VU.emailCheck },
   password: { extraCheck: VU.passwordCheck },
-  instance: { $object: { uuid: { extraCheck: VU.checkUuid } }, optional: false }
+  instance: {
+    $object: { uuid: { extraCheck: VU.checkUuid } },
+    optional: false,
+  },
+};
+
+const authShape: VT.Shape = {
+  type: { optional: true },
+  value: { optional: true },
+  password: { optional: true, extraCheck: VU.passwordCheck },
 };
 
 const signupShape: VT.Shape = {
   firstName: {},
   lastName: {},
   email: { extraCheck: VU.emailCheck },
-  auth: {type: {}, value: {optional:true}, password:{optional:true, extraCheck: VU.passwordCheck }},
+  auth: authShape,
 };
 
 export const checkLogin = Validation.isShapeMiddleware(loginShape);
