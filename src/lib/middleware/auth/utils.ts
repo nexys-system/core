@@ -86,3 +86,18 @@ export const isExpired = (iat: number, accessTokenExpires: number): boolean => {
 
   return iat + accessTokenExpires < timestamp;
 };
+
+export const mapTokenWithResponse = (
+  appToken: string,
+  token?: string
+): { status: number; message: string } | undefined => {
+  if (token === undefined) {
+    return { status: 401, message: "please provide a token" };
+  }
+
+  if (token !== appToken) {
+    return { status: 401, message: "the token provided is wrong" };
+  }
+
+  return;
+};
