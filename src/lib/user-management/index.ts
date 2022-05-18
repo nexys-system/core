@@ -1,4 +1,4 @@
-import LoginService from "./auth";
+import AuthService from "./auth";
 import PasswordService from "./password";
 import PermissionService from "./permission";
 import UserService from "./user";
@@ -10,7 +10,7 @@ export * as Types from "./type";
 export * as CrudTypes from "./crud-type";
 
 export {
-  LoginService,
+  AuthService,
   PasswordService,
   PermissionService,
   UserService,

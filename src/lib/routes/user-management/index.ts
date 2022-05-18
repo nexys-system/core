@@ -1,6 +1,6 @@
 import Superadmin from "./superadmin";
 import Admin from "./admin";
 import Profile from "./profile";
-import Login from "./login";
+import Auth from "./auth";
 
-export { Superadmin, Admin, Profile, Login };
+export { Superadmin, Admin, Profile, Auth };

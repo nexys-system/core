@@ -21,7 +21,7 @@ class ProductService<
   configuration: Configuration;
   qs: QueryService;
   cache: Cache;
-  public loginService: UserManagementService.LoginService;
+  public authService: UserManagementService.AuthService;
   userService: UserManagementService.UserService;
   passwordService: UserManagementService.PasswordService;
   instanceService: UserManagementService.InstanceService;
@@ -40,7 +40,7 @@ class ProductService<
     this.qs = qs;
     this.cache = cache;
 
-    this.loginService = new UserManagementService.LoginService(
+    this.authService = new UserManagementService.AuthService(
       qs,
       configuration.secretKey
     );
@@ -62,7 +62,7 @@ class ProductService<
     this.userTokenService = new UserManagementService.UserToken(qs);
 
     this.middlewareAuth = new MiddlewareAuth(
-      this.loginService,
+      this.authService,
       cache,
       configuration.secretKey,
       authOptions

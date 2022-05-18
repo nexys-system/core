@@ -13,7 +13,7 @@ import * as LT from "./type";
 import * as CookiesService from "../cookies";
 
 import * as U from "./utils";
-import { LoginService } from "../../user-management";
+import { AuthService } from "../../user-management";
 import { localeToString } from "../../user-management/locale";
 // see https://github.com/Nexysweb/koa-lib/blob/master/src/middleware/index.ts
 
@@ -26,7 +26,7 @@ export default class Auth<
   cache: Cache;
   jwt: JWT;
   acceptHeaderToken: boolean;
-  loginService: LoginService;
+  loginService: AuthService;
   accessTokenExpires: number;
   permissionValues: LT.PermissionValues;
 
@@ -36,7 +36,7 @@ export default class Auth<
    * @param secret for the JWT verification
    */
   constructor(
-    loginService: LoginService,
+    loginService: AuthService,
     cache: Cache,
     secret: string,
     options: LT.AuthOptions = {}

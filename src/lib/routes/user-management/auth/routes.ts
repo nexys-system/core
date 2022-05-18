@@ -4,7 +4,7 @@ import bodyParser from "koa-body";
 import { ObjectWithId } from "../../../type";
 import m from "../../../middleware/auth";
 import { Locale, UserCacheDefault } from "../../../middleware/auth/type";
-import { LoginService } from "../../../user-management";
+import { AuthService } from "../../../user-management";
 import { headerAcceptLanguageToLocale } from "../../../user-management/locale";
 import {
   AuthenticationType,
@@ -34,7 +34,7 @@ const formatIP = (headers: {
 };
 
 const LoginRoutes = <Profile extends ObjectWithId<Id>, Id>(
-  { loginService }: { loginService: LoginService },
+  { authService }: { authService: AuthService },
   MiddlewareAuth: m<Profile, UserCacheDefault, Id>,
   instance: { uuid: Uuid; name: string }
 ) => {
@@ -53,7 +53,7 @@ const LoginRoutes = <Profile extends ObjectWithId<Id>, Id>(
 
     try {
       const { profile, locale, permissions, refreshToken } =
-        await loginService.authenticate(
+        await authService.authenticate(
           email,
           instance,
           { password, type: AuthenticationType.password },
@@ -82,7 +82,7 @@ const LoginRoutes = <Profile extends ObjectWithId<Id>, Id>(
   router.all("/logout", MiddlewareAuth.isAuthenticated(), async (ctx) => {
     const profile = ctx.state.profile as Profile;
     MiddlewareAuth.logout(profile, ctx);
-    await loginService.logout(
+    await authService.logout(
       ctx.state.profile.id,
       ctx.cookies.get("REFRESH_TOKEN")
     );
@@ -108,7 +108,7 @@ const LoginRoutes = <Profile extends ObjectWithId<Id>, Id>(
     };
 
     try {
-      const { uuid, token } = await loginService.signup(
+      const { uuid, token } = await authService.signup(
         profile,
         authPostProcessed,
         locale,
@@ -135,7 +135,7 @@ const LoginRoutes = <Profile extends ObjectWithId<Id>, Id>(
       return;
     }
 
-    const success = await loginService.activate(challenge);
+    const success = await authService.activate(challenge);
 
     ctx.body = { success };
   });

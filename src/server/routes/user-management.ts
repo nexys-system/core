@@ -5,8 +5,8 @@ import * as Config from "../config";
 
 import P from "../product";
 
-const loginRoutes = UserManagementRoutes.Login(
-  { loginService: P.loginService },
+const loginRoutes = UserManagementRoutes.Auth(
+  { authService: P.authService },
   P.middlewareAuth,
   Config.instance
 );
