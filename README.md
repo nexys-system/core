@@ -14,31 +14,7 @@ to
 
 ### App init
 
-path suggestion: `src/app.ts`
-
-```
-import Mount from 'koa-mount';
-import { App, Routes } from '@nexys/core';
-
-// import module/service
-import RouteModule from './route/module';
-
-// reference to the instance of nexys-lib
-import LibServices from "./service/product-service";
-
-const app = App();
-// reference to service/module:
-app.use(Mount('/pathTorouteModule', RouteModule));
-
-// this is the reference to the product route modules (i18n, notification, cms)
-// [optional]
-app.use(Mount("/product", Routes.default(LibServices as any)));
-
-
-export const startApp = async (port: number) => {
-  app.listen(port, () => console.log(`Server started at port ${port}`));
-};
-```
+see `/server` for example implementation
 
 ### Cache Initialization
 
@@ -58,7 +34,7 @@ import { Middleware} from '@nexys/core';
 import * as Login from '../service/login';
 import cache from '../service/cache';
 
-// initalises the middleware auth with
+// initalizes the middleware auth with
 // - `Profile` defines the JWT Profile shape
 // - `UserCache` defines the shape of the information saved in the userCache
 // - `cache`reference to the cache
