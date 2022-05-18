@@ -95,31 +95,32 @@ export default class LoginService {
   };
 
   signup = async (
-    profile: Omit<T.Profile, "uuid">,
+    profile: Omit<T.Profile, "uuid" | "instance"> & {
+      instance: { uuid: string };
+    },
+    authentication: { type: AuthenticationType; value: string },
     locale: Locale,
-    {
-      type: authType,
-      value: authValue,
-    }: { type: AuthenticationType; value: string },
-    permissions: T.Permission[] = [],
-    status: T.Status = T.Status.pending
+    permissions: T.Permission[] = []
   ): Promise<{ uuid: Uuid; authentication: { uuid: Uuid }; token: string }> => {
-    const exists = await this.userService.exists(profile.email);
+    const exists = await this.userService.exists(profile.email, {
+      uuid: profile.instance.uuid,
+    });
 
     if (exists) {
       return Promise.reject({ message: "User already exists" });
     }
 
-    const { uuid } = await this.userService.insertByProfile(
-      profile,
-      locale,
-      status
-    );
+    const { uuid } = await this.userService.insertByProfile(profile, locale);
 
-    const authentication = await this.userService.insertAuth(
+    const authenticationValue: string =
+      AuthenticationType.password === authentication.type
+        ? await U.hashPassword(authentication.value)
+        : authentication.value;
+
+    const authenticationOut = await this.userService.insertAuth(
       uuid,
-      authValue,
-      authType
+      authenticationValue,
+      authentication.type
     );
 
     // add permisions
@@ -136,7 +137,7 @@ export default class LoginService {
       this.secretKey
     );
 
-    return { uuid, authentication, token };
+    return { uuid, authentication: authenticationOut, token };
   };
 
   signupWPassword = async (
@@ -158,15 +159,22 @@ export default class LoginService {
       type: AuthenticationType.password,
     };
 
-    const { uuid, authentication, token } = await this.signup(
+    const { uuid, authentication } = await this.signup(
       profile,
-      locale,
       authenticationInputs,
-      permissions,
-      T.Status.pending
+      locale,
+      permissions
     );
 
-    return { uuid, authentication, token };
+    // create token to be able to send email and then change status
+    const token = A.createActionPayload(
+      uuid,
+      { uuid: profile.instance.uuid },
+      "SET_ACTIVE",
+      this.secretKey
+    );
+
+    return { uuid, authentication: authentication, token };
   };
 
   /**

@@ -1,4 +1,4 @@
-import { QueryParams } from "@nexys/fetchr/dist/type";
+import { QueryFilters, QueryParams } from "@nexys/fetchr/dist/type";
 import { Locale } from "../../middleware/auth/type";
 import * as T from "../type";
 import QueryService from "../../query/abstract-service";
@@ -212,11 +212,14 @@ export default class User {
       { uuid, instance },
       { email }
     );
+
     return r.success;
   };
 
   insertByProfile = async (
-    profile: Omit<T.Profile, "uuid">,
+    profile: Omit<T.Profile, "uuid" | "instance"> & {
+      instance: { uuid: string };
+    },
     _locale: Locale,
     status: T.Status = T.Status.pending
   ): Promise<{ uuid: Uuid }> => {
@@ -226,8 +229,9 @@ export default class User {
       logDateAdded: new Date(),
     };
 
-    const r = await this.qs.insertUuid(U.Entity.User, row);
-    return { uuid: r.uuid };
+    const { uuid } = await this.qs.insertUuid(U.Entity.User, row);
+
+    return { uuid };
   };
 
   insertAuth = async (
@@ -285,8 +289,19 @@ export default class User {
     return r.success;
   };
 
-  exists = async (email: string): Promise<boolean> => {
-    const d = await this.qs.find(U.Entity.User, { filters: { email } }, true);
+  exists = async (
+    email: string,
+    instance?: { uuid: string }
+  ): Promise<boolean> => {
+    const filters: QueryFilters = { email };
+
+    if (instance) {
+      filters.instance = instance;
+    }
+
+    const params: QueryParams = { filters };
+
+    const d = await this.qs.find(U.Entity.User, params, true);
 
     return !!d;
   };

@@ -503,10 +503,10 @@
   resolved "https://registry.yarnpkg.com/@nexys/crypto/-/crypto-1.0.4.tgz#087ea960516ca3fee810fd3ea51002db22e07c3f"
   integrity sha512-acsLzzudQyXKDQ5enym9XTpR2u1cey7qjdRjtNf58wP20SSR6h6iRuLLWy9ALIBfwURY0DUe13QY9aD2woDsGw==
 
-"@nexys/fetchr@^0.4.0":
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/@nexys/fetchr/-/fetchr-0.4.0.tgz#01fe58a6400212a34786d036592f65930db22024"
-  integrity sha512-VT/tFrJGh3LAjN355qU45AxwL0OUM+UI+mdrTd+1B9RxZIVCpQkOK2666+SgBTBY740fNd/Q5LtZ/fZJBbquFg==
+"@nexys/fetchr@^0.5.0":
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/@nexys/fetchr/-/fetchr-0.5.0.tgz#f89b72f639474832a119c605a0c7dc86a22808c1"
+  integrity sha512-WCjcxVHlcz7J7iALXuhz4oed7EbihHq5/zyeIqutPg79FVF3FXYMCBL0f2aT66wy2O0QDnC8vRqLY+QYszp/AQ==
   dependencies:
     "@nexys/validation" "^2.1.0"
     "@types/sqlstring" "^2.3.0"
@@ -532,12 +532,17 @@
   resolved "https://registry.yarnpkg.com/@nexys/utils/-/utils-3.9.14.tgz#db7e3581dd3f15990334842111be35d5aba443ca"
   integrity sha512-ab+iVapztGguPbHaACoNXtn65iWh+hSqNOoKnIQkmldsQ4yUsRpPhs+Us+x2g5A3/ShwxREAz8DMLp0rpYcWig==
 
-"@nexys/validation@^2.1.0", "@nexys/validation@^2.1.2":
+"@nexys/validation@^2.1.0":
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/@nexys/validation/-/validation-2.1.2.tgz#1dda5a8e18760c44f66a86e90030d27fea82238d"
   integrity sha512-p47+6HC2ZXwDNRHA43cN+HyDhfcAZ9QhoyXKp0b+EsmzEGkHDe1ZyWJzqUKwpXVU22c3l5ujD8+mCw0CHLVbTw==
   dependencies:
     "@nexys/utils" "^3.9.14"
+
+"@nexys/validation@^2.1.3":
+  version "2.1.3"
+  resolved "https://registry.yarnpkg.com/@nexys/validation/-/validation-2.1.3.tgz#d09874dd5cb7e1e46ae8038bef5b49c9f5858350"
+  integrity sha512-nsn7KnCAYTOLiA+Hbm3SUa5AIAuO9VqVh/xvlAMFqKhQ9mIggSKqh/3L1p88cRQVYIb59BETJpKRm60umQ8zyQ==
 
 "@nexys/workflow@^0.0.9":
   version "0.0.9"

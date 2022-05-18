@@ -2,20 +2,20 @@ import I from "./login";
 import * as M from "./mock";
 import { decryptPayload } from "./action-payload";
 import { localeDefault } from "./locale";
+import { AuthenticationType } from "./crud-type";
 
 const secret = "durbdhrbserjvcejg37fg3hcishfjkic";
 const LoginService = new I(M.qs as any, secret);
 
 describe("login service", () => {
   test("signup", async () => {
-    try {
-      const { token, ...r } = await LoginService.signupWPassword(
-        {
-          ...M.profile,
-        },
-        "mypassword",
-        localeDefault
-      );
+    const { token, ...r } = await LoginService.signupWPassword(
+      {
+        ...M.profile,
+      },
+      { value: "mypassword", type: AuthenticationType.password },
+      localeDefault
+    );
 
       expect(r).toEqual({
         uuid: "User_uuid",
