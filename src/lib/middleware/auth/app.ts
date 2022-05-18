@@ -7,7 +7,7 @@ import Koa from "koa";
 import * as U from "./utils";
 // see https://github.com/Nexysweb/koa-lib/blob/master/src/middleware/index.ts
 
-export default class Auth {
+class Auth {
   appToken: string;
 
   /**
@@ -23,18 +23,18 @@ export default class Auth {
 
     const token = U.extractOptBearerToken(headers.authorization);
 
-    if (token === undefined) {
-      ctx.status = 401;
-      ctx.body = { message: "please provide a token" };
-      return;
-    }
+    const r = U.mapTokenWithResponse(this.appToken, token);
 
-    if (token !== this.appToken) {
-      ctx.status = 401;
-      ctx.body = { message: "the token provided is wrong" };
+    if (r) {
+      const { message, status } = r;
+
+      ctx.status = status;
+      ctx.body = { message };
       return;
     }
 
     await next();
   };
 }
+
+export default Auth;
