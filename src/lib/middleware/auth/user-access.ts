@@ -29,6 +29,7 @@ export default class Auth<
   loginService: AuthService;
   accessTokenExpires: number;
   permissionValues: LT.PermissionValues;
+  tokenAutoRefresh: boolean;
 
   /**
    *
@@ -39,7 +40,7 @@ export default class Auth<
     loginService: AuthService,
     cache: Cache,
     secret: string,
-    options: LT.AuthOptions = {}
+    options: Partial<LT.AuthOptions> = {}
   ) {
     this.cache = cache;
     this.jwt = new JWT(secret);
@@ -51,6 +52,8 @@ export default class Auth<
       2: "admin",
       3: "superadmin",
     };
+
+    this.tokenAutoRefresh = options.tokenAutoRefresh || true;
   }
 
   getProfile = async (
@@ -59,18 +62,17 @@ export default class Auth<
     refreshAttempt = 0
   ): Promise<{ profile: Profile; userCache: UserCache }> => {
     try {
-      //console.log(this.jwt.read(token));
       const profile = this.jwt.verify<Profile>(token);
       const userCache: UserCache = this.getCache<Id, UserCache>(profile.id);
-
-      // todo if beyond a certain time, gte refresh
 
       const { iat } = profile;
 
       if (iat && U.isExpired(iat, this.accessTokenExpires)) {
-        //ctx.status = 401;
-        //ctx.body = { message: "token expired" };
-        return this.refresh(ctx);
+        if (this.tokenAutoRefresh) {
+          return this.refresh(ctx);
+        }
+
+        throw Error("token expired");
       }
 
       return { profile, userCache };
@@ -82,7 +84,11 @@ export default class Auth<
         throw Error("new access token invalid, aborting here");
       }
 
-      return this.refresh(ctx);
+      if (this.tokenAutoRefresh) {
+        return this.refresh(ctx);
+      }
+
+      throw Error("something went wrong while trying to read the profile");
     }
   };
 
@@ -103,11 +109,6 @@ export default class Auth<
     }
 
     try {
-      //console.log("d");
-      // const refTokenValue =
-      // this.jwt.verify<TA.RefreshToken<Profile>>(refreshToken);
-      //console.log(refTokenValue);
-
       const { profile, locale, permissions } =
         await this.loginService.reAuthenticate(refreshToken);
 
@@ -123,10 +124,6 @@ export default class Auth<
 
       U.login(profileWToken, ctx.cookies, cookieOpts);
 
-      //console.log("set token");
-      //return this.getProfile(refTokenValue.profile, ctx, 1);
-      //console.log("p", p);
-      //return p;
       return { profile: nProfile, userCache };
     } catch (err) {
       console.log(err);

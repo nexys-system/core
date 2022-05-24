@@ -35,7 +35,8 @@ export interface UserCacheDefault extends Permissions {
 export type PermissionValues = { [k: number]: string };
 
 export interface AuthOptions {
-  acceptHeaderToken?: boolean;
-  accessTokenExpires?: number;
-  permissionValues?: PermissionValues;
+  acceptHeaderToken: boolean;
+  accessTokenExpires: number;
+  permissionValues: PermissionValues;
+  tokenAutoRefresh: boolean; // if token invalid a new one is automatically issued
 }
