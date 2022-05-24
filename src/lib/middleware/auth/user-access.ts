@@ -222,7 +222,7 @@ export default class Auth<
       if (U.isPermissionValid(permission, permissions as any)) {
         await next();
       } else {
-        ctx.status = 401;
+        ctx.status = 403; // return forbidden permission
         ctx.body = {
           message:
             'user could not be authorized - permission "' +
