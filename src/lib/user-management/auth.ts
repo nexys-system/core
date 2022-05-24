@@ -100,7 +100,7 @@ export default class LoginService {
     },
     authentication: { type: AuthenticationType; value: string },
     locale: Locale,
-    permissions: T.Permission[] = []
+    permissions: T.Permission[] = [1]
   ): Promise<{ uuid: Uuid; authentication: { uuid: Uuid }; token: string }> => {
     const exists = await this.userService.exists(profile.email, {
       uuid: profile.instance.uuid,
