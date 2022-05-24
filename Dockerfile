@@ -1,13 +1,10 @@
-FROM node:14-alpine
+FROM node:17-alpine
 
 # GIT SHA is passed as ARG and then copied into ENV VAR (Args are not perssted beyond build)
 ARG GIT_SHA 
 ENV GIT_SHA_ENV=$GIT_SHA
 ARG GIT_VERSION
 ENV GIT_VERSION_ENV=$GIT_VERSION
-
-# add git in case needed by yarn
-RUN apk --no-cache add git
 
 COPY package.json package.json
 RUN yarn install
