@@ -1,14 +1,13 @@
 import Koa from "koa";
 import Router from "koa-router";
 
-import * as Middleware from "../../middleware";
+import { Response } from "../../middleware";
 
-import { NotificationService } from "./type";
-
-const { Response } = Middleware;
+import NotificationService from "../../services/notification/abstract";
 
 export default (Notification: NotificationService) => {
   const router: Router = new Router();
+
   router.all("/list", async (ctx: Koa.Context) => {
     const r = () => Notification.list();
 

@@ -1,13 +1,10 @@
 import I18nService from "../../services/i18n";
+import NotificationService from "../../services/notification/abstract";
 
 type Uuid = string;
 
 export interface CMSService {
   get: (uuid: Uuid, lang: string) => any;
-}
-
-export interface NotificationService {
-  list: (types?: string[], lang?: string) => any;
 }
 
 export interface EmailService {

@@ -6,15 +6,11 @@ import * as Utils from "./utils";
 import { Context } from "../../context/type";
 import { request } from "../nexys-service";
 
+import NotificationService from "./abstract";
+
 export { Type };
 
-class NotificationServiceWrapper {
-  context: Context;
-
-  constructor(context: Context) {
-    this.context = context;
-  }
-
+class NotificationServiceWrapper extends NotificationService {
   async listAdmin(
     types: Type.NotificationType[],
     userUuid?: Uuid,
