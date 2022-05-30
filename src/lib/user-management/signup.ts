@@ -37,7 +37,7 @@ class SignupService {
 
   signup = async (
     instanceName: string,
-    ghUsername: string,
+    authentication: { value: string; type: CT.AuthenticationType },
     preProfile: Omit<T.Profile, "instance" | "id" | "uuid">,
     permissions: CT.Permission[] = [CT.Permission.app]
   ) => {
@@ -55,10 +55,6 @@ class SignupService {
         instance: { uuid, name: instanceName },
       };
       const locale: Locale = { lang: "en", country: "US" };
-      const authentication = {
-        type: CT.AuthenticationType.github,
-        value: ghUsername,
-      };
 
       const signupOut = await this.authService.signup(
         profile,
