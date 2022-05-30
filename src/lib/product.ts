@@ -34,7 +34,7 @@ class ProductService<
     configuration: Configuration,
     qs: QueryService,
     cache: Cache,
-    authOptions?: LT.AuthOptions
+    authOptions?: Partial<LT.AuthOptions>
   ) {
     this.configuration = configuration;
     this.qs = qs;
