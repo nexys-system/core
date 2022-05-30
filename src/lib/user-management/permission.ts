@@ -154,20 +154,28 @@ export default class Permission<P = CT.Permission> {
    * @param uuids : these are permission uuids
    * @param user: user and uuid
    */
-  assignToInstance = (
+  assignToInstance = async (
     permissionIdxs: CT.Permission[],
     instance: { uuid: Uuid }
-  ) => {
+  ): Promise<string[]> => {
+    if (permissionIdxs.length === 0) {
+      console.warn("tried to insert many permissions, but none were given");
+      return [];
+    }
+
     const permissions: Omit<CT.PermissionInstance, "uuid">[] =
       permissionIdxs.map((permission) => ({
         instance,
         permission,
+        // logDateAdded: new Date(),
       }));
 
-    return this.qs.insertMultiple<CT.PermissionInstance>(
+    const pIds = await this.qs.insertMultiple<CT.PermissionInstance>(
       U.Entity.PermissionInstance,
       permissions
     );
+
+    return pIds.map((p) => p.uuid || "");
   };
 
   /**

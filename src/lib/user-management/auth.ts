@@ -1,5 +1,4 @@
 import { Locale } from "../middleware/auth/type";
-
 import * as T from "./type";
 import QueryService from "../query/abstract-service";
 import UserService from "./user";

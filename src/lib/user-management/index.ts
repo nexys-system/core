@@ -5,6 +5,7 @@ import UserService from "./user";
 import UserAuthentication from "./user/authentication";
 import UserToken from "./user/token";
 import InstanceService from "./instance";
+import SignupService from "./signup";
 
 export * as Types from "./type";
 export * as CrudTypes from "./crud-type";
@@ -17,4 +18,5 @@ export {
   UserAuthentication,
   UserToken,
   InstanceService,
+  SignupService,
 };
