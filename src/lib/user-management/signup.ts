@@ -38,7 +38,7 @@ class SignupService {
   signup = async (
     instanceName: string,
     ghUsername: string,
-    preProfile: Omit<T.Profile, "instance" | "id">,
+    preProfile: Omit<T.Profile, "instance" | "id" | "uuid">,
     permissions: CT.Permission[] = [CT.Permission.app]
   ) => {
     try {
@@ -50,7 +50,7 @@ class SignupService {
         permissions
       );
 
-      const profile: Omit<T.Profile, "id"> = {
+      const profile: Omit<T.Profile, "id" | "uuid"> = {
         ...preProfile,
         instance: { uuid, name: instanceName },
       };
