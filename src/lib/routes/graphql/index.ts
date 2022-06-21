@@ -4,7 +4,7 @@ import { graphql, printSchema } from "graphql";
 
 import MiddlewareAuth, * as Auth from "../../middleware/auth";
 
-import Schema from "../../graph-ql/schema";
+import Schema from "@nexys/fetchr/dist/graphql/schema";
 
 import * as ErrorHandler from "./error-handler";
 

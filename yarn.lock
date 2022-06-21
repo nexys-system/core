@@ -503,12 +503,12 @@
   resolved "https://registry.yarnpkg.com/@nexys/crypto/-/crypto-1.0.4.tgz#087ea960516ca3fee810fd3ea51002db22e07c3f"
   integrity sha512-acsLzzudQyXKDQ5enym9XTpR2u1cey7qjdRjtNf58wP20SSR6h6iRuLLWy9ALIBfwURY0DUe13QY9aD2woDsGw==
 
-"@nexys/fetchr@^0.5.3":
-  version "0.5.3"
-  resolved "https://registry.yarnpkg.com/@nexys/fetchr/-/fetchr-0.5.3.tgz#38bd32703097097c30abbb848a69c88885620aa7"
-  integrity sha512-kyEApIiiLXMG4e4H3jOBq74LNglYonNgE76YDbsZy8url+6rGpw8HTTeGv8VHJY455jNB7vriUVYI1g1rzejFA==
+"@nexys/fetchr@^0.7.0":
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/@nexys/fetchr/-/fetchr-0.7.0.tgz#d205c2af55048904e87842761b8d191653a2c5c6"
+  integrity sha512-bphll2BJc00sWlw/dOy9WtbhJMwEQHdgrZPTwUQlcJ2qCgEveq32pB/B5c3XmyNaE8pcAgeHhUJHv3Hc1Tdu4A==
   dependencies:
-    "@nexys/validation" "^2.1.0"
+    "@nexys/validation" "^2.1.4"
     "@types/sqlstring" "^2.3.0"
     mysql2 "^2.2.5"
     sqlstring "^2.3.2"
@@ -532,17 +532,10 @@
   resolved "https://registry.yarnpkg.com/@nexys/utils/-/utils-3.9.14.tgz#db7e3581dd3f15990334842111be35d5aba443ca"
   integrity sha512-ab+iVapztGguPbHaACoNXtn65iWh+hSqNOoKnIQkmldsQ4yUsRpPhs+Us+x2g5A3/ShwxREAz8DMLp0rpYcWig==
 
-"@nexys/validation@^2.1.0":
-  version "2.1.2"
-  resolved "https://registry.yarnpkg.com/@nexys/validation/-/validation-2.1.2.tgz#1dda5a8e18760c44f66a86e90030d27fea82238d"
-  integrity sha512-p47+6HC2ZXwDNRHA43cN+HyDhfcAZ9QhoyXKp0b+EsmzEGkHDe1ZyWJzqUKwpXVU22c3l5ujD8+mCw0CHLVbTw==
-  dependencies:
-    "@nexys/utils" "^3.9.14"
-
-"@nexys/validation@^2.1.3":
-  version "2.1.3"
-  resolved "https://registry.yarnpkg.com/@nexys/validation/-/validation-2.1.3.tgz#d09874dd5cb7e1e46ae8038bef5b49c9f5858350"
-  integrity sha512-nsn7KnCAYTOLiA+Hbm3SUa5AIAuO9VqVh/xvlAMFqKhQ9mIggSKqh/3L1p88cRQVYIb59BETJpKRm60umQ8zyQ==
+"@nexys/validation@^2.1.4":
+  version "2.1.4"
+  resolved "https://registry.yarnpkg.com/@nexys/validation/-/validation-2.1.4.tgz#99e55f385f90810d5704edc55cb9b27f4ef631bb"
+  integrity sha512-BkGNcV8WWBRGJJm3+KG/oU7gj/0TSfvaJ30nIfukzISsh+p8jk6yEULMiHLqdAb2wlGIF3EjMZ+4FPy9tLSaMQ==
 
 "@nexys/workflow@^0.0.9":
   version "0.0.9"
