@@ -1,15 +1,18 @@
-import Schema from "../../../lib/graph-ql/schema";
+import Schema from "@nexys/fetchr/dist/graphql/schema";
 import getRouter from "../../../lib/routes/graphql/index";
 
-import Product, { fetchR } from "../../product";
+import Product from "../../product";
 import * as Config from "../../config";
 
 import model from "../../../common/generated";
 import submodels from "../../../common/generated/submodels";
 import { Permissions } from "../../../common/generated/type";
 import { roleMap } from "../../../common/generated/utils";
+import { Connection } from "@nexys/fetchr/dist/database";
 
-const schemas = new Schema<Permissions>(model, fetchR, submodels);
+const pool = new Connection.SQL(Config.database);
+
+const schemas = new Schema<Permissions>(model, pool, submodels);
 
 const router = getRouter(
   schemas,
