@@ -5,7 +5,7 @@ const loginShape: VT.Shape = {
   password: { extraCheck: VU.passwordCheck },
   instance: {
     $object: { uuid: { extraCheck: VU.checkUuid } },
-    optional: false,
+    optional: true,
   },
 };
 
