@@ -33,7 +33,7 @@ const formatIP = (headers: {
   return "undefined";
 };
 
-const LoginRoutes = <Profile extends ObjectWithId<Id>, Id>(
+const AuthRoutes = <Profile extends ObjectWithId<Id>, Id>(
   { authService }: { authService: AuthService },
   MiddlewareAuth: m<Profile, UserCacheDefault, Id>,
   instance: { uuid: Uuid; name: string }
@@ -148,4 +148,4 @@ const LoginRoutes = <Profile extends ObjectWithId<Id>, Id>(
   return router.routes();
 };
 
-export default LoginRoutes;
+export default AuthRoutes;
