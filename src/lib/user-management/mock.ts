@@ -2,6 +2,7 @@ import { AuthenticationType, Permission } from "./crud-type";
 import * as T from "./type";
 import AbstractQueryService from "../query/abstract-service";
 import { Entity } from "./utils";
+import { MutateResponseInsert } from "@nexys/fetchr/dist/type";
 
 export const userUuid = "myUuid";
 export const email = "john@doe.com";
@@ -37,12 +38,14 @@ class QueryService extends AbstractQueryService {
     });
 
   list = <A = any>(entity: string, _query: any): Promise<A[]> => {
+    console.debug("mock: list", entity);
     if (entity === "UserPermission") {
       return Promise.resolve([
         { permissionInstance: { permission: Permission.app } },
         { permissionInstance: { permission: Permission.admin } },
       ] as any as A[]);
     }
+
     return Promise.resolve([]);
   };
 
@@ -68,20 +71,25 @@ class QueryService extends AbstractQueryService {
     throw Error("not implemented");
   };
 
-  detail = <A>(_entity: string): Promise<A> => {
+  detail = <A>(entity: string): Promise<A> => {
+    console.debug("mock: detail", entity);
     throw Error("undefined");
   };
 
   insert = <_A>() => {
+    console.debug("mock: insert");
     throw Error("undefined");
   };
-  insertMultiple = () => {
-    throw Error("undefined");
+  insertMultiple = (): Promise<MutateResponseInsert[]> => {
+    console.debug("mock: insert Multiple");
+    return Promise.resolve([{ success: true, uuid: "23" }]);
   };
   update = () => {
+    console.debug("mock: update");
     throw Error("undefined");
   };
   delete = () => {
+    console.debug("mock: delete");
     throw Error("undefined");
   };
 }
