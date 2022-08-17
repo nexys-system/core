@@ -7,6 +7,7 @@ import MiddlewareAuth, * as Auth from "../../middleware/auth";
 import Schema from "@nexys/fetchr/dist/graphql/schema";
 
 import * as ErrorHandler from "./error-handler";
+import { Permissions } from "../../../common/generated/type";
 
 const getRouter = <Permission>(
   schemas: Schema<Permission>,
@@ -28,7 +29,7 @@ const getRouter = <Permission>(
   router.post("/query", bodyParser(), appAuth.isAuthenticated, async (ctx) => {
     const { body } = ctx.request;
     const { query } = body;
-    ctx.body = await graphql(schemas.gQLSchema, query);
+    ctx.body = await graphql({ schema: schemas.gQLSchema, source: query });
   });
 
   // end default
@@ -62,7 +63,7 @@ const getRouter = <Permission>(
         const { body } = ctx.request;
         const { query } = body;
 
-        ctx.body = await graphql(schema, query);
+        ctx.body = await graphql({ schema, source: query });
       } catch (err) {
         ErrorHandler.handleError(ctx, err as ErrorHandler.ErrorWCode);
         return;
@@ -70,6 +71,15 @@ const getRouter = <Permission>(
     }
   );
   // end: access for client with specific role
+
+  router.all(
+    "/model",
+    middlewareAuth.isAuthenticated(),
+    middlewareAuth.isAuthorized(Permissions.superadmin),
+    (ctx) => {
+      ctx.body = schemas.rawModel;
+    }
+  );
 
   return router;
 };

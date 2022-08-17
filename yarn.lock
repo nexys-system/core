@@ -503,10 +503,10 @@
   resolved "https://registry.yarnpkg.com/@nexys/crypto/-/crypto-1.0.4.tgz#087ea960516ca3fee810fd3ea51002db22e07c3f"
   integrity sha512-acsLzzudQyXKDQ5enym9XTpR2u1cey7qjdRjtNf58wP20SSR6h6iRuLLWy9ALIBfwURY0DUe13QY9aD2woDsGw==
 
-"@nexys/fetchr@^0.7.0":
-  version "0.7.0"
-  resolved "https://registry.yarnpkg.com/@nexys/fetchr/-/fetchr-0.7.0.tgz#d205c2af55048904e87842761b8d191653a2c5c6"
-  integrity sha512-bphll2BJc00sWlw/dOy9WtbhJMwEQHdgrZPTwUQlcJ2qCgEveq32pB/B5c3XmyNaE8pcAgeHhUJHv3Hc1Tdu4A==
+"@nexys/fetchr@^0.7.2":
+  version "0.7.2"
+  resolved "https://registry.yarnpkg.com/@nexys/fetchr/-/fetchr-0.7.2.tgz#1212e9e2b7a2e54f58e930956cf764d514f36ca6"
+  integrity sha512-CVZPlpugbD4q7L/tWtN+oJUUC+52wVUo/DplHlMSLURtDwHGwKlzhAZPXMOqq7plbTTG2HX1Zoa7Vwmu6aImmg==
   dependencies:
     "@nexys/validation" "^2.1.4"
     "@types/sqlstring" "^2.3.0"
@@ -536,6 +536,11 @@
   version "2.1.4"
   resolved "https://registry.yarnpkg.com/@nexys/validation/-/validation-2.1.4.tgz#99e55f385f90810d5704edc55cb9b27f4ef631bb"
   integrity sha512-BkGNcV8WWBRGJJm3+KG/oU7gj/0TSfvaJ30nIfukzISsh+p8jk6yEULMiHLqdAb2wlGIF3EjMZ+4FPy9tLSaMQ==
+
+"@nexys/validation@^2.1.5":
+  version "2.1.5"
+  resolved "https://registry.yarnpkg.com/@nexys/validation/-/validation-2.1.5.tgz#187aa5cf3e8cfe240ded58dbca042d83732ba076"
+  integrity sha512-R5y4sj26CRBZRFt2V1G4RGLEN98oqMJ0PhaGfNgxkRp5jBcFFCRl4AWBfVxARiF7JgSXo3B8YsCaspni52quGA==
 
 "@nexys/workflow@^0.0.9":
   version "0.0.9"
@@ -1671,10 +1676,15 @@ graphql-fields@^2.0.3:
   resolved "https://registry.yarnpkg.com/graphql-fields/-/graphql-fields-2.0.3.tgz#5e68dff7afbb202be4f4f40623e983b22c96ab8f"
   integrity sha512-x3VE5lUcR4XCOxPIqaO4CE+bTK8u6gVouOdpQX9+EKHr+scqtK5Pp/l8nIGqIpN1TUlkKE6jDCCycm/WtLRAwA==
 
-graphql@^15.3.0, graphql@^15.5.1:
+graphql@^15.3.0:
   version "15.6.1"
   resolved "https://registry.yarnpkg.com/graphql/-/graphql-15.6.1.tgz#9125bdf057553525da251e19e96dab3d3855ddfc"
   integrity sha512-3i5lu0z6dRvJ48QP9kFxBkJ7h4Kso7PS8eahyTFz5Jm6CvQfLtNIE8LX9N6JLnXTuwR+sIYnXzaWp6anOg0QQw==
+
+graphql@^16.5.0:
+  version "16.6.0"
+  resolved "https://registry.yarnpkg.com/graphql/-/graphql-16.6.0.tgz#c2dcffa4649db149f6282af726c8c83f1c7c5fdb"
+  integrity sha512-KPIBPDlW7NxrbT/eh4qPXz5FiFdL5UbaA0XUNz2Rp3Z3hqBSkbj0GVjwFDztsWVauZUWsbKHgMg++sk8UX0bkw==
 
 has-flag@^3.0.0:
   version "3.0.0"
