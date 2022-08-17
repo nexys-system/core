@@ -1,14 +1,15 @@
 import Schema from "@nexys/fetchr/dist/graphql/schema";
-import getRouter from "../../../lib/routes/graphql/index";
+import { Connection } from "@nexys/fetchr/dist/database";
 
-import Product from "../../product";
-import * as Config from "../../config";
+import getRouter from "../../../lib/routes/graphql/index";
 
 import model from "../../../common/generated";
 import submodels from "../../../common/generated/submodels";
 import { Permissions } from "../../../common/generated/type";
 import { roleMap } from "../../../common/generated/utils";
-import { Connection } from "@nexys/fetchr/dist/database";
+
+import Product from "../../product";
+import * as Config from "../../config";
 
 const pool = new Connection.SQL(Config.database);
 
@@ -20,4 +21,5 @@ const router = getRouter(
   Product.middlewareAuth,
   roleMap
 );
+
 export default router.routes();
