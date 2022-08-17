@@ -22,8 +22,8 @@ const getRouter = <Permission>(
 
   // access for app (using app token)
 
-  // this is the defutschema, superadmin
-  router.all("/schema", bodyParser(), async (ctx) => {
+  // this is the default schema, superadmin. Accessible via app token
+  router.all("/schema", bodyParser(), appAuth.isAuthenticated, async (ctx) => {
     ctx.body = printSchema(schemas.gQLSchema);
   });
 
@@ -31,6 +31,11 @@ const getRouter = <Permission>(
     const { body } = ctx.request;
     const { query } = body;
     ctx.body = await graphql({ schema: schemas.gQLSchema, source: query });
+  });
+
+  // raw model is exported here, needed for the entity browser
+  router.all("/model", appAuth.isAuthenticated, (ctx) => {
+    ctx.body = schemas.rawModel;
   });
 
   // end default
@@ -72,10 +77,6 @@ const getRouter = <Permission>(
     }
   );
   // end: access for client with specific role
-
-  router.all("/model", middlewareAuth.isAuthenticated(), (ctx) => {
-    ctx.body = schemas.rawModel;
-  });
 
   return router;
 };
