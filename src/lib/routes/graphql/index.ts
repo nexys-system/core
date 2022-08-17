@@ -7,7 +7,8 @@ import MiddlewareAuth, * as Auth from "../../middleware/auth";
 import Schema from "@nexys/fetchr/dist/graphql/schema";
 
 import * as ErrorHandler from "./error-handler";
-import { Permissions } from "../../../common/generated/type";
+// todo restore permission
+//import { Permissions } from "../../../common/generated/type";
 
 const getRouter = <Permission>(
   schemas: Schema<Permission>,
@@ -72,14 +73,9 @@ const getRouter = <Permission>(
   );
   // end: access for client with specific role
 
-  router.all(
-    "/model",
-    middlewareAuth.isAuthenticated(),
-    middlewareAuth.isAuthorized(Permissions.superadmin),
-    (ctx) => {
-      ctx.body = schemas.rawModel;
-    }
-  );
+  router.all("/model", middlewareAuth.isAuthenticated(), (ctx) => {
+    ctx.body = schemas.rawModel;
+  });
 
   return router;
 };
