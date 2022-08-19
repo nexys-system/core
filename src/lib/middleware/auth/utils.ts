@@ -1,4 +1,5 @@
 import Koa from "koa";
+
 import * as CookiesService from "../cookies";
 import Cookies from "cookies";
 
@@ -96,6 +97,10 @@ export const mapTokenWithResponse = (
   }
 
   if (token !== appToken) {
+    // here we check the tokens match instead of verifying because the token is issued
+    // by nexys with its private key
+    // this will probably need to be changed because everytime the service is deployed the app token is regenerated
+    // todo: have a public/private key jwt scheme
     return { status: 401, message: "the token provided is wrong" };
   }
 
