@@ -5,9 +5,10 @@ import { Main as Validation, Utils as VU } from "@nexys/validation";
 import m from "../../../../middleware/auth";
 import { UserCacheDefault } from "../../../../middleware/auth/type";
 
-import * as T from "../../../../user-management/crud-type";
 import { ObjectWithId } from "../../../../type";
 import { UserAuthentication } from "../../../../user-management";
+import * as T from "../../../../user-management/crud-type";
+import { hideHashedPassword } from "../../../../user-management/password/utils";
 
 const UserAuthenticationService = <
   Profile extends ObjectWithId<Id>,
@@ -28,7 +29,9 @@ const UserAuthenticationService = <
     Validation.isShapeMiddleware({ uuid: { extraCheck: VU.checkUuid } }),
     async (ctx) => {
       const { uuid } = ctx.request.body;
-      ctx.body = await userAuthenticationService.list({ uuid });
+      const r = await userAuthenticationService.list({ uuid });
+
+      ctx.body = r.map(hideHashedPassword);
     }
   );
 
@@ -41,7 +44,9 @@ const UserAuthenticationService = <
     }),
     async (ctx) => {
       const { uuid } = ctx.request.body;
-      ctx.body = await userAuthenticationService.detail(uuid);
+      const r = await userAuthenticationService.detail(uuid);
+
+      ctx.body = hideHashedPassword(r);
     }
   );
 

@@ -1,6 +1,7 @@
 import QueryService from "../../query/abstract-service";
 import * as U from "../utils";
 import * as CT from "../crud-type";
+import { hashPassword } from "../password/utils";
 
 type Uuid = string;
 
@@ -31,10 +32,23 @@ export default class UserAuthentication {
     return r;
   };
 
-  insert = async (
-    row: Omit<CT.UserAuthentication, "uuid">
-  ): Promise<{ uuid: Uuid }> => {
-    const r = await this.qs.insertUuid(U.Entity.UserAuthentication, row);
+  insert = async ({
+    value: preValue,
+    isEnabled,
+    type,
+    user,
+  }: Omit<CT.UserAuthentication, "uuid">): Promise<{ uuid: Uuid }> => {
+    const value: string =
+      CT.AuthenticationType.password === type
+        ? await hashPassword(preValue)
+        : preValue;
+
+    const r = await this.qs.insertUuid(U.Entity.UserAuthentication, {
+      value,
+      isEnabled,
+      type,
+      user,
+    });
 
     return { uuid: r.uuid };
   };

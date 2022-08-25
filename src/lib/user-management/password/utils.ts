@@ -1,4 +1,5 @@
 import bcrypt from "bcryptjs";
+import { AuthenticationType, UserAuthentication } from "../crud-type";
 
 export const matchPassword = (p: string, hash: string): Promise<boolean> =>
   bcrypt.compare(p, hash);
@@ -6,3 +7,19 @@ export const matchPassword = (p: string, hash: string): Promise<boolean> =>
 const salt = 8;
 export const hashPassword = (p: string): Promise<string> =>
   bcrypt.hash(p, salt);
+
+/**
+ * hide the password when displaying list of auth
+ * @param userAuthentication : userAuthentication row
+ * @returns userAuthentication but password replaced
+ */
+export const hideHashedPassword = (
+  userAuthentication: UserAuthentication
+): UserAuthentication => {
+  if (userAuthentication.type === AuthenticationType.password) {
+    const value = "xxx";
+    return { ...userAuthentication, value };
+  }
+
+  return userAuthentication;
+};

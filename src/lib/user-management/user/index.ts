@@ -234,23 +234,6 @@ export default class User {
     return { uuid };
   };
 
-  insertAuth = async (
-    uuid: Uuid,
-    value: string,
-    type: CT.AuthenticationType = CT.AuthenticationType.password
-  ): Promise<{ uuid: string }> => {
-    const row: Omit<CT.UserAuthentication, "uuid"> = {
-      type,
-      user: { uuid },
-      isEnabled: true,
-      value,
-    };
-
-    const r = await this.qs.insertUuid(U.Entity.UserAuthentication, row);
-
-    return { uuid: r.uuid };
-  };
-
   // admin functionalities
 
   list = async (instance: { uuid: Uuid }): Promise<CT.User[]> =>

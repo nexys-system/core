@@ -6,6 +6,7 @@ import UserTokenService from "./user/token";
 import * as U from "./password/utils";
 import * as A from "./action-payload";
 import { AuthenticationType, Permission } from "./crud-type";
+import UserAuthentication from "./user/authentication";
 
 type Uuid = string;
 
@@ -13,6 +14,7 @@ export default class LoginService {
   userService: UserService;
   userTokenService: UserTokenService;
   secretKey: string;
+
   constructor(qs: QueryService, secretKey: string) {
     this.userService = new UserService(qs);
     this.userTokenService = new UserTokenService(qs);
@@ -111,16 +113,14 @@ export default class LoginService {
 
     const { uuid } = await this.userService.insertByProfile(profile, locale);
 
-    const authenticationValue: string =
-      AuthenticationType.password === authentication.type
-        ? await U.hashPassword(authentication.value)
-        : authentication.value;
+    const userAuthentication = new UserAuthentication(this.userService.qs);
 
-    const authenticationOut = await this.userService.insertAuth(
-      uuid,
-      authenticationValue,
-      authentication.type
-    );
+    const authenticationOut = await userAuthentication.insert({
+      value: authentication.value,
+      type: authentication.type,
+      user: { uuid },
+      isEnabled: true,
+    });
 
     // add permisions
     this.userService.permissionService.assignToUserByNames(permissions, {
