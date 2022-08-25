@@ -8,13 +8,12 @@
 
 Nexys typescript web framework (built on top of Koa and Nexys System SDK)
 
-to
 
 ## Setup
 
 ### App init
 
-see `/server` for example implementation
+see `/server` for example implementation or https://github.com/nexys-system/server-boilerplate
 
 ### Cache Initialization
 
