@@ -6,7 +6,6 @@ import UserTokenService from "./user/token";
 import * as U from "./password/utils";
 import * as A from "./action-payload";
 import { AuthenticationType, Permission } from "./crud-type";
-import UserAuthentication from "./user/authentication";
 
 type Uuid = string;
 
