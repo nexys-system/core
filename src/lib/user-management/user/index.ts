@@ -6,6 +6,7 @@ import * as U from "../utils";
 import * as CT from "../crud-type";
 import PermissionService from "../permission";
 import * as L from "../locale";
+import UserAuthentication from "./authentication";
 
 type Uuid = string;
 interface UOptionSet {
@@ -16,9 +17,12 @@ interface UOptionSet {
 export default class User {
   qs: QueryService;
   permissionService: PermissionService;
+  userAuthenticationService: UserAuthentication;
+
   constructor(qs: QueryService) {
     this.qs = qs;
     this.permissionService = new PermissionService(qs);
+    this.userAuthenticationService = new UserAuthentication(qs);
   }
 
   getByUuid = async (

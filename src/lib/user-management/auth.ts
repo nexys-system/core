@@ -113,14 +113,13 @@ export default class LoginService {
 
     const { uuid } = await this.userService.insertByProfile(profile, locale);
 
-    const userAuthentication = new UserAuthentication(this.userService.qs);
-
-    const authenticationOut = await userAuthentication.insert({
-      value: authentication.value,
-      type: authentication.type,
-      user: { uuid },
-      isEnabled: true,
-    });
+    const authenticationOut =
+      await this.userService.userAuthenticationService.insert({
+        value: authentication.value,
+        type: authentication.type,
+        user: { uuid },
+        isEnabled: true,
+      });
 
     // add permisions
     this.userService.permissionService.assignToUserByNames(permissions, {
