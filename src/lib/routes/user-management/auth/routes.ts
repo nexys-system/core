@@ -4,15 +4,16 @@ import bodyParser from "koa-body";
 import { ObjectWithId } from "../../../type";
 import m from "../../../middleware/auth";
 import { Locale, UserCacheDefault } from "../../../middleware/auth/type";
+
 import { AuthService } from "../../../user-management";
 import { headerAcceptLanguageToLocale } from "../../../user-management/locale";
 import {
   AuthenticationType,
   Permission,
 } from "../../../user-management/crud-type";
+
 import { Signup } from "./type";
 import { formatIP } from "./utils";
-
 import { checkLogin, isSignupShape } from "./validation";
 
 type Uuid = string;
