@@ -54,14 +54,14 @@ export default class Permission<P = CT.Permission> {
     uuid: Uuid;
     instance: { uuid: Uuid };
   }): Promise<{ permission: P; assigned?: Uuid }[]> => {
+    const permissionList = await this.listByInstance(user.instance);
+
     const query: QueryParams = {
       filters: { user },
       projection: {
-        permissionInstance: { permission: { name: true, uuid: true } },
+        permissionInstance: { permission: { uuid: true, name: true } },
       },
     };
-
-    const permissionList = await this.listByInstance(user.instance);
 
     const r: {
       permissionInstance: { uuid: Uuid };
