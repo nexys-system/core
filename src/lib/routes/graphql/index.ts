@@ -8,7 +8,10 @@ import Schema from "@nexys/fetchr/dist/graphql/schema";
 
 import * as ErrorHandler from "./error-handler";
 // todo restore permission
-import { Permissions } from "../../../common/generated/type";
+//import { Permissions } from "../../../common/generated/type";
+
+// cannot use reference from above else the package will not be built correctly (includes the lib folder)
+const superadminPermission = 3;
 
 const getRouter = <Permission>(
   schemas: Schema<Permission>,
@@ -41,7 +44,7 @@ const getRouter = <Permission>(
   router.all(
     "/superadmin/model",
     middlewareAuth.isAuthenticated(),
-    middlewareAuth.hasPermission(Permissions.superadmin),
+    middlewareAuth.hasPermission(superadminPermission),
     (ctx) => {
       ctx.body = schemas.rawModel;
     }
