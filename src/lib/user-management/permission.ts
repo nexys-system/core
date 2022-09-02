@@ -63,7 +63,7 @@ export default class Permission<P = CT.Permission> {
       },
     };
 
-    const r: {
+    const userPermissions: {
       permissionInstance: { uuid: Uuid };
       uuid: Uuid;
       user: { uuid: Uuid };
@@ -74,7 +74,7 @@ export default class Permission<P = CT.Permission> {
         permission: permission.permission,
       };
 
-      const f = r.find(
+      const f = userPermissions.find(
         (x) => x.permissionInstance.uuid === permission.permissionInstance.uuid
       );
 
