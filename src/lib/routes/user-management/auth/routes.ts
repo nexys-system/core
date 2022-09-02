@@ -31,6 +31,14 @@ const AuthRoutes = <Profile extends ObjectWithId<Id>, Id>(
     // note the instance is optional, if not given the default instance is taken
     const { email, password, instance = instanceDefault } = ctx.request.body;
 
+    if (!instance || instance === "") {
+      ctx.status = 400;
+      ctx.body = {
+        error: "instance not given: " + JSON.stringify({ instance }),
+      };
+      return;
+    }
+
     const { headers } = ctx;
 
     const userAgent: string | undefined = headers["user-agent"];

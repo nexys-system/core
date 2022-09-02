@@ -33,7 +33,7 @@ abstract class QueryService {
 
   abstract update<A>(
     entity: string,
-    filters: Partial<A>,
+    filters: Partial<number | string | TQ.Type.QueryFilters>,
     data: Partial<A>
   ): Promise<TQ.Type.MutateResponseUpdate>;
 
