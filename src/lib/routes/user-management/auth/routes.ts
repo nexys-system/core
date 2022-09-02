@@ -55,7 +55,7 @@ const AuthRoutes = <Profile extends ObjectWithId<Id>, Id>(
 
       const nProfile: Profile = { id: profile.uuid, ...profile } as any;
 
-      MiddlewareAuth.authOutput(
+      await MiddlewareAuth.authOutput(
         ctx,
         nProfile,
         refreshToken,
