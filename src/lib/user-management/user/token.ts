@@ -14,10 +14,16 @@ export default class UserToken {
     this.qs = qs;
   }
 
-  list = async ({ uuid }: { uuid: Uuid }): Promise<CT.UserToken[]> =>
-    this.qs.list<CT.UserToken>(entity, {
+  list = async ({ uuid }: { uuid: Uuid }): Promise<CT.UserToken[]> => {
+    const l = await this.qs.list<CT.UserToken>(entity, {
       filters: { user: { uuid } },
     });
+
+    return l.sort(
+      (a, b) =>
+        new Date(b.logDateAdded).getTime() - new Date(a.logDateAdded).getTime()
+    );
+  };
 
   detail = async (uuid: Uuid): Promise<CT.UserToken> =>
     this.qs.detail<CT.UserToken>(entity, uuid);
