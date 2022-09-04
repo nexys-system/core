@@ -102,6 +102,7 @@ export default class LoginService {
     locale: Locale,
     permissions: T.Permission[]
   ): Promise<{ uuid: Uuid; authentication: { uuid: Uuid }; token: string }> => {
+    // make sure user does not exist
     const exists = await this.userService.exists(profile.email, {
       uuid: profile.instance.uuid,
     });
@@ -143,18 +144,10 @@ export default class LoginService {
     locale: Locale,
     permissions: T.Permission[]
   ): Promise<{ uuid: Uuid; authentication: { uuid: Uuid }; token: string }> => {
-    const exists = await this.userService.exists(profile.email, {
-      uuid: profile.instance.uuid,
-    });
-
-    if (exists) {
-      return Promise.reject({ message: "User already exists" });
-    }
-
-    const hashedPassword = await U.hashPassword(password);
-
+    // prepare password
+    // note the password is hashed in the userAuthenticationService
     const authenticationInputs: { type: AuthenticationType; value: string } = {
-      value: hashedPassword,
+      value: password,
       type: AuthenticationType.password,
     };
 
