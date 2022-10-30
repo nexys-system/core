@@ -532,14 +532,14 @@
   resolved "https://registry.yarnpkg.com/@nexys/crypto/-/crypto-1.0.4.tgz#087ea960516ca3fee810fd3ea51002db22e07c3f"
   integrity sha512-acsLzzudQyXKDQ5enym9XTpR2u1cey7qjdRjtNf58wP20SSR6h6iRuLLWy9ALIBfwURY0DUe13QY9aD2woDsGw==
 
-"@nexys/fetchr@^0.7.7":
-  version "0.7.7"
-  resolved "https://registry.yarnpkg.com/@nexys/fetchr/-/fetchr-0.7.7.tgz#7bfd3afe00b84d048968fa2c97ec9f0acdafdd13"
-  integrity sha512-87NY5Ukynaa/wonMI7pO5TvYjcgJGVC9PEyoPJeRvXMov+7fMqVU6jKajVrtuRtfu5Uqmllqct6SsaYQyxEN8A==
+"@nexys/fetchr@^0.7.10":
+  version "0.7.12"
+  resolved "https://registry.yarnpkg.com/@nexys/fetchr/-/fetchr-0.7.12.tgz#83d207360c03a85902bf334a09e96f1b98fffe70"
+  integrity sha512-cCRe6B6W3OxaFXUz90ci/5lNH3y0CnqK0gTt8b/8WmA9CkNnQOvfDGBQWIypqTJFaiG//iAV+2QSzvdByNkA2w==
   dependencies:
     "@nexys/validation" "^2.1.4"
     "@types/sqlstring" "^2.3.0"
-    mysql2 "^2.2.5"
+    mysql2 "^2.3.3"
     sqlstring "^2.3.2"
 
 "@nexys/http@^1.0.0":
@@ -555,6 +555,13 @@
   integrity sha512-2KRtluOryOOLU8JlOEwJpgYxx3YMjiefLNCy8tBZNVaUkJ6MzGPN7YaKJPYTdsR4EigXJHoNx+qiP8l4XgRKrA==
   dependencies:
     node-cache "^5.1.2"
+
+"@nexys/timebasedotp@^0.0.7":
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/@nexys/timebasedotp/-/timebasedotp-0.0.7.tgz#8e616ec0c28cdc273e7d0b71890e8a4db8392fcd"
+  integrity sha512-2YG9YMe+pRLgOMP84dZZAYCMWOKwpvSkBHak1p6wyCfTEGSpk7Tfo3ljrAGwlMXCot5i2H4BvEkWW7cAMlNSYg==
+  dependencies:
+    hi-base32 "^0.5.0"
 
 "@nexys/utils@^3.9.14":
   version "3.9.14"
@@ -670,7 +677,7 @@
     "@types/keygrip" "*"
     "@types/node" "*"
 
-"@types/express-serve-static-core@^4.17.18", "@types/express-serve-static-core@^4.17.30":
+"@types/express-serve-static-core@^4.17.18":
   version "4.17.30"
   resolved "https://registry.yarnpkg.com/@types/express-serve-static-core/-/express-serve-static-core-4.17.30.tgz#0f2f99617fa8f9696170c46152ccf7500b34ac04"
   integrity sha512-gstzbTWro2/nFed1WXtf+TtrpwxH7Ggs4RLYTLbeVgIkUQOI3WG/JKjgeOU1zXDvezllupjrf8OPIdvTbIaVOQ==
@@ -1748,6 +1755,11 @@ helmet@^4.0.0, helmet@^4.4.1:
   resolved "https://registry.yarnpkg.com/helmet/-/helmet-4.6.0.tgz#579971196ba93c5978eb019e4e8ec0e50076b4df"
   integrity sha512-HVqALKZlR95ROkrnesdhbbZJFi/rIVSoNq6f3jA/9u6MIbTsPh3xZwihjeI5+DO/2sOV6HMHooXcEOuwskHpTg==
 
+hi-base32@^0.5.0:
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/hi-base32/-/hi-base32-0.5.1.tgz#1279f2ddae2673219ea5870c2121d2a33132857e"
+  integrity sha512-EmBBpvdYh/4XxsnUybsPag6VikPYnN30td+vQk+GI3qpahVEG9+gTkG0aXVxTjBqQ5T6ijbWIu77O+C5WFWsnA==
+
 html-encoding-sniffer@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/html-encoding-sniffer/-/html-encoding-sniffer-2.0.1.tgz#42a6dc4fd33f00281176e8b23759ca4e4fa185f3"
@@ -2760,7 +2772,7 @@ ms@^2.1.1:
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.1.3.tgz#574c8138ce1d2b5861f0b44579dbadd60c6615b2"
   integrity sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==
 
-mysql2@^2.2.5:
+mysql2@^2.3.3:
   version "2.3.3"
   resolved "https://registry.yarnpkg.com/mysql2/-/mysql2-2.3.3.tgz#944f3deca4b16629052ff8614fbf89d5552545a0"
   integrity sha512-wxJUev6LgMSgACDkb/InIFxDprRa6T95+VEoR+xPvtngtccNH2dGjEB/fVZ8yg1gWv1510c9CvXuJHi5zUm0ZA==
