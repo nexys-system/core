@@ -1,36 +1,48 @@
 import * as CryptoService from "@nexys/crypto";
-import { ActionPayload, Action } from "./type";
+import { Action, ActionPayload, AuthOut } from "./type";
 
 type Uuid = string;
+
+export const twoFaPayload = (
+  data: Pick<AuthOut, "profile" | "permissions" | "locale"> & {
+    auth: {
+      uuid: Uuid;
+      value: string;
+    };
+  },
+  secretKey: string,
+  duration: number = 10 * 1000 // valid for 10min
+): string => encrypt(data, secretKey, "2FA", duration);
 
 export const createActionPayload = (
   uuid: Uuid,
   instance: { uuid: Uuid },
   action: Action,
+  secretKey: string
+): string => encrypt({ uuid, instance }, secretKey, action);
+
+export const encrypt = <A>(
+  data: A,
   secretKey: string,
+  action: Action,
   duration: number = 24 * 3600 * 1000 // resource is valid for 1 day, by default
 ): string => {
   const issued = new Date().getTime();
   const expires = issued + duration;
+  const payload = { ...data, action, issued, expires };
 
-  const payload: ActionPayload = {
-    uuid,
-    instance,
-    action,
-    issued,
-    expires,
-  };
   return CryptoService.Symmetric.encrypt(JSON.stringify(payload), secretKey);
 };
 
-export const decryptPayload = (
+export const decryptPayload = <A = ActionPayload>(
   ciphertext: string,
   secretKey: string,
   expectedAction?: Action
-): ActionPayload => {
+): A & { issued: number; expires: number; action: Action } => {
   try {
     const decrypted = CryptoService.Symmetric.decrypt(ciphertext, secretKey);
-    const r: ActionPayload = JSON.parse(decrypted);
+    const r: A & { issued: number; expires: number; action: Action } =
+      JSON.parse(decrypted);
 
     const dt = new Date().getTime();
 

@@ -13,8 +13,8 @@ import {
 } from "../../../user-management/crud-type";
 
 import { Signup } from "./type";
-import { formatIP } from "./utils";
-import { checkLogin, isSignupShape } from "./validation";
+import { getUserMeta, isAuthOut } from "./utils";
+import { checkLogin, isSignupShape, twoFaShape } from "./validation";
 
 type Uuid = string;
 
@@ -39,19 +39,22 @@ const AuthRoutes = <Profile extends ObjectWithId<Id>, Id>(
       return;
     }
 
-    const { headers } = ctx;
-
-    const userAgent: string | undefined = headers["user-agent"];
-    const ip: string = formatIP(headers);
+    const userMeta = getUserMeta(ctx);
 
     try {
-      const { profile, locale, permissions, refreshToken } =
-        await authService.authenticate(
-          email,
-          instance,
-          { password, type: AuthenticationType.password },
-          { userAgent, ip }
-        );
+      const r = await authService.authenticate(
+        email,
+        instance,
+        { password, type: AuthenticationType.password },
+        userMeta
+      );
+
+      if (!isAuthOut(r)) {
+        ctx.status = 403;
+        ctx.body = r;
+        return;
+      }
+      const { profile, locale, permissions, refreshToken } = r;
 
       const nProfile: Profile = { id: profile.uuid, ...profile } as any;
 
@@ -136,6 +139,35 @@ const AuthRoutes = <Profile extends ObjectWithId<Id>, Id>(
   router.all("/refresh", async (ctx) => {
     const { profile } = await MiddlewareAuth.refresh(ctx);
     ctx.body = profile;
+  });
+
+  router.post("/2fa", bodyParser(), twoFaShape, async (ctx) => {
+    const { payload, code }: { payload: string; code: number } =
+      ctx.request.body;
+    const userMeta = getUserMeta(ctx);
+
+    try {
+      const r = await authService.authenticate2Fa(code, payload, userMeta);
+
+      const { profile, locale, permissions, refreshToken } = r;
+
+      const nProfile: Profile = { id: profile.uuid, ...profile } as any;
+
+      await MiddlewareAuth.authOutput(
+        ctx,
+        nProfile,
+        refreshToken,
+        { permissions, locale },
+
+        {
+          secure: false,
+        }
+      );
+    } catch (err) {
+      ctx.status = 400;
+      ctx.body = { error: (err as any).message };
+      return;
+    }
   });
 
   return router.routes();

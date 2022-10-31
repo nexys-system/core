@@ -2,6 +2,7 @@ import QueryService from "../../query/abstract-service";
 import * as U from "../utils";
 import * as CT from "../crud-type";
 import { generateString } from "@nexys/utils/dist/random";
+import { UserMeta } from "../type";
 
 type Uuid = string;
 
@@ -28,10 +29,7 @@ export default class UserToken {
   detail = async (uuid: Uuid): Promise<CT.UserToken> =>
     this.qs.detail<CT.UserToken>(entity, uuid);
 
-  create = async (
-    userUuid: Uuid,
-    { userAgent, ip }: { userAgent?: string; ip: string }
-  ) => {
+  create = async (userUuid: Uuid, { userAgent, ip }: UserMeta) => {
     const token = generateString(21);
 
     const tokenRow = {

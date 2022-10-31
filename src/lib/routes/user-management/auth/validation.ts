@@ -29,3 +29,8 @@ export const isSignupShape = Validation.isShapeMiddleware(signupShape);
 export const isUuid = Validation.isShapeMiddleware({
   uuid: { extraCheck: VU.checkUuid },
 });
+
+export const twoFaShape = Validation.isShapeMiddleware({
+  payload: {},
+  code: { type: "number" },
+});

@@ -1,3 +1,4 @@
+import { Locale } from "../middleware/auth/type";
 import * as TC from "./crud-type";
 
 type Uuid = string;
@@ -29,7 +30,7 @@ export interface LoginResponse {
   cacheData: UserCache;
 }
 
-export type Action = "SET_ACTIVE" | "RESET_PASSWORD" | "CHANGE_EMAIL";
+export type Action = "SET_ACTIVE" | "RESET_PASSWORD" | "CHANGE_EMAIL" | "2FA";
 
 export interface ActionPayload {
   uuid: Uuid;
@@ -42,3 +43,15 @@ export interface ActionPayload {
 export type UserListOut = Omit<TC.User, "status"> & {
   status: Status;
 };
+
+export interface AuthOut {
+  profile: Profile;
+  locale: Locale;
+  permissions: Permission[];
+  refreshToken: string;
+}
+
+export interface UserMeta {
+  userAgent?: string;
+  ip: string;
+}

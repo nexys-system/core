@@ -53,6 +53,7 @@ export default class User {
     status: T.Status;
     locale: Locale;
     UserAuthentication?: CT.UserAuthentication[];
+    faSecret?: string;
   }> => {
     const params: QueryParams = {
       projection: {
@@ -64,6 +65,7 @@ export default class User {
         localeCountry: true,
         status: true,
         instance: { uuid: true, name: true },
+        faSecret: true,
       },
       filters: {
         [attribute.key]: attribute.value,
@@ -92,6 +94,7 @@ export default class User {
       localeCountry,
       status,
       instance,
+      faSecret,
       UserAuthentication,
     }: {
       uuid: Uuid;
@@ -102,6 +105,7 @@ export default class User {
       localeCountry?: string;
       status: T.Status;
       instance: UOptionSet;
+      faSecret?: string;
       UserAuthentication?: CT.UserAuthentication[];
     } = await this.qs.find(U.Entity.User, params, false);
 
@@ -112,7 +116,7 @@ export default class User {
 
     const profile: T.Profile = { uuid, firstName, lastName, email, instance };
 
-    return { profile, status, locale, UserAuthentication };
+    return { profile, status, locale, UserAuthentication, faSecret };
   };
 
   getAuthenticationRow = async (
@@ -144,9 +148,10 @@ export default class User {
     status: T.Status;
     locale: Locale;
     auth: { uuid: Uuid; value: string };
+    faSecret?: string;
   }> => {
     try {
-      const { profile, status, locale, UserAuthentication } =
+      const { profile, status, locale, UserAuthentication, faSecret } =
         await this.getByAttribute(attribute, instanceIn);
 
       const userAuthentication = UserAuthentication?.find(
@@ -165,6 +170,7 @@ export default class User {
           uuid: userAuthentication.uuid,
           value: userAuthentication.value,
         },
+        faSecret,
       };
     } catch (err) {
       console.log(err);
