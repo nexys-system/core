@@ -33,7 +33,7 @@ export interface LoginResponse {
 export type Action = "SET_ACTIVE" | "RESET_PASSWORD" | "CHANGE_EMAIL" | "2FA";
 
 export interface ActionPayload {
-  uuid: Uuid;
+  id: Uuid;
   instance: { uuid: Uuid };
   action: Action;
   issued: number;

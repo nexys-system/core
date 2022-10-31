@@ -175,13 +175,13 @@ export default class LoginService {
   activate = async (
     token: string
   ): Promise<{ success: boolean; message?: string }> => {
-    const { uuid, instance } = A.decryptPayload(
+    const { id, instance } = A.decryptPayload(
       token,
       this.secretKey,
       "SET_ACTIVE"
     );
 
-    const detail = await this.userService.detail(uuid, instance);
+    const detail = await this.userService.detail(id, instance);
 
     if (detail.status !== T.Status.pending) {
       return {
@@ -192,7 +192,7 @@ export default class LoginService {
     }
 
     const success = await this.userService.changeStatusAdmin(
-      uuid,
+      id,
       instance,
       T.Status.active
     );
@@ -244,7 +244,7 @@ export default class LoginService {
     const decrypted = A.decryptPayload(payload, this.secretKey);
 
     const { faSecret, profile, locale } = await this.userService.getByAttribute(
-      { key: "uuid", value: decrypted.uuid },
+      { key: "uuid", value: decrypted.id },
       { uuid: decrypted.instance.uuid }
     );
 

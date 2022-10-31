@@ -15,11 +15,18 @@ export const twoFaPayload = (
 ): string => encrypt(data, secretKey, "2FA", duration);
 
 export const createActionPayload = (
-  uuid: Uuid,
+  id: Uuid,
   instance: { uuid: Uuid },
   action: Action,
   secretKey: string
-): string => encrypt({ uuid, instance }, secretKey, action);
+): string => {
+  const actionPayload: Pick<ActionPayload, "id" | "instance"> = {
+    id,
+    instance,
+  };
+
+  return encrypt(actionPayload, secretKey, action);
+};
 
 export const encrypt = <A>(
   data: A,
