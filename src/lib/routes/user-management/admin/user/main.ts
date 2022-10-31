@@ -19,7 +19,7 @@ const UserRoutes = <
   Id
 >(
   { userService }: { userService: UserService },
-  MiddlewareAuth: m<Profile, UserCache, Id>
+  MiddlewareAuth: m<UserCache>
 ) => {
   const router = new Router();
 

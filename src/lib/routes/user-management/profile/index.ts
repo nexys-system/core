@@ -4,21 +4,16 @@ import bodyParser from "koa-body";
 import m from "../../../middleware/auth";
 import { Main as Validation } from "@nexys/validation";
 
-import { ObjectWithId } from "../../../type";
 import { UserCacheDefault } from "../../../middleware/auth/type";
 
 import { UserService, PasswordService } from "../../../user-management";
 
-const ProfileRoutes = <
-  Profile extends ObjectWithId<Id>,
-  UserCache extends UserCacheDefault,
-  Id
->(
+const ProfileRoutes = <UserCache extends UserCacheDefault>(
   {
     userService,
     passwordService,
   }: { userService: UserService; passwordService: PasswordService },
-  MiddlewareAuth: m<Profile, UserCache, Id>
+  MiddlewareAuth: m<UserCache>
 ) => {
   const router = new Router();
 

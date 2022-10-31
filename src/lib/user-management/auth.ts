@@ -95,7 +95,7 @@ export default class LoginService {
   };
 
   signup = async (
-    profile: Omit<T.Profile, "uuid" | "instance"> & {
+    profile: Pick<T.Profile, "firstName" | "lastName" | "email"> & {
       instance: { uuid: string };
     },
     authentication: { type: AuthenticationType; value: string },

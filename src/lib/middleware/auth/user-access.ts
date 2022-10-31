@@ -7,7 +7,6 @@ import Compose from "koa-compose";
 import Cache from "@nexys/node-cache/dist/cache";
 
 import JWT from "../../jwt";
-import * as T from "../../type";
 
 import * as LT from "./type";
 import * as CookiesService from "../cookies";
@@ -15,12 +14,13 @@ import * as CookiesService from "../cookies";
 import * as U from "./utils";
 import { AuthService } from "../../user-management";
 import { localeToString } from "../../user-management/locale";
+import { Profile } from "../../user-management/type";
 // see https://github.com/Nexysweb/koa-lib/blob/master/src/middleware/index.ts
 
+type Id = string;
+
 export default class Auth<
-  Profile extends T.ObjectWithId<Id>,
   UserCache extends LT.UserCacheDefault,
-  Id = number,
   Permission = LT.Permission
 > {
   cache: Cache;
@@ -112,19 +112,17 @@ export default class Auth<
       const { profile, locale, permissions } =
         await this.loginService.reAuthenticate(refreshToken);
 
-      const nProfile: Profile = { id: profile.uuid, ...profile } as any;
-
       const userCache: UserCache = { permissions, locale } as UserCache;
 
       const profileWToken = await this.authFormat(
         userCache,
-        nProfile,
+        profile,
         refreshToken
       );
 
       U.login(profileWToken, ctx.cookies, cookieOpts);
 
-      return { profile: nProfile, userCache };
+      return { profile, userCache };
     } catch (err) {
       console.log(err);
       throw Error("JWT refresh invalid");

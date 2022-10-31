@@ -1,7 +1,7 @@
 import Router from "koa-router";
 
 import m from "../../../../middleware/auth";
-import { ObjectWithId } from "../../../../type";
+
 import { UserCacheDefault } from "../../../../middleware/auth/type";
 
 import InstanceRoutes from "./instance";
@@ -9,25 +9,21 @@ import UserRoutes from "./user";
 import MainRoutes from "./main";
 import { PermissionService } from "../../../../user-management";
 
-const ProfileRoutes = <
-  Profile extends ObjectWithId<Id>,
-  UserCache extends UserCacheDefault,
-  Id
->(
+const ProfileRoutes = <UserCache extends UserCacheDefault>(
   { permissionService }: { permissionService: PermissionService },
-  MiddlewareAuth: m<Profile, UserCache, Id>
+  MiddlewareAuth: m<UserCache>
 ) => {
-  const instanceRoutes = InstanceRoutes<Profile, UserCache, Id>(
+  const instanceRoutes = InstanceRoutes<UserCache>(
     { permissionService },
     MiddlewareAuth
   );
 
-  const userRoutes = UserRoutes<Profile, UserCache, Id>(
+  const userRoutes = UserRoutes<UserCache>(
     { permissionService },
     MiddlewareAuth
   );
 
-  const mainRoutes = MainRoutes<Profile, UserCache, Id>(
+  const mainRoutes = MainRoutes<UserCache>(
     { permissionService },
     MiddlewareAuth
   );

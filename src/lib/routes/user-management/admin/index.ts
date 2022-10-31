@@ -22,7 +22,7 @@ const AdminRoutes = <
     permissionService: PermissionService;
     userAuthenticationService: UserAuthentication;
   },
-  MiddlewareAuth: m<Profile, UserCache, Id>
+  MiddlewareAuth: m<UserCache>
 ) => {
   const router = new Router();
 

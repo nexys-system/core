@@ -16,7 +16,7 @@ const superadminPermission = 3;
 const getRouter = <Permission>(
   schemas: Schema<Permission>,
   appToken: string,
-  middlewareAuth: MiddlewareAuth<any, any, any>,
+  middlewareAuth: MiddlewareAuth<any>,
   roleMap: Map<string, Permission>
 ) => {
   const router = new Router();

@@ -19,7 +19,7 @@ export enum Status {
 export type Profile = Pick<
   TC.User,
   "uuid" | "firstName" | "lastName" | "email"
-> & { instance: UOptionSet };
+> & { id: string; instance: UOptionSet };
 
 export interface UserCache {
   permissions: Permission[];

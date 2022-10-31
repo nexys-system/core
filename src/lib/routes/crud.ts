@@ -9,21 +9,13 @@ import * as T from "../query/constraint/type";
 import QueryService from "../query/abstract-service-wdata";
 import * as FT from "@nexys/fetchr/dist/type";
 import m from "../middleware/auth";
-import { ObjectWithId } from "../type";
+
 import { UserCacheDefault } from "../middleware/auth/type";
 
-class CrudRoutes<
-  Profile extends ObjectWithId<Id>,
-  UserCache extends UserCacheDefault,
-  Id
-> {
+class CrudRoutes<UserCache extends UserCacheDefault> {
   model: Entity[];
   router: Router;
-  constructor(
-    model: Entity[],
-    qs: QueryService,
-    MiddlewareAuth: m<Profile, UserCache, Id>
-  ) {
+  constructor(model: Entity[], qs: QueryService, MiddlewareAuth: m<UserCache>) {
     this.model = model;
 
     const middleware = new MiddlewareConstraints(this.model);

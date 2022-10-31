@@ -4,17 +4,13 @@ import { Main as Validation, Utils as VU } from "@nexys/validation";
 
 import m from "../../../middleware/auth";
 import { UserCacheDefault } from "../../../middleware/auth/type";
-import { ObjectWithId } from "../../../type";
+
 import { InstanceService } from "../../../user-management";
 import { Permission } from "../../../user-management/crud-type";
 
-const InstanceRoute = <
-  Profile extends ObjectWithId<Id>,
-  UserCache extends UserCacheDefault,
-  Id
->(
+const InstanceRoute = <UserCache extends UserCacheDefault>(
   { instanceService }: { instanceService: InstanceService },
-  MiddlewareAuth: m<Profile, UserCache, Id>
+  MiddlewareAuth: m<UserCache>
 ) => {
   const router = new Router();
 

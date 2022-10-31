@@ -3,15 +3,10 @@ import Router from "koa-router";
 import m from "../../../middleware/auth";
 import { UserCacheDefault } from "../../../middleware/auth/type";
 
-import { ObjectWithId } from "../../../type";
 import { Permission } from "../../../user-management/crud-type";
 
-const UserManagementRoutes = <
-  Profile extends ObjectWithId<Id>,
-  UserCache extends UserCacheDefault,
-  Id
->(
-  MiddlewareAuth: m<Profile, UserCache, Id>
+const UserManagementRoutes = <UserCache extends UserCacheDefault>(
+  MiddlewareAuth: m<UserCache>
 ) => {
   const router = new Router();
 

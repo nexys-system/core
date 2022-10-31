@@ -1,7 +1,6 @@
 import Router from "koa-router";
 import bodyParser from "koa-body";
 
-import { ObjectWithId } from "../../../type";
 import m from "../../../middleware/auth";
 import { Locale, UserCacheDefault } from "../../../middleware/auth/type";
 
@@ -15,12 +14,13 @@ import {
 import { Signup } from "./type";
 import { getUserMeta, isAuthOut } from "./utils";
 import { checkLogin, isSignupShape, twoFaShape } from "./validation";
+import { Profile } from "../../../user-management/type";
 
 type Uuid = string;
 
-const AuthRoutes = <Profile extends ObjectWithId<Id>, Id>(
+const AuthRoutes = (
   { authService }: { authService: AuthService },
-  MiddlewareAuth: m<Profile, UserCacheDefault, Id>,
+  MiddlewareAuth: m<UserCacheDefault>,
   instance: { uuid: Uuid; name: string }
 ) => {
   const router = new Router();
@@ -56,11 +56,9 @@ const AuthRoutes = <Profile extends ObjectWithId<Id>, Id>(
       }
       const { profile, locale, permissions, refreshToken } = r;
 
-      const nProfile: Profile = { id: profile.uuid, ...profile } as any;
-
       await MiddlewareAuth.authOutput(
         ctx,
-        nProfile,
+        profile,
         refreshToken,
         { permissions, locale },
 
@@ -147,15 +145,12 @@ const AuthRoutes = <Profile extends ObjectWithId<Id>, Id>(
     const userMeta = getUserMeta(ctx);
 
     try {
-      const r = await authService.authenticate2Fa(code, payload, userMeta);
-
-      const { profile, locale, permissions, refreshToken } = r;
-
-      const nProfile: Profile = { id: profile.uuid, ...profile } as any;
+      const { profile, locale, permissions, refreshToken } =
+        await authService.authenticate2Fa(code, payload, userMeta);
 
       await MiddlewareAuth.authOutput(
         ctx,
-        nProfile,
+        profile,
         refreshToken,
         { permissions, locale },
 

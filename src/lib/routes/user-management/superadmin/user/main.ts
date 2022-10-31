@@ -5,21 +5,16 @@ import { Main as Validation, Utils as VU } from "@nexys/validation";
 import m from "../../../../middleware/auth";
 import { UserCacheDefault } from "../../../../middleware/auth/type";
 
-import { ObjectWithId } from "../../../../type";
 import { UserService } from "../../../../user-management";
 
-import { Status } from "../../../../user-management/type";
+import { Profile, Status } from "../../../../user-management/type";
 import { Permission } from "../../../../user-management/crud-type";
 
 type Uuid = string;
 
-const UserRoutes = <
-  Profile extends ObjectWithId<Id>,
-  UserCache extends UserCacheDefault,
-  Id
->(
+const UserRoutes = <UserCache extends UserCacheDefault>(
   { userService }: { userService: UserService },
-  MiddlewareAuth: m<Profile, UserCache, Id>
+  MiddlewareAuth: m<UserCache>
 ) => {
   const router = new Router();
 

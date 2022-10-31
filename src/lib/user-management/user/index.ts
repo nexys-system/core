@@ -114,7 +114,14 @@ export default class User {
       lang: localeLang || L.langDefault,
     };
 
-    const profile: T.Profile = { uuid, firstName, lastName, email, instance };
+    const profile: T.Profile = {
+      id: uuid,
+      uuid,
+      firstName,
+      lastName,
+      email,
+      instance,
+    };
 
     return { profile, status, locale, UserAuthentication, faSecret };
   };
@@ -227,7 +234,7 @@ export default class User {
   };
 
   insertByProfile = async (
-    profile: Omit<T.Profile, "uuid" | "instance"> & {
+    profile: Omit<T.Profile, "id" | "uuid" | "instance"> & {
       instance: { uuid: string };
     },
     _locale: Locale,
