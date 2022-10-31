@@ -16,10 +16,10 @@ export enum Status {
   pending = 2,
 }
 
-export type Profile = Pick<
-  TC.User,
-  "uuid" | "firstName" | "lastName" | "email"
-> & { id: string; instance: UOptionSet };
+export type Profile = Pick<TC.User, "firstName" | "lastName" | "email"> & {
+  id: string;
+  instance: UOptionSet;
+};
 
 export interface UserCache {
   permissions: Permission[];

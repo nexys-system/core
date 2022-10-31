@@ -82,7 +82,7 @@ export default class LoginService {
     // if fa secret, process aborts and sends info encrypted, await 2fa
     if (!!faSecret) {
       const payload = A.createActionPayload(
-        profile.uuid,
+        profile.id,
         { uuid: profile.instance.uuid },
         "2FA",
         this.secretKey
@@ -231,7 +231,7 @@ export default class LoginService {
 
     const permissions =
       await this.userService.permissionService.permissionNamesByUser(
-        profile.uuid
+        profile.id
       );
     return { profile, permissions, locale };
   };
@@ -264,7 +264,7 @@ export default class LoginService {
     locale: Locale,
     userMeta: T.UserMeta
   ) => {
-    const { uuid: userId } = profile;
+    const { id: userId } = profile;
     const permissions =
       await this.userService.permissionService.permissionNamesByUser(userId);
 

@@ -10,7 +10,6 @@ export const email = "john@doe.com";
 export const permissions: Permission[] = [Permission.app, Permission.admin];
 export const profile: T.Profile = {
   id: userUuid,
-  uuid: userUuid,
   firstName: "John",
   lastName: "Doe",
   email,

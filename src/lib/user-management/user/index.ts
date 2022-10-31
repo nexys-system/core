@@ -116,7 +116,6 @@ export default class User {
 
     const profile: T.Profile = {
       id: uuid,
-      uuid,
       firstName,
       lastName,
       email,

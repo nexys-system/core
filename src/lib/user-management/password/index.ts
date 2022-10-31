@@ -76,7 +76,7 @@ export default class Password {
     const { profile } = await this.userService.getByEmail(email);
 
     return A.createActionPayload(
-      profile.uuid,
+      profile.id,
       { uuid: profile.instance.uuid },
       "RESET_PASSWORD",
       this.secretKey
