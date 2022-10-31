@@ -33,6 +33,7 @@ export interface User {
   status: Status;
   localeLang?: string;
   localeCountry?: string;
+  faSecret?: string;
   logDateAdded: Date;
   instance: { uuid: Uuid } | Instance;
 }

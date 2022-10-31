@@ -104,7 +104,7 @@ const ProfileRoutes = <UserCache extends UserCacheDefault>(
         return;
       }
 
-      const r = await userService.update(id, { faSecret: secret } as any);
+      const r = await userService.update(id, { faSecret: secret });
 
       ctx.body = { verification, r };
       return;
