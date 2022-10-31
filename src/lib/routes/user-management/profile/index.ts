@@ -86,6 +86,24 @@ const ProfileRoutes = <UserCache extends UserCacheDefault>(
     }
   );
 
+  router.all("/2fa/status", MiddlewareAuth.isAuthenticated(), async (ctx) => {
+    const { id, instance } = ctx.state.profile;
+
+    const r = await userService.detail(id, instance);
+
+    const isSet: boolean = !!r.faSecret;
+
+    ctx.body = { isSet };
+  });
+
+  router.all("/2fa/reset", MiddlewareAuth.isAuthenticated(), async (ctx) => {
+    const { id } = ctx.state.profile;
+
+    const r = await userService.update(id, { faSecret: null } as any);
+
+    ctx.body = { r };
+  });
+
   router.post(
     "/2fa/set",
     bodyParser(),
@@ -107,7 +125,6 @@ const ProfileRoutes = <UserCache extends UserCacheDefault>(
       const r = await userService.update(id, { faSecret: secret });
 
       ctx.body = { verification, r };
-      return;
     }
   );
 
