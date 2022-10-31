@@ -7,6 +7,8 @@ import { Main as Validation } from "@nexys/validation";
 import { UserCacheDefault } from "../../../middleware/auth/type";
 
 import { UserService, PasswordService } from "../../../user-management";
+import { verifyTOTP } from "@nexys/timebasedotp";
+import { secretFromUrl } from "@nexys/timebasedotp/dist/utils";
 
 const ProfileRoutes = <UserCache extends UserCacheDefault>(
   {
@@ -36,7 +38,7 @@ const ProfileRoutes = <UserCache extends UserCacheDefault>(
     }),
     async (ctx) => {
       const data: { firstName: string; lastName: string } = ctx.request.body;
-      const { uuid } = ctx.state.profile;
+      const { id } = ctx.state.profile;
 
       if (Object.keys(data).length === 0) {
         ctx.status = 400;
@@ -44,7 +46,7 @@ const ProfileRoutes = <UserCache extends UserCacheDefault>(
         return;
       }
 
-      const r = await userService.update(uuid, data);
+      const r = await userService.update(id, data);
 
       if (!r.success) {
         throw Error("could not update the profile");
@@ -81,6 +83,31 @@ const ProfileRoutes = <UserCache extends UserCacheDefault>(
         ctx.status = 400;
         ctx.body = err;
       }
+    }
+  );
+
+  router.post(
+    "/2fa/set",
+    bodyParser(),
+    MiddlewareAuth.isAuthenticated(),
+    Validation.isShapeMiddleware({ code: { type: "number" }, secretUrl: {} }),
+    async (ctx) => {
+      const { id } = ctx.state.profile;
+      const { code, secretUrl } = ctx.request.body;
+
+      const secret = secretFromUrl(secretUrl);
+
+      const verification: boolean = verifyTOTP(code, secret);
+
+      if (verification === false) {
+        ctx.body = { verification };
+        return;
+      }
+
+      const r = await userService.update(id, { faSecret: secret } as any);
+
+      ctx.body = { verification, r };
+      return;
     }
   );
 

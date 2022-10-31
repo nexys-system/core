@@ -19,7 +19,7 @@
     "@nexys/fetchr": "^0.7.12",
     "@nexys/http": "^1.0.0",
     "@nexys/node-cache": "^0.0.1",
-    "@nexys/timebasedotp": "^0.0.7",
+    "@nexys/timebasedotp": "^0.0.8",
     "@nexys/utils": "^3.9.14",
     "@nexys/validation": "^2.1.5",
     "@nexys/workflow": "^0.0.9",

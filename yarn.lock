@@ -532,10 +532,10 @@
   resolved "https://registry.yarnpkg.com/@nexys/crypto/-/crypto-1.0.4.tgz#087ea960516ca3fee810fd3ea51002db22e07c3f"
   integrity sha512-acsLzzudQyXKDQ5enym9XTpR2u1cey7qjdRjtNf58wP20SSR6h6iRuLLWy9ALIBfwURY0DUe13QY9aD2woDsGw==
 
-"@nexys/fetchr@^0.7.10":
-  version "0.7.12"
-  resolved "https://registry.yarnpkg.com/@nexys/fetchr/-/fetchr-0.7.12.tgz#83d207360c03a85902bf334a09e96f1b98fffe70"
-  integrity sha512-cCRe6B6W3OxaFXUz90ci/5lNH3y0CnqK0gTt8b/8WmA9CkNnQOvfDGBQWIypqTJFaiG//iAV+2QSzvdByNkA2w==
+"@nexys/fetchr@^0.7.12":
+  version "0.7.13"
+  resolved "https://registry.yarnpkg.com/@nexys/fetchr/-/fetchr-0.7.13.tgz#3471ce63171b618d2448eade470d505e756767f6"
+  integrity sha512-YDlGbGDtCdCf1O5xGZNzjV+x5tKQgW/r9v/1ZrvAIYz+dP+D4BNR3SN+UKL188mJkgIw5weSIiZ+hKR2EGlNkg==
   dependencies:
     "@nexys/validation" "^2.1.4"
     "@types/sqlstring" "^2.3.0"
@@ -556,10 +556,10 @@
   dependencies:
     node-cache "^5.1.2"
 
-"@nexys/timebasedotp@^0.0.7":
-  version "0.0.7"
-  resolved "https://registry.yarnpkg.com/@nexys/timebasedotp/-/timebasedotp-0.0.7.tgz#8e616ec0c28cdc273e7d0b71890e8a4db8392fcd"
-  integrity sha512-2YG9YMe+pRLgOMP84dZZAYCMWOKwpvSkBHak1p6wyCfTEGSpk7Tfo3ljrAGwlMXCot5i2H4BvEkWW7cAMlNSYg==
+"@nexys/timebasedotp@^0.0.8":
+  version "0.0.8"
+  resolved "https://registry.yarnpkg.com/@nexys/timebasedotp/-/timebasedotp-0.0.8.tgz#09847b776e7f2ea58fb729bdcef4d2800829371a"
+  integrity sha512-MHVVQ6L97AUg5yz5Y7oGga1iZoM9NrbRu1ActQBGkOsafVk9cUNRU5IJlhB/qCuq9NbW4n2kyttD3+fdXbnAMQ==
   dependencies:
     hi-base32 "^0.5.0"
 
