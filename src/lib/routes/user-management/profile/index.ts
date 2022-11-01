@@ -7,8 +7,8 @@ import { Main as Validation } from "@nexys/validation";
 import { UserCacheDefault } from "../../../middleware/auth/type";
 
 import { UserService, PasswordService } from "../../../user-management";
-import { verifyTOTP } from "@nexys/timebasedotp";
-import { secretFromUrl } from "@nexys/timebasedotp/dist/utils";
+
+import Profile2FaRoutes from "./two-fa";
 
 const ProfileRoutes = <UserCache extends UserCacheDefault>(
   {
@@ -86,47 +86,7 @@ const ProfileRoutes = <UserCache extends UserCacheDefault>(
     }
   );
 
-  router.all("/2fa/status", MiddlewareAuth.isAuthenticated(), async (ctx) => {
-    const { id, instance } = ctx.state.profile;
-
-    const r = await userService.detail(id, instance);
-
-    const isSet: boolean = !!r.faSecret;
-
-    ctx.body = { isSet };
-  });
-
-  router.all("/2fa/reset", MiddlewareAuth.isAuthenticated(), async (ctx) => {
-    const { id } = ctx.state.profile;
-
-    const r = await userService.update(id, { faSecret: null } as any);
-
-    ctx.body = { r };
-  });
-
-  router.post(
-    "/2fa/set",
-    bodyParser(),
-    MiddlewareAuth.isAuthenticated(),
-    Validation.isShapeMiddleware({ code: { type: "number" }, secretUrl: {} }),
-    async (ctx) => {
-      const { id } = ctx.state.profile;
-      const { code, secretUrl } = ctx.request.body;
-
-      const secret = secretFromUrl(secretUrl);
-
-      const verification: boolean = verifyTOTP(code, secret);
-
-      if (verification === false) {
-        ctx.body = { verification };
-        return;
-      }
-
-      const r = await userService.update(id, { faSecret: secret });
-
-      ctx.body = { verification, r };
-    }
-  );
+  router.use("/2fa", Profile2FaRoutes({ userService }, MiddlewareAuth));
 
   return router.routes();
 };
