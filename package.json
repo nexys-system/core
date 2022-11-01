@@ -1,6 +1,6 @@
 {
   "name": "@nexys/core",
-  "version": "1.2.7",
+  "version": "1.2.8",
   "license": "AGPL-3.0",
   "scripts": {
     "test": "rm -rf dist;SECRET=mysecretmysecretmysecretmysecret APP_TOKEN=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpbnN0YW5jZSI6IjJjNWQwNTM1LTI2YWItMTFlOS05Mjg0LWZhMTYzZTQxZjMzZCIsImluc3RhbmNlTmFtZSI6InRlc3QiLCJwcm9kdWN0IjoxLCJwcm9kdWN0TmFtZSI6InRlc3Rwcm9kdWN0IiwiZW52IjoxLCJlbnZOYW1lIjoiZGV2IiwiaWF0IjoxNjI4NjczNjg1fQ.EgWvtBUoQLCITpQpeb9j3fLTu4Hxd9DgDxA7yCu0hTA NEXYS_HOST=http://myhost NEXYS_TOKEN=nexys_token jest",
