@@ -1,12 +1,24 @@
-import QueryService from "../../query/abstract-service";
-import * as U from "../utils";
-import * as CT from "../crud-type";
 import { generateString } from "@nexys/utils/dist/random";
-import { UserMeta } from "../type";
+
+import QueryService from "../../../query/abstract-service";
+
+import * as U from "../../utils";
+import * as CT from "../../crud-type";
+import { UserMeta } from "../../type";
 
 type Uuid = string;
 
 const entity = U.Entity.UserToken;
+
+const sepCharacter = ":";
+
+export const createRefreshToken = (uuid: Uuid, token: string) =>
+  uuid + sepCharacter + token;
+
+export const extractTokenAndUuid = (refreshToken: string) => {
+  const [uuid, token] = refreshToken.split(sepCharacter);
+  return [uuid, token];
+};
 
 export default class UserToken {
   qs: QueryService;
@@ -32,12 +44,13 @@ export default class UserToken {
   create = async (userUuid: Uuid, { userAgent, ip }: UserMeta) => {
     const token = generateString(21);
 
-    const tokenRow = {
+    const tokenRow: Omit<CT.UserToken, "uuid"> = {
       token,
       logDateAdded: new Date(),
       user: { uuid: userUuid },
       userAgent,
       ip,
+      status: CT.TokenStatus.active,
     };
 
     const rToken = await this.insert(tokenRow);
@@ -70,6 +83,24 @@ export default class UserToken {
     return r.deleted > 0;
   };
 
+  disableRefreshToken = async (
+    userUuid: Uuid,
+    refreshToken: string
+  ): Promise<boolean> => {
+    const [uuid, token] = extractTokenAndUuid(refreshToken);
+
+    const r = await this.qs.update<CT.UserToken>(
+      entity,
+      {
+        user: { uuid: userUuid },
+        token,
+        uuid,
+      },
+      { status: CT.TokenStatus.inactive }
+    );
+    return r.success;
+  };
+
   getFromRefreshToken = async (refreshToken: string): Promise<Uuid> => {
     const [uuid, token] = extractTokenAndUuid(refreshToken);
     const tokenRow = await this.detail(uuid);
@@ -77,16 +108,36 @@ export default class UserToken {
       throw Error("could not find token");
     }
 
+    if (tokenRow.status !== CT.TokenStatus.active) {
+      throw Error("token inactive");
+    }
+
     return tokenRow.user.uuid;
   };
+
+  /*
+  change the status of a refresh token.
+  The status change can only occur from active to inactive
+  */
+  changeStatus = async (
+    uuid: string,
+    newStatus: CT.TokenStatus
+  ): Promise<boolean> => {
+    const d = await this.detail(uuid);
+
+    if (d.status === CT.TokenStatus.inactive) {
+      throw Error("token is already inactive");
+    }
+
+    if (d.status === CT.TokenStatus.active) {
+      const r = await this.qs.update<CT.UserToken>(
+        entity,
+        { uuid },
+        { status: newStatus }
+      );
+      return r.success;
+    }
+
+    throw Error("token status not found/no scenario available");
+  };
 }
-
-const sepCharacter = ":";
-
-export const createRefreshToken = (uuid: Uuid, token: string) =>
-  uuid + sepCharacter + token;
-
-export const extractTokenAndUuid = (refreshToken: string) => {
-  const [uuid, token] = refreshToken.split(sepCharacter);
-  return [uuid, token];
-};

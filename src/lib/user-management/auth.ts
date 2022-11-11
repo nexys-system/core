@@ -204,7 +204,7 @@ export default class LoginService {
       return true;
     }
 
-    return this.userTokenService.deleteByRefreshToken(uuid, refreshToken);
+    return this.userTokenService.disableRefreshToken(uuid, refreshToken);
   };
 
   /**
