@@ -43,7 +43,6 @@ export interface User {
   instance: { uuid: Uuid } | Instance;
 }
 
-// to add:expiration
 export interface UserToken {
   uuid: Uuid;
   token: string;
@@ -52,6 +51,7 @@ export interface UserToken {
   userAgent?: string;
   ip?: string;
   status: TokenStatus;
+  expirationDate: Date;
 }
 
 // note: no instance here because it can be found implicitly via user

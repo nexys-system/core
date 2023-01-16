@@ -44,13 +44,18 @@ export default class UserToken {
   create = async (userUuid: Uuid, { userAgent, ip }: UserMeta) => {
     const token = generateString(21);
 
+    const logDateAdded = new Date();
+    const thirtyDays = 30 * 60 * 60 * 1000;
+    const expirationDate = new Date(logDateAdded.getTime() + thirtyDays);
+
     const tokenRow: Omit<CT.UserToken, "uuid"> = {
       token,
-      logDateAdded: new Date(),
       user: { uuid: userUuid },
       userAgent,
       ip,
       status: CT.TokenStatus.active,
+      expirationDate,
+      logDateAdded,
     };
 
     const rToken = await this.insert(tokenRow);
@@ -110,6 +115,11 @@ export default class UserToken {
 
     if (tokenRow.status !== CT.TokenStatus.active) {
       throw Error("token inactive");
+    }
+
+    // expiration date check
+    if (tokenRow.expirationDate.getTime() < new Date().getTime()) {
+      throw Error("token expired");
     }
 
     return tokenRow.user.uuid;
