@@ -139,7 +139,7 @@ export default class LoginService {
   };
 
   signupWPassword = async (
-    profile: Omit<T.Profile, "uuid">,
+    profile: Omit<T.Profile, "id" | "uuid">,
     password: string,
     locale: Locale,
     permissions: T.Permission[]
