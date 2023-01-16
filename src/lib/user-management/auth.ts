@@ -199,13 +199,8 @@ export default class LoginService {
     return { success };
   };
 
-  logout = async (uuid: Uuid, refreshToken?: string): Promise<boolean> => {
-    if (!refreshToken) {
-      return true;
-    }
-
-    return this.userTokenService.disableRefreshToken(uuid, refreshToken);
-  };
+  logout = async (uuid: Uuid, refreshToken: string): Promise<boolean> =>
+    this.userTokenService.disableRefreshToken(uuid, refreshToken);
 
   /**
    * when using refresh token

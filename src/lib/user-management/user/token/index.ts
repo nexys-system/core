@@ -118,7 +118,7 @@ export default class UserToken {
     }
 
     // expiration date check
-    if (tokenRow.expirationDate.getTime() < new Date().getTime()) {
+    if (new Date(tokenRow.expirationDate).getTime() < new Date().getTime()) {
       throw Error("token expired");
     }
 

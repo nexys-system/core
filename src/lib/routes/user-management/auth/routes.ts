@@ -76,10 +76,12 @@ const AuthRoutes = (
   router.all("/logout", MiddlewareAuth.isAuthenticated(), async (ctx) => {
     const profile = ctx.state.profile as Profile;
     MiddlewareAuth.logout(profile, ctx);
-    await authService.logout(
-      ctx.state.profile.id,
-      ctx.cookies.get("REFRESH_TOKEN")
-    );
+    const refreshToken = ctx.cookies.get("REFRESH_TOKEN");
+
+    if (refreshToken) {
+      console.warn("revoking refresh token");
+      await authService.logout(ctx.state.profile.id, refreshToken);
+    }
     ctx.body = { message: "logged out successfully" };
   });
 
