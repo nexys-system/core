@@ -218,12 +218,7 @@ const model = [
         optional: false,
       },
       { name: "secretKey", column: "keyy", type: "String", optional: false },
-      {
-        name: "userStatus",
-        column: "status_id",
-        type: "UserStatus",
-        optional: true,
-      },
+
       { name: "language", column: "language_id", type: "Int", optional: false },
       {
         name: "logDateAdded",
@@ -262,7 +257,7 @@ const model = [
         type: "String",
         optional: false,
       },
-      { name: "status", column: "status", type: "Int", optional: false },
+      { name: "status", column: "status_id", type: "Int", optional: false },
       {
         name: "localeLang",
         column: "locale_lang",
@@ -281,6 +276,7 @@ const model = [
         type: "Company",
         optional: true,
       },
+      { name: "faSecret", column: "fa_secret", optional: true, type: "String" },
     ],
   },
   {
@@ -349,7 +345,7 @@ const model = [
       },
       {
         name: "permission",
-        column: "permission",
+        column: "permission_id",
         type: "Int",
         optional: false,
         optionSet: "Permission",
@@ -367,7 +363,7 @@ const model = [
         type: "Boolean",
         optional: false,
       },
-      { name: "type", column: "type", type: "Int", optional: false },
+      { name: "type", column: "type_id", type: "Int", optional: false },
       { name: "user", column: "user_id", type: "User", optional: false },
       { name: "value", column: "value", type: "String", optional: false },
     ],
@@ -389,6 +385,18 @@ const model = [
         name: "userAgent",
         column: "user_agent",
         type: "String",
+        optional: false,
+      },
+      {
+        name: "status",
+        column: "status",
+        type: "Int",
+        optional: false,
+      },
+      {
+        name: "tokenType",
+        column: "token_type",
+        type: "Int",
         optional: false,
       },
     ],
