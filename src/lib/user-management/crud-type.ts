@@ -43,6 +43,11 @@ export interface User {
   instance: { uuid: Uuid } | Instance;
 }
 
+export enum TokenType {
+  refreshToken = 1,
+  apiToken = 2,
+}
+
 export interface UserToken {
   uuid: Uuid;
   token: string;
@@ -51,7 +56,8 @@ export interface UserToken {
   userAgent?: string;
   ip?: string;
   status: TokenStatus;
-  expirationDate: Date;
+  expirationDate?: Date;
+  tokenType: TokenType;
 }
 
 // note: no instance here because it can be found implicitly via user

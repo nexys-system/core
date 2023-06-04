@@ -56,6 +56,7 @@ export default class UserToken {
       status: CT.TokenStatus.active,
       expirationDate,
       logDateAdded,
+      tokenType: CT.TokenType.refreshToken, // todo: work on this, different types of tokens
     };
 
     const rToken = await this.insert(tokenRow);
@@ -118,7 +119,10 @@ export default class UserToken {
     }
 
     // expiration date check
-    if (new Date(tokenRow.expirationDate).getTime() < new Date().getTime()) {
+    if (
+      tokenRow.expirationDate &&
+      new Date(tokenRow.expirationDate).getTime() < new Date().getTime()
+    ) {
       throw Error("token expired");
     }
 
