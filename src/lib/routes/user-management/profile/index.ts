@@ -4,21 +4,18 @@ import bodyParser from "koa-body";
 import m from "../../../middleware/auth";
 import { Main as Validation } from "@nexys/validation";
 
-import { ObjectWithId } from "../../../type";
 import { UserCacheDefault } from "../../../middleware/auth/type";
 
 import { UserService, PasswordService } from "../../../user-management";
 
-const ProfileRoutes = <
-  Profile extends ObjectWithId<Id>,
-  UserCache extends UserCacheDefault,
-  Id
->(
+import Profile2FaRoutes from "./two-fa";
+
+const ProfileRoutes = <UserCache extends UserCacheDefault>(
   {
     userService,
     passwordService,
   }: { userService: UserService; passwordService: PasswordService },
-  MiddlewareAuth: m<Profile, UserCache, Id>
+  MiddlewareAuth: m<UserCache>
 ) => {
   const router = new Router();
 
@@ -41,7 +38,7 @@ const ProfileRoutes = <
     }),
     async (ctx) => {
       const data: { firstName: string; lastName: string } = ctx.request.body;
-      const { uuid } = ctx.state.profile;
+      const { id } = ctx.state.profile;
 
       if (Object.keys(data).length === 0) {
         ctx.status = 400;
@@ -49,7 +46,7 @@ const ProfileRoutes = <
         return;
       }
 
-      const r = await userService.update(uuid, data);
+      const r = await userService.update(id, data);
 
       if (!r.success) {
         throw Error("could not update the profile");
@@ -88,6 +85,8 @@ const ProfileRoutes = <
       }
     }
   );
+
+  router.use("/2fa", Profile2FaRoutes({ userService }, MiddlewareAuth));
 
   return router.routes();
 };

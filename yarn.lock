@@ -532,14 +532,14 @@
   resolved "https://registry.yarnpkg.com/@nexys/crypto/-/crypto-1.0.4.tgz#087ea960516ca3fee810fd3ea51002db22e07c3f"
   integrity sha512-acsLzzudQyXKDQ5enym9XTpR2u1cey7qjdRjtNf58wP20SSR6h6iRuLLWy9ALIBfwURY0DUe13QY9aD2woDsGw==
 
-"@nexys/fetchr@^0.7.7":
-  version "0.7.7"
-  resolved "https://registry.yarnpkg.com/@nexys/fetchr/-/fetchr-0.7.7.tgz#7bfd3afe00b84d048968fa2c97ec9f0acdafdd13"
-  integrity sha512-87NY5Ukynaa/wonMI7pO5TvYjcgJGVC9PEyoPJeRvXMov+7fMqVU6jKajVrtuRtfu5Uqmllqct6SsaYQyxEN8A==
+"@nexys/fetchr@^0.7.12":
+  version "0.7.13"
+  resolved "https://registry.yarnpkg.com/@nexys/fetchr/-/fetchr-0.7.13.tgz#3471ce63171b618d2448eade470d505e756767f6"
+  integrity sha512-YDlGbGDtCdCf1O5xGZNzjV+x5tKQgW/r9v/1ZrvAIYz+dP+D4BNR3SN+UKL188mJkgIw5weSIiZ+hKR2EGlNkg==
   dependencies:
     "@nexys/validation" "^2.1.4"
     "@types/sqlstring" "^2.3.0"
-    mysql2 "^2.2.5"
+    mysql2 "^2.3.3"
     sqlstring "^2.3.2"
 
 "@nexys/http@^1.0.0":
@@ -555,6 +555,13 @@
   integrity sha512-2KRtluOryOOLU8JlOEwJpgYxx3YMjiefLNCy8tBZNVaUkJ6MzGPN7YaKJPYTdsR4EigXJHoNx+qiP8l4XgRKrA==
   dependencies:
     node-cache "^5.1.2"
+
+"@nexys/timebasedotp@^0.0.8":
+  version "0.0.8"
+  resolved "https://registry.yarnpkg.com/@nexys/timebasedotp/-/timebasedotp-0.0.8.tgz#09847b776e7f2ea58fb729bdcef4d2800829371a"
+  integrity sha512-MHVVQ6L97AUg5yz5Y7oGga1iZoM9NrbRu1ActQBGkOsafVk9cUNRU5IJlhB/qCuq9NbW4n2kyttD3+fdXbnAMQ==
+  dependencies:
+    hi-base32 "^0.5.0"
 
 "@nexys/utils@^3.9.14":
   version "3.9.14"
@@ -795,7 +802,7 @@
   dependencies:
     "@types/koa" "*"
 
-"@types/koa@*", "@types/koa@^2.13.4":
+"@types/koa@*", "@types/koa@^2.13.5":
   version "2.13.5"
   resolved "https://registry.yarnpkg.com/@types/koa/-/koa-2.13.5.tgz#64b3ca4d54e08c0062e89ec666c9f45443b21a61"
   integrity sha512-HSUOdzKz3by4fnqagwthW/1w/yJspTgppyyalPVbgZf8jQWvdIXcVW5h2DGtw4zYntOaeRGx49r1hxoPWrD4aA==
@@ -1748,6 +1755,11 @@ helmet@^4.0.0, helmet@^4.4.1:
   resolved "https://registry.yarnpkg.com/helmet/-/helmet-4.6.0.tgz#579971196ba93c5978eb019e4e8ec0e50076b4df"
   integrity sha512-HVqALKZlR95ROkrnesdhbbZJFi/rIVSoNq6f3jA/9u6MIbTsPh3xZwihjeI5+DO/2sOV6HMHooXcEOuwskHpTg==
 
+hi-base32@^0.5.0:
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/hi-base32/-/hi-base32-0.5.1.tgz#1279f2ddae2673219ea5870c2121d2a33132857e"
+  integrity sha512-EmBBpvdYh/4XxsnUybsPag6VikPYnN30td+vQk+GI3qpahVEG9+gTkG0aXVxTjBqQ5T6ijbWIu77O+C5WFWsnA==
+
 html-encoding-sniffer@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/html-encoding-sniffer/-/html-encoding-sniffer-2.0.1.tgz#42a6dc4fd33f00281176e8b23759ca4e4fa185f3"
@@ -2555,7 +2567,7 @@ koa-router@^7.4.0:
     path-to-regexp "^1.1.1"
     urijs "^1.19.0"
 
-koa@^2.13.1:
+koa@^2.13.4:
   version "2.13.4"
   resolved "https://registry.yarnpkg.com/koa/-/koa-2.13.4.tgz#ee5b0cb39e0b8069c38d115139c774833d32462e"
   integrity sha512-43zkIKubNbnrULWlHdN5h1g3SEKXOEzoAlRsHOTFpnlDu8JlAOZSMJBLULusuXRequboiwJcj5vtYXKB3k7+2g==
@@ -2760,7 +2772,7 @@ ms@^2.1.1:
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.1.3.tgz#574c8138ce1d2b5861f0b44579dbadd60c6615b2"
   integrity sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==
 
-mysql2@^2.2.5:
+mysql2@^2.3.3:
   version "2.3.3"
   resolved "https://registry.yarnpkg.com/mysql2/-/mysql2-2.3.3.tgz#944f3deca4b16629052ff8614fbf89d5552545a0"
   integrity sha512-wxJUev6LgMSgACDkb/InIFxDprRa6T95+VEoR+xPvtngtccNH2dGjEB/fVZ8yg1gWv1510c9CvXuJHi5zUm0ZA==
@@ -3523,7 +3535,7 @@ typedarray-to-buffer@^3.1.5:
   dependencies:
     is-typedarray "^1.0.0"
 
-typescript@^4.7.3:
+typescript@^4.8.2:
   version "4.8.2"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.8.2.tgz#e3b33d5ccfb5914e4eeab6699cf208adee3fd790"
   integrity sha512-C0I1UsrrDHo2fYI5oaCGbSejwX4ch+9Y5jTQELvovfmFkK3HHSZJB8MSJcWLmCUBzQBchCrZ9rMRV6GuNrvGtw==

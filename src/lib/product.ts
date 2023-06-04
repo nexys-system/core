@@ -1,7 +1,6 @@
 import Cache from "@nexys/node-cache/dist/cache";
 import QueryService from "./query/abstract-service-wdata";
 
-import * as T from "./type";
 import * as LT from "./middleware/auth/type";
 
 import * as UserManagementService from "./user-management";
@@ -13,9 +12,7 @@ export interface Configuration {
 }
 
 class ProductService<
-  Profile extends T.ObjectWithId<Id>,
   UserCache extends LT.UserCacheDefault,
-  Id = number,
   Permission = LT.Permission
 > {
   configuration: Configuration;
@@ -28,7 +25,7 @@ class ProductService<
   permissionService: UserManagementService.PermissionService;
   userAuthenticationService: UserManagementService.UserAuthentication;
   userTokenService: UserManagementService.UserToken;
-  public middlewareAuth: MiddlewareAuth<Profile, UserCache, Id, Permission>;
+  public middlewareAuth: MiddlewareAuth<UserCache, Permission>;
 
   constructor(
     configuration: Configuration,

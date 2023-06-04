@@ -5,20 +5,15 @@ import { Main as Validation, Utils as VU } from "@nexys/validation";
 import m from "../../../../middleware/auth";
 import { UserCacheDefault } from "../../../../middleware/auth/type";
 
-import { ObjectWithId } from "../../../../type";
 import { UserAuthentication } from "../../../../user-management";
 import * as T from "../../../../user-management/crud-type";
 import { hideHashedPassword } from "../../../../user-management/password/utils";
 
-const UserAuthenticationService = <
-  Profile extends ObjectWithId<Id>,
-  UserCache extends UserCacheDefault,
-  Id
->(
+const UserAuthenticationService = <UserCache extends UserCacheDefault>(
   {
     userAuthenticationService,
   }: { userAuthenticationService: UserAuthentication },
-  MiddlewareAuth: m<Profile, UserCache, Id>
+  MiddlewareAuth: m<UserCache>
 ) => {
   const router = new Router();
 

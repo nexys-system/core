@@ -28,16 +28,16 @@ const UserRoutes = <
     permissionService: PermissionService;
     userAuthenticationService: UserAuthentication;
   },
-  MiddlewareAuth: m<Profile, UserCache, Id>
+  MiddlewareAuth: m<UserCache>
 ) => {
   const router = new Router();
 
-  const authenticationRoutes = Authentication<Profile, UserCache, Id>(
+  const authenticationRoutes = Authentication<UserCache>(
     { userAuthenticationService },
     MiddlewareAuth
   );
 
-  const permissionRoutes = Permission<Profile, UserCache, Id>(
+  const permissionRoutes = Permission<UserCache>(
     { permissionService },
     MiddlewareAuth
   );

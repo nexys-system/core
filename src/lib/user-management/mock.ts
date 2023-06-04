@@ -8,17 +8,18 @@ export const userUuid = "myUuid";
 export const email = "john@doe.com";
 
 export const permissions: Permission[] = [Permission.app, Permission.admin];
+
+export const status = T.Status.pending;
+
+export const hashedPassword = "myhashedpassword";
+
 export const profile: T.Profile = {
-  uuid: userUuid,
+  id: userUuid,
   firstName: "John",
   lastName: "Doe",
   email,
   instance: { uuid: "instanceUuid", name: "instance" },
 };
-
-export const status = T.Status.pending;
-
-export const hashedPassword = "myhashedpassword";
 
 class QueryService extends AbstractQueryService {
   constructor(_host: string, _token: string) {
@@ -54,6 +55,15 @@ class QueryService extends AbstractQueryService {
       if (b === true) {
         return Promise.resolve(null);
       }
+
+      // this is the profile that we get from the db (so uuid and not id)
+      const profile = {
+        uuid: userUuid,
+        firstName: "John",
+        lastName: "Doe",
+        email,
+        instance: { uuid: "instanceUuid", name: "instance" },
+      };
 
       return Promise.resolve({
         ...profile,

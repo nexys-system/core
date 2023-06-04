@@ -76,7 +76,7 @@ export default class Password {
     const { profile } = await this.userService.getByEmail(email);
 
     return A.createActionPayload(
-      profile.uuid,
+      profile.id,
       { uuid: profile.instance.uuid },
       "RESET_PASSWORD",
       this.secretKey
@@ -87,9 +87,9 @@ export default class Password {
     password: string,
     encrypted: string
   ): Promise<{ success: boolean }> => {
-    const { uuid, instance } = A.decryptPayload(encrypted, this.secretKey);
+    const { id, instance } = A.decryptPayload(encrypted, this.secretKey);
 
-    return this.setPassword(uuid, password, instance);
+    return this.setPassword(id, password, instance);
   };
 
   requestEmailChange = async (
@@ -105,8 +105,8 @@ export default class Password {
   };
 
   changeEmail = async (email: string, encrypted: string): Promise<boolean> => {
-    const { uuid, instance } = A.decryptPayload(encrypted, this.secretKey);
+    const { id, instance } = A.decryptPayload(encrypted, this.secretKey);
 
-    return this.userService.changeEmail(uuid, instance, email);
+    return this.userService.changeEmail(id, instance, email);
   };
 }

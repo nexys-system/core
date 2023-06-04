@@ -1,3 +1,4 @@
+import { Locale } from "../middleware/auth/type";
 import * as TC from "./crud-type";
 
 type Uuid = string;
@@ -15,10 +16,10 @@ export enum Status {
   pending = 2,
 }
 
-export type Profile = Pick<
-  TC.User,
-  "uuid" | "firstName" | "lastName" | "email"
-> & { instance: UOptionSet };
+export type Profile = Pick<TC.User, "firstName" | "lastName" | "email"> & {
+  id: string;
+  instance: UOptionSet;
+};
 
 export interface UserCache {
   permissions: Permission[];
@@ -29,10 +30,10 @@ export interface LoginResponse {
   cacheData: UserCache;
 }
 
-export type Action = "SET_ACTIVE" | "RESET_PASSWORD" | "CHANGE_EMAIL";
+export type Action = "SET_ACTIVE" | "RESET_PASSWORD" | "CHANGE_EMAIL" | "2FA";
 
 export interface ActionPayload {
-  uuid: Uuid;
+  id: Uuid;
   instance: { uuid: Uuid };
   action: Action;
   issued: number;
@@ -42,3 +43,15 @@ export interface ActionPayload {
 export type UserListOut = Omit<TC.User, "status"> & {
   status: Status;
 };
+
+export interface AuthOut {
+  profile: Profile;
+  locale: Locale;
+  permissions: Permission[];
+  refreshToken: string;
+}
+
+export interface UserMeta {
+  userAgent?: string;
+  ip: string;
+}

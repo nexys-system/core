@@ -7,7 +7,6 @@ import Compose from "koa-compose";
 import Cache from "@nexys/node-cache/dist/cache";
 
 import JWT from "../../jwt";
-import * as T from "../../type";
 
 import * as LT from "./type";
 import * as CookiesService from "../cookies";
@@ -15,12 +14,13 @@ import * as CookiesService from "../cookies";
 import * as U from "./utils";
 import { AuthService } from "../../user-management";
 import { localeToString } from "../../user-management/locale";
+import { Profile } from "../../user-management/type";
 // see https://github.com/Nexysweb/koa-lib/blob/master/src/middleware/index.ts
 
+type Id = string;
+
 export default class Auth<
-  Profile extends T.ObjectWithId<Id>,
   UserCache extends LT.UserCacheDefault,
-  Id = number,
   Permission = LT.Permission
 > {
   cache: Cache;
@@ -108,8 +108,10 @@ export default class Auth<
     }
 
     try {
-      const { profile, userCache } =
-        await this.profileAndUserCacheByRefreshToken(refreshToken);
+      const { profile, locale, permissions } =
+        await this.loginService.reAuthenticate(refreshToken);
+
+      const userCache: UserCache = { permissions, locale } as UserCache;
 
       const profileWToken = await this.authFormat(
         userCache,
@@ -120,24 +122,6 @@ export default class Auth<
       U.login(profileWToken, ctx.cookies, cookieOpts);
 
       return { profile, userCache };
-    } catch (err) {
-      console.log(err);
-      throw Error("JWT refresh invalid");
-    }
-  };
-
-  profileAndUserCacheByRefreshToken = async (
-    refreshToken: string
-  ): Promise<{ profile: Profile; userCache: UserCache }> => {
-    try {
-      const { profile, locale, permissions } =
-        await this.loginService.reAuthenticate(refreshToken);
-
-      const newProfile: Profile = { id: profile.uuid, ...profile } as any;
-
-      const userCache: UserCache = { permissions, locale } as UserCache;
-
-      return { profile: newProfile, userCache };
     } catch (err) {
       console.log(err);
       throw Error("JWT refresh invalid");
@@ -205,8 +189,9 @@ export default class Auth<
       // try api access
       if (!U.isJWT(token)) {
         try {
-          const { profile, userCache } =
-            await this.profileAndUserCacheByRefreshToken(token);
+          const { profile, permissions, locale } =
+            await this.loginService.reAuthenticate(token);
+          const userCache: UserCache = { permissions, locale } as UserCache;
           const state: LT.UserState<Id, Profile, UserCache> = {
             profile,
             userCache,

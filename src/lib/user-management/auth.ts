@@ -1,3 +1,4 @@
+import * as N2FA from "@nexys/timebasedotp";
 import { Locale } from "../middleware/auth/type";
 import * as T from "./type";
 import QueryService from "../query/abstract-service";
@@ -5,7 +6,7 @@ import UserService from "./user";
 import UserTokenService from "./user/token";
 import * as U from "./password/utils";
 import * as A from "./action-payload";
-import { AuthenticationType, Permission } from "./crud-type";
+import { AuthenticationType } from "./crud-type";
 
 type Uuid = string;
 
@@ -24,7 +25,13 @@ export default class LoginService {
     username: string,
     instance: { uuid: Uuid },
     authMode: { type: AuthenticationType; password?: string }
-  ) => {
+  ): Promise<{
+    profile: T.Profile;
+    status: T.Status;
+    locale: Locale;
+    auth: { uuid: Uuid; value: string };
+    faSecret?: string;
+  }> => {
     if (authMode.type !== AuthenticationType.password) {
       const authRow = await this.userService.getAuthenticationRow(
         authMode.type,
@@ -55,18 +62,10 @@ export default class LoginService {
     username: string,
     instance: { uuid: Uuid },
     authMode: { type: AuthenticationType; password?: string },
-    { userAgent, ip }: { userAgent?: string; ip: string }
-  ): Promise<{
-    profile: T.Profile;
-    locale: Locale;
-    permissions: Permission[];
-    refreshToken: string;
-  }> => {
-    const { profile, status, locale, auth } = await this.preAuthenticate(
-      username,
-      instance,
-      authMode
-    );
+    userMeta: T.UserMeta
+  ): Promise<T.AuthOut | { payload: string; action: T.Action }> => {
+    const { profile, status, locale, auth, faSecret } =
+      await this.preAuthenticate(username, instance, authMode);
 
     if (status !== T.Status.active) {
       throw new Error(`status not ok`);
@@ -80,28 +79,30 @@ export default class LoginService {
       throw new Error(`email and password combination don't match`);
     }
 
-    const permissions =
-      await this.userService.permissionService.permissionNamesByUser(
-        profile.uuid
+    // if fa secret, process aborts and sends info encrypted, await 2fa
+    if (!!faSecret) {
+      const payload = A.createActionPayload(
+        profile.id,
+        { uuid: profile.instance.uuid },
+        "2FA",
+        this.secretKey
       );
 
-    // create token
-    const refreshToken = await this.userTokenService.create(profile.uuid, {
-      userAgent,
-      ip,
-    });
+      return { payload, action: "2FA" };
+    }
 
-    return { profile, locale, permissions, refreshToken };
+    return this.toAuthOut(profile, locale, userMeta);
   };
 
   signup = async (
-    profile: Omit<T.Profile, "uuid" | "instance"> & {
+    profile: Pick<T.Profile, "firstName" | "lastName" | "email"> & {
       instance: { uuid: string };
     },
     authentication: { type: AuthenticationType; value: string },
     locale: Locale,
     permissions: T.Permission[]
   ): Promise<{ uuid: Uuid; authentication: { uuid: Uuid }; token: string }> => {
+    // make sure user does not exist
     const exists = await this.userService.exists(profile.email, {
       uuid: profile.instance.uuid,
     });
@@ -138,21 +139,15 @@ export default class LoginService {
   };
 
   signupWPassword = async (
-    profile: Omit<T.Profile, "uuid">,
+    profile: Omit<T.Profile, "id" | "uuid">,
     password: string,
     locale: Locale,
     permissions: T.Permission[]
   ): Promise<{ uuid: Uuid; authentication: { uuid: Uuid }; token: string }> => {
-    const exists = await this.userService.exists(profile.email);
-
-    if (exists) {
-      return Promise.reject({ message: "User already exists" });
-    }
-
-    const hashedPassword = await U.hashPassword(password);
-
+    // prepare password
+    // note the password is hashed in the userAuthenticationService
     const authenticationInputs: { type: AuthenticationType; value: string } = {
-      value: hashedPassword,
+      value: password,
       type: AuthenticationType.password,
     };
 
@@ -180,13 +175,13 @@ export default class LoginService {
   activate = async (
     token: string
   ): Promise<{ success: boolean; message?: string }> => {
-    const { uuid, instance } = A.decryptPayload(
+    const { id, instance } = A.decryptPayload(
       token,
       this.secretKey,
       "SET_ACTIVE"
     );
 
-    const detail = await this.userService.detail(uuid, instance);
+    const detail = await this.userService.detail(id, instance);
 
     if (detail.status !== T.Status.pending) {
       return {
@@ -197,20 +192,15 @@ export default class LoginService {
     }
 
     const success = await this.userService.changeStatusAdmin(
-      uuid,
+      id,
       instance,
       T.Status.active
     );
     return { success };
   };
 
-  logout = async (uuid: Uuid, refreshToken?: string): Promise<boolean> => {
-    if (!refreshToken) {
-      return true;
-    }
-
-    return this.userTokenService.deleteByRefreshToken(uuid, refreshToken);
-  };
+  logout = async (uuid: Uuid, refreshToken: string): Promise<boolean> =>
+    this.userTokenService.disableRefreshToken(uuid, refreshToken);
 
   /**
    * when using refresh token
@@ -236,8 +226,46 @@ export default class LoginService {
 
     const permissions =
       await this.userService.permissionService.permissionNamesByUser(
-        profile.uuid
+        profile.id
       );
     return { profile, permissions, locale };
+  };
+
+  authenticate2Fa = async (
+    code: number,
+    payload: string,
+    userMeta: T.UserMeta
+  ): Promise<T.AuthOut> => {
+    const decrypted = A.decryptPayload(payload, this.secretKey);
+
+    const { faSecret, profile, locale } = await this.userService.getByAttribute(
+      { key: "uuid", value: decrypted.id },
+      { uuid: decrypted.instance.uuid }
+    );
+
+    if (!faSecret) {
+      throw Error("fa secret is undefined");
+    }
+
+    if (!N2FA.verifyTOTP(code, faSecret)) {
+      throw Error("2FA unsuccessful");
+    }
+
+    return this.toAuthOut(profile, locale, userMeta);
+  };
+
+  toAuthOut = async (
+    profile: T.Profile,
+    locale: Locale,
+    userMeta: T.UserMeta
+  ) => {
+    const { id: userId } = profile;
+    const permissions =
+      await this.userService.permissionService.permissionNamesByUser(userId);
+
+    // create token
+    const refreshToken = await this.userTokenService.create(userId, userMeta);
+
+    return { profile, locale, permissions, refreshToken };
   };
 }

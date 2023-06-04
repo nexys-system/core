@@ -2,7 +2,6 @@ import Router from "koa-router";
 
 import m from "../../../middleware/auth";
 
-import { ObjectWithId } from "../../../type";
 import { UserCacheDefault } from "../../../middleware/auth/type";
 
 import Instance from "./instance";
@@ -17,11 +16,7 @@ import {
   UserToken,
 } from "../../../user-management";
 
-const SuperadminRoutes = <
-  Profile extends ObjectWithId<Id>,
-  UserCache extends UserCacheDefault,
-  Id
->(
+const SuperadminRoutes = <UserCache extends UserCacheDefault>(
   {
     userService,
     instanceService,
@@ -35,21 +30,21 @@ const SuperadminRoutes = <
     userAuthenticationService: UserAuthentication;
     userTokenService: UserToken;
   },
-  MiddlewareAuth: m<Profile, UserCache, Id>
+  MiddlewareAuth: m<UserCache>
 ) => {
   const router = new Router();
 
-  const instanceRoutes = Instance<Profile, UserCache, Id>(
+  const instanceRoutes = Instance<UserCache>(
     { instanceService },
     MiddlewareAuth
   );
 
-  const userRoutes = User<Profile, UserCache, Id>(
+  const userRoutes = User<UserCache>(
     { userService, userAuthenticationService, userTokenService },
     MiddlewareAuth
   );
 
-  const permissionRoutes = Permission<Profile, UserCache, Id>(
+  const permissionRoutes = Permission<UserCache>(
     { permissionService },
     MiddlewareAuth
   );

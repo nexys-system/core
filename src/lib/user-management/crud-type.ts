@@ -13,6 +13,11 @@ export enum AuthenticationType {
   swissId = 9,
 }
 
+export enum TokenStatus {
+  active,
+  inactive,
+}
+
 export enum Permission {
   app = 1,
   admin = 2,
@@ -33,6 +38,7 @@ export interface User {
   status: Status;
   localeLang?: string;
   localeCountry?: string;
+  faSecret?: string;
   logDateAdded: Date;
   instance: { uuid: Uuid } | Instance;
 }
@@ -44,6 +50,8 @@ export interface UserToken {
   user: { uuid: Uuid };
   userAgent?: string;
   ip?: string;
+  status: TokenStatus;
+  expirationDate: Date;
 }
 
 // note: no instance here because it can be found implicitly via user

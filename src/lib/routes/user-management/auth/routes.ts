@@ -1,7 +1,6 @@
 import Router from "koa-router";
 import bodyParser from "koa-body";
 
-import { ObjectWithId } from "../../../type";
 import m from "../../../middleware/auth";
 import { Locale, UserCacheDefault } from "../../../middleware/auth/type";
 
@@ -13,14 +12,15 @@ import {
 } from "../../../user-management/crud-type";
 
 import { Signup } from "./type";
-import { formatIP } from "./utils";
-import { checkLogin, isSignupShape } from "./validation";
+import { getUserMeta, isAuthOut } from "./utils";
+import { checkLogin, isSignupShape, twoFaShape } from "./validation";
+import { Profile } from "../../../user-management/type";
 
 type Uuid = string;
 
-const AuthRoutes = <Profile extends ObjectWithId<Id>, Id>(
+const AuthRoutes = (
   { authService }: { authService: AuthService },
-  MiddlewareAuth: m<Profile, UserCacheDefault, Id>,
+  MiddlewareAuth: m<UserCacheDefault>,
   instance: { uuid: Uuid; name: string }
 ) => {
   const router = new Router();
@@ -39,25 +39,26 @@ const AuthRoutes = <Profile extends ObjectWithId<Id>, Id>(
       return;
     }
 
-    const { headers } = ctx;
-
-    const userAgent: string | undefined = headers["user-agent"];
-    const ip: string = formatIP(headers);
+    const userMeta = getUserMeta(ctx);
 
     try {
-      const { profile, locale, permissions, refreshToken } =
-        await authService.authenticate(
-          email,
-          instance,
-          { password, type: AuthenticationType.password },
-          { userAgent, ip }
-        );
+      const r = await authService.authenticate(
+        email,
+        instance,
+        { password, type: AuthenticationType.password },
+        userMeta
+      );
 
-      const nProfile: Profile = { id: profile.uuid, ...profile } as any;
+      if (!isAuthOut(r)) {
+        ctx.status = 403;
+        ctx.body = r;
+        return;
+      }
+      const { profile, locale, permissions, refreshToken } = r;
 
-      MiddlewareAuth.authOutput(
+      await MiddlewareAuth.authOutput(
         ctx,
-        nProfile,
+        profile,
         refreshToken,
         { permissions, locale },
 
@@ -75,10 +76,12 @@ const AuthRoutes = <Profile extends ObjectWithId<Id>, Id>(
   router.all("/logout", MiddlewareAuth.isAuthenticated(), async (ctx) => {
     const profile = ctx.state.profile as Profile;
     MiddlewareAuth.logout(profile, ctx);
-    await authService.logout(
-      ctx.state.profile.id,
-      ctx.cookies.get("REFRESH_TOKEN")
-    );
+    const refreshToken = ctx.cookies.get("REFRESH_TOKEN");
+
+    if (refreshToken) {
+      console.warn("revoking refresh token");
+      await authService.logout(ctx.state.profile.id, refreshToken);
+    }
     ctx.body = { message: "logged out successfully" };
   });
 
@@ -136,6 +139,32 @@ const AuthRoutes = <Profile extends ObjectWithId<Id>, Id>(
   router.all("/refresh", async (ctx) => {
     const { profile } = await MiddlewareAuth.refresh(ctx);
     ctx.body = profile;
+  });
+
+  router.post("/2fa", bodyParser(), twoFaShape, async (ctx) => {
+    const { payload, code }: { payload: string; code: number } =
+      ctx.request.body;
+    const userMeta = getUserMeta(ctx);
+
+    try {
+      const { profile, locale, permissions, refreshToken } =
+        await authService.authenticate2Fa(code, payload, userMeta);
+
+      await MiddlewareAuth.authOutput(
+        ctx,
+        profile,
+        refreshToken,
+        { permissions, locale },
+
+        {
+          secure: false,
+        }
+      );
+    } catch (err) {
+      ctx.status = 400;
+      ctx.body = { error: (err as any).message };
+      return;
+    }
   });
 
   return router.routes();

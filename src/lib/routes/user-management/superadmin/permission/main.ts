@@ -4,17 +4,12 @@ import bodyParser from "koa-body";
 import m from "../../../../middleware/auth";
 import { UserCacheDefault } from "../../../../middleware/auth/type";
 
-import { ObjectWithId } from "../../../../type";
 import { PermissionService } from "../../../../user-management";
 import { Permission } from "../../../../user-management/crud-type";
 
-const PermissionRoutes = <
-  Profile extends ObjectWithId<Id>,
-  UserCache extends UserCacheDefault,
-  Id
->(
+const PermissionRoutes = <UserCache extends UserCacheDefault>(
   { permissionService }: { permissionService: PermissionService },
-  MiddlewareAuth: m<Profile, UserCache, Id>
+  MiddlewareAuth: m<UserCache>
 ) => {
   const router = new Router();
 
