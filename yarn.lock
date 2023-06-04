@@ -532,10 +532,10 @@
   resolved "https://registry.yarnpkg.com/@nexys/crypto/-/crypto-1.0.4.tgz#087ea960516ca3fee810fd3ea51002db22e07c3f"
   integrity sha512-acsLzzudQyXKDQ5enym9XTpR2u1cey7qjdRjtNf58wP20SSR6h6iRuLLWy9ALIBfwURY0DUe13QY9aD2woDsGw==
 
-"@nexys/fetchr@^0.7.12":
-  version "0.7.13"
-  resolved "https://registry.yarnpkg.com/@nexys/fetchr/-/fetchr-0.7.13.tgz#3471ce63171b618d2448eade470d505e756767f6"
-  integrity sha512-YDlGbGDtCdCf1O5xGZNzjV+x5tKQgW/r9v/1ZrvAIYz+dP+D4BNR3SN+UKL188mJkgIw5weSIiZ+hKR2EGlNkg==
+"@nexys/fetchr@^0.7.15":
+  version "0.7.15"
+  resolved "https://registry.yarnpkg.com/@nexys/fetchr/-/fetchr-0.7.15.tgz#0e640bb018bff4da88d2cee8dfea525c2c7c5e1a"
+  integrity sha512-/7UIlKKqOpoeCV4hebPohStlLdlxUvQt/LfKc1Y/fk4P7VsviKUjrYJWB15N2sOf51yEr+Ws0fBUMFRum7xOfw==
   dependencies:
     "@nexys/validation" "^2.1.4"
     "@types/sqlstring" "^2.3.0"
@@ -2813,7 +2813,7 @@ nock@^13.1.1:
     lodash "^4.17.21"
     propagate "^2.0.0"
 
-node-cache@^5.1.0, node-cache@^5.1.2:
+node-cache@^5.1.2:
   version "5.1.2"
   resolved "https://registry.yarnpkg.com/node-cache/-/node-cache-5.1.2.tgz#f264dc2ccad0a780e76253a694e9fd0ed19c398d"
   integrity sha512-t1QzWwnk4sjLWaQAS8CHgOJ+RAfmHpxFWmc36IWTiWHQfs0w5JDMBS1b1ZxQteo0vVVuWJvIUKHDkkeK7vIGCg==
