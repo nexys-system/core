@@ -6,7 +6,7 @@ import UserService from "./user";
 import UserTokenService from "./user/token";
 import * as U from "./password/utils";
 import * as A from "./action-payload";
-import { AuthenticationType } from "./crud-type";
+import { AuthenticationType, TokenType } from "./crud-type";
 
 type Uuid = string;
 
@@ -264,7 +264,11 @@ export default class LoginService {
       await this.userService.permissionService.permissionNamesByUser(userId);
 
     // create token
-    const refreshToken = await this.userTokenService.create(userId, userMeta);
+    const refreshToken = await this.userTokenService.create(
+      userId,
+      TokenType.refreshToken,
+      userMeta
+    );
 
     return { profile, locale, permissions, refreshToken };
   };

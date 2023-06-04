@@ -41,12 +41,21 @@ export default class UserToken {
   detail = async (uuid: Uuid): Promise<CT.UserToken> =>
     this.qs.detail<CT.UserToken>(entity, uuid);
 
-  create = async (userUuid: Uuid, { userAgent, ip }: UserMeta) => {
+  create = async (
+    userUuid: Uuid,
+    tokenType: CT.TokenType,
+    { userAgent, ip }: UserMeta,
+    expirationDate?: Date
+  ) => {
     const token = generateString(21);
 
     const logDateAdded = new Date();
-    const thirtyDays = 30 * 60 * 60 * 1000;
-    const expirationDate = new Date(logDateAdded.getTime() + thirtyDays);
+
+    // if the token type is a refresh token, do not allow tokens that do not expire
+    if (!expirationDate && tokenType === CT.TokenType.refreshToken) {
+      const thirtyDays = 30 * 60 * 60 * 1000;
+      expirationDate = new Date(logDateAdded.getTime() + thirtyDays);
+    }
 
     const tokenRow: Omit<CT.UserToken, "uuid"> = {
       token,
@@ -56,7 +65,7 @@ export default class UserToken {
       status: CT.TokenStatus.active,
       expirationDate,
       logDateAdded,
-      tokenType: CT.TokenType.refreshToken, // todo: work on this, different types of tokens
+      tokenType, // todo: work on this, different types of tokens
     };
 
     const rToken = await this.insert(tokenRow);
