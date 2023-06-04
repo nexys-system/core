@@ -15,6 +15,7 @@ import * as U from "./utils";
 import { AuthService } from "../../user-management";
 import { localeToString } from "../../user-management/locale";
 import { Profile } from "../../user-management/type";
+import { TokenType } from "../../user-management/crud-type";
 // see https://github.com/Nexysweb/koa-lib/blob/master/src/middleware/index.ts
 
 type Id = string;
@@ -109,7 +110,10 @@ export default class Auth<
 
     try {
       const { profile, locale, permissions } =
-        await this.loginService.reAuthenticate(refreshToken);
+        await this.loginService.reAuthenticate(
+          refreshToken,
+          TokenType.refreshToken
+        );
 
       const userCache: UserCache = { permissions, locale } as UserCache;
 
@@ -190,7 +194,7 @@ export default class Auth<
       if (!U.isJWT(token)) {
         try {
           const { profile, permissions, locale } =
-            await this.loginService.reAuthenticate(token);
+            await this.loginService.reAuthenticate(token, TokenType.apiToken);
           const userCache: UserCache = { permissions, locale } as UserCache;
           const state: LT.UserState<Id, Profile, UserCache> = {
             profile,

@@ -65,7 +65,7 @@ export default class UserToken {
       status: CT.TokenStatus.active,
       expirationDate,
       logDateAdded,
-      tokenType, // todo: work on this, different types of tokens
+      tokenType,
     };
 
     const rToken = await this.insert(tokenRow);
@@ -116,12 +116,19 @@ export default class UserToken {
     return r.success;
   };
 
-  getFromRefreshToken = async (refreshToken: string): Promise<Uuid> => {
+  getFromRefreshToken = async (
+    refreshToken: string,
+    tokenType: CT.TokenType
+  ): Promise<Uuid> => {
     const [uuid, token] = extractTokenAndUuid(refreshToken);
     //console.log({ uuid, token });
     const tokenRow = await this.detail(uuid);
     if (!(tokenRow.token === token)) {
       throw Error("could not find token");
+    }
+
+    if (tokenRow.tokenType !== tokenType) {
+      throw Error("token Type is wrong");
     }
 
     //console.log("tokenrow", tokenRow, CT.TokenStatus.active);

@@ -206,14 +206,18 @@ export default class LoginService {
    * when using refresh token
    */
   reAuthenticate = async (
-    token: string
+    token: string,
+    tokenType: TokenType
   ): Promise<{
     profile: T.Profile;
     permissions: T.Permission[];
     locale: Locale;
   }> => {
     try {
-      const userUuid = await this.userTokenService.getFromRefreshToken(token);
+      const userUuid = await this.userTokenService.getFromRefreshToken(
+        token,
+        tokenType
+      );
 
       const { profile, status, locale } = await this.userService.getByUuid(
         userUuid
