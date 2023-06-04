@@ -118,10 +118,13 @@ export default class UserToken {
 
   getFromRefreshToken = async (refreshToken: string): Promise<Uuid> => {
     const [uuid, token] = extractTokenAndUuid(refreshToken);
+    //console.log({ uuid, token });
     const tokenRow = await this.detail(uuid);
     if (!(tokenRow.token === token)) {
       throw Error("could not find token");
     }
+
+    //console.log("tokenrow", tokenRow, CT.TokenStatus.active);
 
     if (tokenRow.status !== CT.TokenStatus.active) {
       throw Error("token inactive");

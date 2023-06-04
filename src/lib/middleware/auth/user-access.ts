@@ -198,12 +198,18 @@ export default class Auth<
           };
 
           ctx.state = state;
+
+          await next();
         } catch (err) {
           ctx.status = 401;
-          ctx.body = { error: "could not authenticate API request" };
+          console.error(err);
+          ctx.body = {
+            message: "could not authenticate API request",
+            err: (err as Error).message,
+          };
         }
 
-        // no matter what stops here
+        // no matter what stops header
         return;
       }
 

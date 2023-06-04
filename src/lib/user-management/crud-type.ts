@@ -14,7 +14,7 @@ export enum AuthenticationType {
 }
 
 export enum TokenStatus {
-  active,
+  active = 1,
   inactive,
 }
 

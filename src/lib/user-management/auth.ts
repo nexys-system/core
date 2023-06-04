@@ -206,29 +206,32 @@ export default class LoginService {
    * when using refresh token
    */
   reAuthenticate = async (
-    refreshToken: string
+    token: string
   ): Promise<{
     profile: T.Profile;
     permissions: T.Permission[];
     locale: Locale;
   }> => {
-    const userUuid = await this.userTokenService.getFromRefreshToken(
-      refreshToken
-    );
+    try {
+      const userUuid = await this.userTokenService.getFromRefreshToken(token);
 
-    const { profile, status, locale } = await this.userService.getByUuid(
-      userUuid
-    );
-
-    if (status !== T.Status.active) {
-      throw new Error(`status not ok`);
-    }
-
-    const permissions =
-      await this.userService.permissionService.permissionNamesByUser(
-        profile.id
+      const { profile, status, locale } = await this.userService.getByUuid(
+        userUuid
       );
-    return { profile, permissions, locale };
+
+      if (status !== T.Status.active) {
+        throw new Error(`status not ok`);
+      }
+
+      const permissions =
+        await this.userService.permissionService.permissionNamesByUser(
+          profile.id
+        );
+      return { profile, permissions, locale };
+    } catch (err) {
+      console.error("err", "reAuthenticate", (err as Error).message);
+      throw err;
+    }
   };
 
   authenticate2Fa = async (
