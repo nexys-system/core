@@ -106,3 +106,9 @@ export const mapTokenWithResponse = (
 
   return;
 };
+
+export const isJWT = (token: string): boolean => {
+  const parts = token.split(".");
+
+  return parts.length === 3;
+};

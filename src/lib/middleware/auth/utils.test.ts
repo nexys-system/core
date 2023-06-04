@@ -56,3 +56,15 @@ test("is expired", () => {
   expect(A.isExpired(dt - 1000, 1200)).toEqual(false);
   expect(A.isExpired(dt - 2000, 1200)).toEqual(true);
 });
+
+describe("isJWT", () => {
+  it("should return true for a valid JWT structure", () => {
+    const token = "header.payload.signature";
+    expect(A.isJWT(token)).toBe(true);
+  });
+
+  it("should return false for an invalid JWT structure", () => {
+    const invalidToken = "header.payload";
+    expect(A.isJWT(invalidToken)).toBe(false);
+  });
+});

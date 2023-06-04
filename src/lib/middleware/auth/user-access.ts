@@ -92,7 +92,6 @@ export default class Auth<
     }
   };
 
-  // todo call database to avoid inifinte renewing
   refresh = async (
     ctx: Koa.Context,
     cookieOpts: {
@@ -109,28 +108,40 @@ export default class Auth<
     }
 
     try {
-      const { profile, locale, permissions } =
-        await this.loginService.reAuthenticate(refreshToken);
-
-      const nProfile: Profile = { id: profile.uuid, ...profile } as any;
-
-      const userCache: UserCache = { permissions, locale } as UserCache;
+      const { profile, userCache } =
+        await this.profileAndUserCacheByRefreshToken(refreshToken);
 
       const profileWToken = await this.authFormat(
         userCache,
-        nProfile,
+        profile,
         refreshToken
       );
 
       U.login(profileWToken, ctx.cookies, cookieOpts);
 
-      return { profile: nProfile, userCache };
+      return { profile, userCache };
     } catch (err) {
       console.log(err);
       throw Error("JWT refresh invalid");
     }
+  };
 
-    //throw Error("JWT invalid");
+  profileAndUserCacheByRefreshToken = async (
+    refreshToken: string
+  ): Promise<{ profile: Profile; userCache: UserCache }> => {
+    try {
+      const { profile, locale, permissions } =
+        await this.loginService.reAuthenticate(refreshToken);
+
+      const newProfile: Profile = { id: profile.uuid, ...profile } as any;
+
+      const userCache: UserCache = { permissions, locale } as UserCache;
+
+      return { profile: newProfile, userCache };
+    } catch (err) {
+      console.log(err);
+      throw Error("JWT refresh invalid");
+    }
   };
 
   getCache = <Id, A>(id: Id): A => this.cache.get(U.getKey(id));
@@ -166,7 +177,6 @@ export default class Auth<
     profile: Profile,
     refreshToken: string,
     userCache: UserCache,
-
     cookieOpts: {
       secure: boolean;
       sameSite?: boolean | "strict" | "lax" | "none";
@@ -189,6 +199,26 @@ export default class Auth<
       if (token === undefined) {
         ctx.status = 401;
         ctx.body = { message: "isAuthenticated: please provide a token" };
+        return;
+      }
+
+      // try api access
+      if (!U.isJWT(token)) {
+        try {
+          const { profile, userCache } =
+            await this.profileAndUserCacheByRefreshToken(token);
+          const state: LT.UserState<Id, Profile, UserCache> = {
+            profile,
+            userCache,
+          };
+
+          ctx.state = state;
+        } catch (err) {
+          ctx.status = 401;
+          ctx.body = { error: "could not authenticate API request" };
+        }
+
+        // no matter what stops here
         return;
       }
 
