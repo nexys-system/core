@@ -1,9 +1,9 @@
 # Nexys web framework
 
-[![CI](https://github.com/nexys-system/core/workflows/CI/badge.svg)](https://github.com/nexys-system/core/actions)
+[![Test Package](https://github.com/nexys-system/core/actions/workflows/test.yml/badge.svg)](https://github.com/nexys-system/core/actions/workflows/test.yml)
+[![Publish](https://github.com/nexys-system/core/actions/workflows/publish.yml/badge.svg)](https://github.com/nexys-system/core/actions/workflows/publish.yml)
 [![NPM package](https://badge.fury.io/js/%40nexys%2Fcore.svg)](https://www.npmjs.com/package/@nexys/core)
 [![NPM package](https://img.shields.io/npm/v/@nexys/core.svg)](https://www.npmjs.com/package/@nexys/core)
-[![Bundleophobia](https://badgen.net/bundlephobia/min/@nexys/core)](https://bundlephobia.com/result?p=@nexys/core)
 [![Prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://prettier.io/)
 
 Nexys typescript web framework (built on top of Koa and Nexys System SDK)
