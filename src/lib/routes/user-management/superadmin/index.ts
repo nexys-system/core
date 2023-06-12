@@ -13,7 +13,7 @@ import {
   UserService,
   InstanceService,
   UserAuthentication,
-  UserToken,
+  UserTokenService,
 } from "../../../user-management";
 
 const SuperadminRoutes = <UserCache extends UserCacheDefault>(
@@ -28,7 +28,7 @@ const SuperadminRoutes = <UserCache extends UserCacheDefault>(
     instanceService: InstanceService;
     permissionService: PermissionService;
     userAuthenticationService: UserAuthentication;
-    userTokenService: UserToken;
+    userTokenService: UserTokenService;
   },
   MiddlewareAuth: m<UserCache>
 ) => {

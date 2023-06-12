@@ -11,7 +11,7 @@ import TokenRoutes from "./token";
 import {
   UserAuthentication,
   UserService,
-  UserToken,
+  UserTokenService,
 } from "../../../../user-management";
 
 const UserRoutes = <UserCache extends UserCacheDefault>(
@@ -22,7 +22,7 @@ const UserRoutes = <UserCache extends UserCacheDefault>(
   }: {
     userService: UserService;
     userAuthenticationService: UserAuthentication;
-    userTokenService: UserToken;
+    userTokenService: UserTokenService;
   },
   MiddlewareAuth: m<UserCache>
 ) => {

@@ -24,7 +24,7 @@ class ProductService<
   instanceService: UserManagementService.InstanceService;
   permissionService: UserManagementService.PermissionService;
   userAuthenticationService: UserManagementService.UserAuthentication;
-  userTokenService: UserManagementService.UserToken;
+  userTokenService: UserManagementService.UserTokenService;
   public middlewareAuth: MiddlewareAuth<UserCache, Permission>;
 
   constructor(
@@ -56,7 +56,7 @@ class ProductService<
     this.userAuthenticationService =
       new UserManagementService.UserAuthentication(qs);
 
-    this.userTokenService = new UserManagementService.UserToken(qs);
+    this.userTokenService = new UserManagementService.UserTokenService(qs);
 
     this.middlewareAuth = new MiddlewareAuth(
       this.authService,

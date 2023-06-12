@@ -6,15 +6,25 @@ import { Main as Validation } from "@nexys/validation";
 
 import { UserCacheDefault } from "../../../middleware/auth/type";
 
-import { UserService, PasswordService } from "../../../user-management";
+import {
+  UserService,
+  PasswordService,
+  UserTokenService,
+} from "../../../user-management";
 
 import Profile2FaRoutes from "./two-fa";
+import ProfileTokenRoutes from "./token";
 
 const ProfileRoutes = <UserCache extends UserCacheDefault>(
   {
     userService,
     passwordService,
-  }: { userService: UserService; passwordService: PasswordService },
+    userTokenService,
+  }: {
+    userService: UserService;
+    passwordService: PasswordService;
+    userTokenService: UserTokenService;
+  },
   MiddlewareAuth: m<UserCache>
 ) => {
   const router = new Router();
@@ -87,6 +97,10 @@ const ProfileRoutes = <UserCache extends UserCacheDefault>(
   );
 
   router.use("/2fa", Profile2FaRoutes({ userService }, MiddlewareAuth));
+  router.use(
+    "/token",
+    ProfileTokenRoutes({ userTokenService }, MiddlewareAuth)
+  );
 
   return router.routes();
 };

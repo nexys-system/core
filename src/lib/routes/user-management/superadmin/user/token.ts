@@ -5,11 +5,11 @@ import { Main as Validation, Utils as VU } from "@nexys/validation";
 import m from "../../../../middleware/auth";
 import { UserCacheDefault } from "../../../../middleware/auth/type";
 
-import { UserToken } from "../../../../user-management";
+import { UserTokenService } from "../../../../user-management";
 import { Permission } from "../../../../user-management/crud-type";
 
-const UserTokenService = <UserCache extends UserCacheDefault>(
-  { userTokenService }: { userTokenService: UserToken },
+const UserTokenRoutes = <UserCache extends UserCacheDefault>(
+  { userTokenService }: { userTokenService: UserTokenService },
   MiddlewareAuth: m<UserCache>
 ) => {
   const router = new Router();
@@ -42,4 +42,4 @@ const UserTokenService = <UserCache extends UserCacheDefault>(
   return router.routes();
 };
 
-export default UserTokenService;
+export default UserTokenRoutes;

@@ -12,7 +12,11 @@ const loginRoutes = UserManagementRoutes.Auth(
 );
 
 const profileRoutes = UserManagementRoutes.Profile(
-  { userService: P.userService, passwordService: P.passwordService },
+  {
+    userService: P.userService,
+    passwordService: P.passwordService,
+    userTokenService: P.userTokenService,
+  },
   P.middlewareAuth
 );
 

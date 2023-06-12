@@ -3,7 +3,7 @@ import PasswordService from "./password";
 import PermissionService from "./permission";
 import UserService from "./user";
 import UserAuthentication from "./user/authentication";
-import UserToken from "./user/token";
+import UserTokenService from "./user/token";
 import InstanceService from "./instance";
 import SignupService from "./signup";
 
@@ -16,7 +16,7 @@ export {
   PermissionService,
   UserService,
   UserAuthentication,
-  UserToken,
+  UserTokenService,
   InstanceService,
   SignupService,
 };
