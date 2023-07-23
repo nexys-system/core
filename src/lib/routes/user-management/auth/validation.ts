@@ -19,6 +19,7 @@ const signupShape: VT.Shape = {
   firstName: {},
   lastName: {},
   email: { extraCheck: VU.emailCheck },
+  instance: { uuid: {}},
   auth: authShape,
 };
 
