@@ -11,9 +11,9 @@ import { roleMap } from "../../../common/generated/utils";
 import Product from "../../product";
 import * as Config from "../../config";
 
-const pool = new Connection.SQL(Config.database);
+const pool = new Connection.SQL(Config.database, "MySQL");
 
-const schemas = new Schema<Permissions>(model, pool, submodels);
+const schemas = new Schema<Permissions>(model, pool, "MySQL", submodels);
 
 const router = getRouter(
   schemas,

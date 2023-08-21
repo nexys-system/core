@@ -1,15 +1,15 @@
-import * as FetchR from "@nexys/fetchr";
 import dotenv from "dotenv";
 
 import JWT from "jsonwebtoken";
 
 import { get } from "../../lib/context";
 import { AppTokenDecoded } from "../../lib/context/type";
+import { ConnectionOptions } from "@nexys/fetchr/dist/database/type";
 
 dotenv.config();
 
 // init fetchr
-export const database: FetchR.Database.Connection.ConnectionOptions = {
+export const database: ConnectionOptions = {
   user: process.env.DATABASE_USER || "",
   host: process.env.DATABASE_HOST || "",
   password: process.env.DATABASE_PASSWORD || "",
