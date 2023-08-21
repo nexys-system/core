@@ -1,6 +1,6 @@
 {
   "name": "@nexys/core",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "license": "AGPL-3.0",
   "scripts": {
     "test": "rm -rf dist;SECRET=mysecretmysecretmysecretmysecret APP_TOKEN=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpbnN0YW5jZSI6IjJjNWQwNTM1LTI2YWItMTFlOS05Mjg0LWZhMTYzZTQxZjMzZCIsImluc3RhbmNlTmFtZSI6InRlc3QiLCJwcm9kdWN0IjoxLCJwcm9kdWN0TmFtZSI6InRlc3Rwcm9kdWN0IiwiZW52IjoxLCJlbnZOYW1lIjoiZGV2IiwiaWF0IjoxNjI4NjczNjg1fQ.EgWvtBUoQLCITpQpeb9j3fLTu4Hxd9DgDxA7yCu0hTA NEXYS_HOST=http://myhost NEXYS_TOKEN=nexys_token jest",
@@ -16,7 +16,7 @@
   "dependencies": {
     "@nexys/api-request": "^0.0.1",
     "@nexys/crypto": "^1.0.4",
-    "@nexys/fetchr": "^0.8.2",
+    "@nexys/fetchr": "^0.8.3",
     "@nexys/http": "^1.0.0",
     "@nexys/node-cache": "^0.0.1",
     "@nexys/timebasedotp": "^0.0.8",
