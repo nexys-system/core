@@ -532,14 +532,15 @@
   resolved "https://registry.yarnpkg.com/@nexys/crypto/-/crypto-1.0.4.tgz#087ea960516ca3fee810fd3ea51002db22e07c3f"
   integrity sha512-acsLzzudQyXKDQ5enym9XTpR2u1cey7qjdRjtNf58wP20SSR6h6iRuLLWy9ALIBfwURY0DUe13QY9aD2woDsGw==
 
-"@nexys/fetchr@^0.8.2":
-  version "0.8.2"
-  resolved "https://registry.yarnpkg.com/@nexys/fetchr/-/fetchr-0.8.2.tgz#7dbfb38950e95dc247006042f6c4b00ff8dab6e8"
-  integrity sha512-zX3prXgpxUABNRwvZ/ohwaOo82Bb0ws4GZEElxI4EH7BcJskjUtnQvu24d0e2+n8nYDw2yUHR3u8LsDSFQ6svA==
+"@nexys/fetchr@^0.9.0":
+  version "0.9.0"
+  resolved "https://registry.yarnpkg.com/@nexys/fetchr/-/fetchr-0.9.0.tgz#0da4fda52bbc39f0e3fe106d8a8af3edf07b3e8c"
+  integrity sha512-+S5KCCwCHCcb4xtbXBrQ9NDP3HzIGy0AgDwY42cDMYDhr+hxZ6vjoP6QpORb1MFyk0vfr7cmxRMPYCKv+fAnng==
   dependencies:
     "@nexys/validation" "^2.1.4"
     "@types/pg" "^8.10.2"
     "@types/sqlstring" "^2.3.0"
+    crc-32 "^1.2.2"
     mysql2 "^2.3.3"
     pg "^8.11.3"
     sqlstring "^2.3.2"
@@ -1318,6 +1319,11 @@ core-util-is@~1.0.0:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/core-util-is/-/core-util-is-1.0.3.tgz#a6042d3634c2b27e9328f837b965fac83808db85"
   integrity sha512-ZQBvi1DcpJ4GDqanjucZ2Hj3wEO5pZDS89BWbkcrvdxksJorwUDDZamX9ldFkp9aw2lmBDLgkObEA4DWNJ9FYQ==
+
+crc-32@^1.2.2:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/crc-32/-/crc-32-1.2.2.tgz#3cad35a934b8bf71f25ca524b6da51fb7eace2ff"
+  integrity sha512-ROmzCKrTnOwybPcJApAA6WBWij23HVfGVNKqqrZpuyZOHqK2CwHSvpGuyt/UNNvaIjEd8X5IFGp4Mh+Ie1IHJQ==
 
 cross-spawn@^7.0.3:
   version "7.0.3"
