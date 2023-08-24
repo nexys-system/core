@@ -11,7 +11,7 @@ import { Permission } from "../../../../user-management/crud-type";
 
 type Uuid = string;
 
-const InstanceService = <UserCache extends UserCacheDefault>(
+const PermissionInstanceService = <UserCache extends UserCacheDefault>(
   { permissionService }: { permissionService: PermissionService },
   MiddlewareAuth: m<UserCache>
 ) => {
@@ -55,4 +55,4 @@ const InstanceService = <UserCache extends UserCacheDefault>(
   return router.routes();
 };
 
-export default InstanceService;
+export default PermissionInstanceService;
