@@ -1,6 +1,6 @@
 {
   "name": "@nexys/core",
-  "version": "1.6.2",
+  "version": "2.0.0",
   "license": "AGPL-3.0",
   "scripts": {
     "test": "rm -rf dist;jest",
