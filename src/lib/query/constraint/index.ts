@@ -1,7 +1,7 @@
 import { Entity } from "../model/type";
 
-import { Profile, Constraint } from "./type";
-import { Permission } from "../../user-management/crud-type";
+import { Profile, Constraint, Permission } from "./type";
+
 import DefaultConstraints from "./default-constraints";
 
 const roleKeys = [Permission.app, Permission.admin, Permission.superadmin];

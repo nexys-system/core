@@ -14,11 +14,6 @@ const pool = new Connection.SQL(Config.database, "MySQL");
 
 const schemas = new Schema<Permissions>(model, pool, "MySQL", submodels);
 
-const router = getRouter(
-  schemas,
-  Config.appToken,
-
-  roleMap
-);
+const router = getRouter(schemas, roleMap);
 
 export default router.routes();

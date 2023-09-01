@@ -32,3 +32,10 @@ export interface Constraint {
   data: QueryConstraint;
   mutate: MutateConstraint;
 }
+
+//
+export enum Permission {
+  app = 1,
+  admin = 2,
+  superadmin = 3,
+}

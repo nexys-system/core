@@ -2,8 +2,9 @@ import Koa from "koa";
 
 //import * as R from "../../common/generated/role";
 import { Entity } from "../model/type";
-import { Permission } from "../../user-management/crud-type";
+
 import Constraints from "./index";
+import { Permission } from "./type";
 
 const mapRoleStringToPermission = (role: string): Permission => {
   switch (role) {

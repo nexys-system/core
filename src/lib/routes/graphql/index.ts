@@ -3,7 +3,7 @@ import bodyParser from "koa-body";
 import { graphql, printSchema } from "graphql";
 
 //import MiddlewareAuth,
-import * as Auth from "../../middleware/auth";
+//import * as Auth from "../../middleware/auth";
 
 import Schema from "@nexys/fetchr/dist/graphql/schema";
 
@@ -16,29 +16,27 @@ import * as ErrorHandler from "./error-handler";
 
 const getRouter = <Permission>(
   schemas: Schema<Permission>,
-  appToken: string,
-
   roleMap: Map<string, Permission>
 ) => {
   const router = new Router();
 
-  const appAuth = new Auth.App.default(appToken);
+  ///const appAuth = new Auth.App.default(appToken);
 
   // access for app (using app token)
 
   // this is the default schema, superadmin. Accessible via app token
-  router.all("/schema", bodyParser(), appAuth.isAuthenticated, async (ctx) => {
+  router.all("/schema", bodyParser(), async (ctx) => {
     ctx.body = printSchema(schemas.gQLSchema);
   });
 
-  router.post("/query", bodyParser(), appAuth.isAuthenticated, async (ctx) => {
+  router.post("/query", bodyParser(), async (ctx) => {
     const { body } = ctx.request;
     const { query } = body;
     ctx.body = await graphql({ schema: schemas.gQLSchema, source: query });
   });
 
   // raw model is exported here, needed for the entity browser
-  router.all("/model", appAuth.isAuthenticated, (ctx) => {
+  router.all("/model", (ctx) => {
     ctx.body = schemas.rawModel;
   });
 
