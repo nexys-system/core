@@ -2,7 +2,8 @@ import Router from "koa-router";
 import bodyParser from "koa-body";
 import { graphql, printSchema } from "graphql";
 
-import MiddlewareAuth, * as Auth from "../../middleware/auth";
+//import MiddlewareAuth,
+import * as Auth from "../../middleware/auth";
 
 import Schema from "@nexys/fetchr/dist/graphql/schema";
 
@@ -11,12 +12,12 @@ import * as ErrorHandler from "./error-handler";
 //import { Permissions } from "../../../common/generated/type";
 
 // cannot use reference from above else the package will not be built correctly (includes the lib folder)
-const superadminPermission = 3;
+//const superadminPermission = 3;
 
 const getRouter = <Permission>(
   schemas: Schema<Permission>,
   appToken: string,
-  middlewareAuth: MiddlewareAuth<any>,
+
   roleMap: Map<string, Permission>
 ) => {
   const router = new Router();
@@ -43,8 +44,8 @@ const getRouter = <Permission>(
 
   router.all(
     "/superadmin/model",
-    middlewareAuth.isAuthenticated(),
-    middlewareAuth.hasPermission(superadminPermission),
+    //  middlewareAuth.isAuthenticated(),
+    //  middlewareAuth.hasPermission(superadminPermission),
     (ctx) => {
       ctx.body = schemas.rawModel;
     }
@@ -58,7 +59,7 @@ const getRouter = <Permission>(
   router.all(
     "/:role/schema",
     bodyParser(),
-    middlewareAuth.isAuthenticated(),
+    //   middlewareAuth.isAuthenticated(),
     async (ctx) => {
       try {
         const schema = schemas.getSchemaFromCtx(ctx, roleMap);
@@ -74,7 +75,7 @@ const getRouter = <Permission>(
   router.post(
     "/:role",
     bodyParser(),
-    middlewareAuth.isAuthenticated(),
+    //   middlewareAuth.isAuthenticated(),
     async (ctx) => {
       try {
         const schema = schemas.getSchemaFromCtx(ctx, roleMap);
