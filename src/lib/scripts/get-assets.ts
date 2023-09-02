@@ -1,5 +1,5 @@
+/// <reference lib="dom" />
 import dotenv from "dotenv";
-import fetch from "node-fetch";
 import readline from "readline";
 import fs, { promises as fsp } from "fs";
 import * as U from "./utils";

@@ -1,4 +1,4 @@
-import fetch from "node-fetch";
+/// <reference lib="dom" />
 import fs from "fs";
 import readline from "readline";
 import * as C from "./config";

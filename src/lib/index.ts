@@ -1,4 +1,3 @@
-export * as JWT from "./jwt";
 export * as Type from "./type";
 export * as Middleware from "./middleware";
 export * as Routes from "./routes/product";

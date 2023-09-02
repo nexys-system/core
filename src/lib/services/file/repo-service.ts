@@ -1,7 +1,6 @@
-import FormData from "form-data";
+/// <reference lib="dom" />
 
 import * as Type from "./type";
-import fetch from "node-fetch";
 
 import * as NexysService from "../nexys-service";
 import { Context } from "../../context/type";
@@ -24,10 +23,14 @@ class RepositoryService {
     form.append("name", payload.name);
     // see
     // https://stackoverflow.com/a/43914175/1659569
-    form.append("file", payload.file.value, payload.file.options);
+    form.append(
+      "file",
+      new Blob([payload.file.value]),
+      payload.file.options.filename
+    );
 
     const headers = {
-      ...form.getHeaders(),
+      //...form.getHeaders(),
       "app-token": this.context.appToken,
     };
 
@@ -47,7 +50,7 @@ class RepositoryService {
    * serve file
    * @param filename filename
    */
-  serve = async (name: string): Promise<Buffer> => {
+  serve = async (name: string): Promise<ArrayBuffer> => {
     const url = NexysService.host + "/file/serve";
 
     const data = { name };
@@ -62,7 +65,7 @@ class RepositoryService {
       headers,
       method,
     });
-    return r.buffer();
+    return r.arrayBuffer();
   };
 
   write = (filename: string, data: string): Promise<{ status: boolean }> => {

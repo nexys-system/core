@@ -1,9 +1,9 @@
 /**
  * this service allows to use the external fetchr service
  */
+/// <reference lib="dom" />
 import { Query, Mutate, MutateResponse } from "@nexys/fetchr/dist/type";
 import AbstractServiceWData from "./abstract-service-wdata";
-import fetch from "node-fetch";
 import * as TA from "@nexys/fetchr/dist/query-builder/aggregate/type";
 import * as TF from "@nexys/fetchr/dist/type";
 

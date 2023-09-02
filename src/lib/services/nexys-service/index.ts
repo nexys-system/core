@@ -1,4 +1,4 @@
-import fetch from "node-fetch";
+/// <reference lib="dom" />
 
 export const host: string =
   process.env.NEXYS_SERVICE_HOST || "https://service.nexys.io";
