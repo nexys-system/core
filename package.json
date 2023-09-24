@@ -1,6 +1,6 @@
 {
   "name": "@nexys/core",
-  "version": "4.0.4",
+  "version": "4.0.7",
   "license": "AGPL-3.0",
   "scripts": {
     "test": "rm -rf dist;jest",
@@ -16,7 +16,7 @@
   "dependencies": {
     "@nexys/api-request": "^0.0.1",
     "@nexys/crypto": "^1.0.4",
-    "@nexys/fetchr": "^0.9.0",
+    "@nexys/fetchr": "^0.9.3",
     "@nexys/http": "^1.0.0",
     "@nexys/node-cache": "^0.0.1",
     "@nexys/swifts3-client": "^0.0.10",
