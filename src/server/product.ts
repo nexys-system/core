@@ -1,7 +1,5 @@
-import FetchR from "@nexys/fetchr";
+import FetchR, { QueryService } from "@nexys/fetchr";
 import Cache from "@nexys/node-cache";
-
-import QueryService from "../lib/query/service";
 
 import * as Config from "./config";
 
@@ -16,5 +14,5 @@ export const workflow = new WorkflowService(Config.context);
 export const notifications = new NotificationService(Config.context);
 
 export const fetchR = new FetchR(Config.database, "MySQL", model);
-export const qs = new QueryService(fetchR);
+export const qs = new QueryService.Service(fetchR);
 export const cache = new Cache();

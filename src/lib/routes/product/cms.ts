@@ -1,12 +1,9 @@
 import Koa from "koa";
 import Router from "koa-router";
 import bodyParser from "koa-body";
-import * as Middleware from "../../middleware";
 import { Main as Validation, Utils as VU } from "@nexys/validation";
 
 import { CMSService } from "./type";
-
-const { Response } = Middleware;
 
 export default (CMS: CMSService) => {
   const router: Router = new Router();
@@ -21,9 +18,12 @@ export default (CMS: CMSService) => {
     }),
     async (ctx: Koa.Context) => {
       const { uuid, lang = "en" } = ctx.request.body;
-      const r = () => CMS.get(uuid, lang);
-
-      await Response.handleResponse(r, ctx);
+      try {
+        ctx.body = await CMS.get(uuid, lang);
+      } catch (err) {
+        ctx.status = 400;
+        ctx.body = err;
+      }
     }
   );
 

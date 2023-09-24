@@ -1,6 +1,5 @@
 import Router from "koa-router";
 import { EmailService } from "./type";
-import { HTTP } from "@nexys/http";
 
 export default (emailService: EmailService) => {
   const router: Router = new Router();
@@ -9,7 +8,7 @@ export default (emailService: EmailService) => {
     const { email }: { email?: string } = ctx.query;
 
     if (!email) {
-      throw new HTTP.Error("no email was given", 400);
+      throw new Error("no email was given");
     }
 
     if (typeof email !== "string") {

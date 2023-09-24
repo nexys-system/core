@@ -16,8 +16,6 @@
   "dependencies": {
     "@nexys/api-request": "^0.0.1",
     "@nexys/crypto": "^1.0.4",
-    "@nexys/fetchr": "^0.9.3",
-    "@nexys/http": "^1.0.0",
     "@nexys/node-cache": "^0.0.1",
     "@nexys/swifts3-client": "^0.0.10",
     "@nexys/timebasedotp": "^0.0.8",
@@ -52,6 +50,7 @@
     "@types/jest": "^27.0.2",
     "@types/jsonwebtoken": "^9.0.2",
     "@types/supertest": "^2.0.8",
+    "@nexys/fetchr": "^0.10.0",
     "jest": "^29.6.4",
     "jsonwebtoken": "^9.0.2",
     "nock": "^13.3.3",

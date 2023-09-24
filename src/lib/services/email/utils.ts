@@ -1,4 +1,3 @@
-import HTTP from "@nexys/http";
 import * as T from "./types";
 
 export const parseRecipientsToArray = (
@@ -16,7 +15,7 @@ export const parseRecipientsToArray = (
     }
   }
 
-  throw new HTTP.Error("Please provide (a) valid recipient(s)!");
+  throw new Error("Please provide (a) valid recipient(s)!");
 };
 
 export const parseRecipients = (
