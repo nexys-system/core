@@ -47,6 +47,7 @@
     "nock": "^13.3.3",
     "supertest": "^4.0.2",
     "ts-jest": "^29.1.1",
-    "tsc-watch": "^4.4.0"
+    "tsc-watch": "^4.4.0",
+    "typescript": "^5.2.2"
   }
 }
