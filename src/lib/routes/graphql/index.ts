@@ -1,4 +1,4 @@
-import Router from "koa-router";
+import Router from "@koa/router";
 import bodyParser from "koa-body";
 import { graphql, printSchema } from "graphql";
 

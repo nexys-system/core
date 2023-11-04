@@ -1,5 +1,5 @@
 import App from "../lib/app";
-import Router from "koa-router";
+import Router from "@koa/router";
 
 import graphQLRoutes from "./routes/graphql";
 
