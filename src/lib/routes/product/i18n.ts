@@ -1,5 +1,5 @@
 import Koa from "koa";
-import Router from "koa-router";
+import Router from "@koa/router";
 
 import I18nService from "../../services/i18n";
 
@@ -18,9 +18,12 @@ export default (I18n: I18nService) => {
     try {
       ctx.body = await I18n.getFile(lang);
     } catch (error) {
-      console.log('I18n: initializing, saving files locally');
+      console.log("I18n: initializing, saving files locally");
       const langs = await I18n.saveAll();
-      console.log('I18n: the following langs were saved and can now be consumed by the application: ' + JSON.stringify(langs));
+      console.log(
+        "I18n: the following langs were saved and can now be consumed by the application: " +
+          JSON.stringify(langs)
+      );
       ctx.body = await I18n.getFile(lang);
     }
   });

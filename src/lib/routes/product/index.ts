@@ -1,4 +1,4 @@
-import Router from "koa-router";
+import Router from "@koa/router";
 import Cms from "./cms";
 import I18n from "./i18n";
 import Notification from "./notification";

@@ -1,4 +1,4 @@
-import Router from "koa-router";
+import Router from "@koa/router";
 import { EmailService } from "./type";
 
 export default (emailService: EmailService) => {

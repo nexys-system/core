@@ -2,7 +2,7 @@
  * collection routes displaying/managing meta information
  */
 import Koa from "koa";
-import Router from "koa-router";
+import Router from "@koa/router";
 
 // Where everyday CLI arguments are concerned, you'll want to skip the first two.
 // @see https://nodejs.org/en/knowledge/command-line/how-to-parse-command-line-arguments/

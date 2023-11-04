@@ -1,5 +1,5 @@
 import Koa from "koa";
-import Router from "koa-router";
+import Router from "@koa/router";
 import bodyParser from "koa-body";
 import { Main as Validation, Utils as VU } from "@nexys/validation";
 
