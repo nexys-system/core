@@ -1,6 +1,6 @@
 {
   "name": "@nexys/core",
-  "version": "4.2.1",
+  "version": "4.2.2",
   "license": "AGPL-3.0",
   "scripts": {
     "test": "rm -rf dist;jest",
@@ -16,7 +16,7 @@
   "dependencies": {
     "@koa/router": "^12.0.1",
     "@nexys/api-request": "^0.0.3",
-    "@nexys/node-cache": "^0.0.1",
+    "@nexys/node-cache": "^0.0.2",
     "@nexys/validation": "^2.1.5",
     "@nexys/workflow": "^0.0.9",
     "@types/graphql-fields": "^1.3.4",
